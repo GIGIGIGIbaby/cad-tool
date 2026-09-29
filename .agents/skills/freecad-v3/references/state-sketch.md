@@ -82,7 +82,7 @@ sk.PartiallyRedundantConstraints  # 本轮未构造出非空样例，编号基�
 - `Shape.ElementMap` 是 `{历史键: 名称}`，名称为 `Face1/Edge1/...`，**顶点名可以一对多**。
 - 纯重算（无参数改动）名称与历史键 0 变化；改尺寸后**名称保留但"名称→历史键"绑定会被重新生成**（实测 12/38 与 4/26 换键）。
   → 不能声称 Face/Edge 编号永远稳定，更不能只凭序号认定同一物理特征。
-- FeaturePython（脚本对象）：快照只存 `<模块>.<类名>`，**装不下实现**；把 Proxy 类放进可导入模块后，另一进程重开可完整恢复行为（700→2000→6000 mm³ 含表达式）。`json.dumps(obj.Proxy)` 会抛 `TypeError`。
+- FeaturePython（脚本对象）：快照只存 `<模块>.<类名>`，**装不下实现**。FreeCAD 1.1.3 恢复文档时**拦截工程模块**（`blocked import of module ... Only modules from FreeCAD or installed addons are permitted`），即使打开前已 `import` 该模块，重开后 Proxy 仍为 `None`、改表格不重建（EVAL-002 复核）。旧结论"放进可导入模块即可恢复"作废。要重开后仍参数化，用原生对象 + 表达式。`json.dumps(obj.Proxy)` 会抛 `TypeError`。
 - 子元素引用（如 Fillet 的边）失败是**静默**的：伪造 `Edge99` 不抛异常，只得到 `State=['Touched','Invalid']`、`Shape=None`，stderr 才写 `Invalid edge link`。
 
 ## 5. 明确不声称
