@@ -31,3 +31,8 @@ Independent check: [evaluate_eval002.py](evaluate_eval002.py) + [eval002_probe.p
 - Add: when a boolean result looks "wrong", first check operand validity/solid count and axis/orientation of the tool bodies before suspecting the kernel.
 - All three agents used correct standard dimensions (NEMA17, LM8UU, 608, T8 nut, MGN12); no evidence yet that the V2 parts catalogue needs porting.
 - Render framing leaves ~50% whitespace; small parts are hard to see.
+
+## Follow-up applied
+
+- Docs: `feedback.md` §4.8 rewritten (+§4.9 frozen `Part::Feature`, §4.10 suspect inputs before the kernel); `SKILL.md` gained "native objects + expressions" and "see inside / interference" sections; `state-sketch.md` FeaturePython note corrected. Re-checked: pre-importing the project module before `openDocument` still leaves all 12 proxies `None`.
+- Tool: `cad3 render --section AXIS=MM` (half-space sections, overlaps red + listed). On the Flash model, `--section y=58` shows the lead screw red through nut block, both supports and the coupler, and the cross-drilled nut bore as a circle. Views are now framed from projected bbox corners instead of the bounding sphere.

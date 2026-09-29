@@ -81,3 +81,4 @@ notes/                    # 意图/设计笔记
 - **不要为了观察而对任意草图调 `solve()`**：`recompute` 后读诊断即可。
 - `inspect --format code` 是紧凑只读描述，头部即声明"不是可执行重建代码"。
 - `render` 的视图名固定为 `iso/top/front/right`；VTK 缺失或对象无几何是可操作错误，不是静默空图。
+- `render --section y=12.5`（可重复）输出 `section_<n>_<axis>.png`；只给 `--section` 时不再渲染四个默认视图。每张图的元数据含 `objects_cut_by_plane` 与 `overlaps`（红色区域）。

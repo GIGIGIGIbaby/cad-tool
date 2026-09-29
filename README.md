@@ -41,6 +41,7 @@ cp examples/fail.py /tmp/cad3-demo/src/fail.py
 python3 cad3.py run -p /tmp/cad3-demo --step
 python3 cad3.py inspect -p /tmp/cad3-demo --format code
 python3 cad3.py render -p /tmp/cad3-demo --views iso,top
+python3 cad3.py render -p /tmp/cad3-demo --section y=10   # 剖面：切掉朝向相机一半，零件重叠处标红
 python3 cad3.py commit -p /tmp/cad3-demo -m "带孔板初版"
 
 python3 cad3.py run src/edit_plate.py -p /tmp/cad3-demo --step
@@ -107,6 +108,7 @@ assert abs(box.Shape.Volume - 8000) < 1e-6
 - `inspect --object 名称 --detail`：查看指定对象的更多属性、表达式与草图诊断。
 - `inspect --format code`：便于模型阅读的**只读**表达，不是完整重建脚本。
 - `render`：真实几何的 VTK 着色图；**不是原生 GUI 截图**，不承诺保留界面标注或选中态。
+- `render --section AXIS=MM`（可重复）：轴向剖面。看不见的内部（轴穿孔、轴承座、螺母）靠它看；零件之间的体积重叠画成红色，并在 JSON 的 `overlaps` 里列出。
 - 其他测量/求解工作流仍由模型通过原生 Python API 组织，不要求固定建模顺序。
 
 ## 执行与恢复边界

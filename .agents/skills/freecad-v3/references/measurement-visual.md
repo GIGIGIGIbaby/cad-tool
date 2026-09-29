@@ -58,6 +58,7 @@ overlap == min(VolA, VolB)   → 完全内含（内含只出现在 overlap>0 分
 
 | 能力 | 无头可用 | 说明 |
 |---|---|---|
+| **`cad3 render --section AXIS=MM`** | 是 | 半空间 `common()` 切开每个输出对象，正对切面出图；切后零件两两重叠画红并列在 `overlaps`。首选的"看内部"手段 |
 | BRep 网格化 + VTK 离屏着色 PNG | 是 | 用安装包自带 VTK 9.3.1，`App.GuiUp=0`；**不是 GUI 截图**，不保留选中态/显示对象/界面标注 |
 | 几何投影（可见 + 隐藏线） | 是 | `TechDraw.project()` 返回 4 组 `[可见边, 可见点, 隐藏边, 隐藏点]`（都是 `Part.Shape`）；`projectEx()` 返回 10 组 |
 | 原生矢量投影 | 是 | `projectToSVG` / `exportSVGEdges` / `projectToDXF`；`projectToSVG` 有隐藏线虚线分组与线宽分级，但**无填充、无尺寸、无文字、无 viewBox** |

@@ -742,6 +742,7 @@ def _invoke(
     object_name: str | None = None,
     detail: bool = False,
     views=None,
+    sections=None,
     width: int = 960,
     height: int = 720,
     executable=None,
@@ -802,9 +803,19 @@ def _invoke(
             return _fail(result, "script_missing", f"script not found: {script}")
         script_sha = _sha256_file(script)
     elif action == "render":
-        views = tuple(views or ("iso", "top", "front", "right"))
-        if not views:
-            return _fail(result, "bad_request", "render needs at least one view")
+        sections = list(sections or [])
+        views = tuple(views) if views is not None else (() if sections else ("iso", "top", "front", "right"))
+        if not views and not sections:
+            return _fail(result, "bad_request", "render needs at least one view or section")
+        for item in sections:
+            text = str(item).strip().lower().replace(" ", "")
+            axis, _, value = text.partition("=")
+            try:
+                ok_value = axis in ("x", "y", "z") and float(value) == float(value) and abs(float(value)) < 1e9
+            except ValueError:
+                ok_value = False
+            if not ok_value:
+                return _fail(result, "bad_request", f"section must look like x=0, y=12.5 or z=-3: {item!r}")
         for name in views:
             if name not in ("iso", "top", "front", "right"):
                 return _fail(result, "bad_request", f"unsupported view name: {name!r}")
@@ -832,7 +843,8 @@ def _invoke(
         "model_candidate": str(run_dir / "model.FCStd"),
         "step_candidate": str(step_path or (run_dir / (document.stem + ".step"))),
         "export_step": bool(export_step),
-        "views": list(views) if views else None,
+        "views": list(views) if views is not None else None,
+        "sections": list(sections or []),
         "width": width,
         "height": height,
         "object_name": object_name,
@@ -1109,11 +1121,16 @@ def render(
     *,
     executable: str | None = None,
     timeout: float = 90.0,
-    views=("iso", "top", "front", "right"),
+    views=None,
+    sections=None,
     width: int = 960,
     height: int = 720,
 ) -> dict:
-    """Tessellate + shade the current document to PNGs via cad3.rendering."""
+    """Tessellate + shade the current document to PNGs via cad3.rendering.
+
+    ``views`` defaults to iso/top/front/right unless only ``sections`` (e.g.
+    ``["y=12.5"]``) are requested; each section is one extra PNG.
+    """
     try:
         root = _root(project)
         document = _document_path(project)
@@ -1139,6 +1156,7 @@ def render(
         document=document,
         project=project,
         views=views,
+        sections=sections,
         width=width,
         height=height,
         executable=executable,

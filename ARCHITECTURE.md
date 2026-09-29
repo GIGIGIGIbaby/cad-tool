@@ -58,6 +58,7 @@ Project init only accepts an absent or empty target directory; never silently ad
 - `code_view(state: dict) -> str`: compact READ-ONLY descriptive view, explicitly not executable rebuild code.
 
 `cad3.rendering` (observation owner, FreeCAD worker context):
+- `render_sections(objects, output_dir, sections, width, height) -> list[dict]`: axis-aligned half-space sections (`'y=12.5'`), camera facing the cut, pairwise overlaps of cut objects drawn red and listed; observation only, not an interference gate.
 - `render_objects(objects, output_dir: Path, *, views=('iso','top','front','right'), width=960, height=720) -> list[dict]`: VTK imported lazily from bundled runtime, FreeCAD tessellation -> shaded PNG, metadata per view (camera, dimensions, source), explicitly NOT native GUI screenshot. Stable valid view names; detect no geometry/missing VTK as actionable error. Keep target paths inside supplied output dir.
 
 ## CLI (parent owns cli.py and package scaffold)
@@ -66,7 +67,7 @@ Project init only accepts an absent or empty target directory; never silently ad
 `cad3 init PATH [--name NAME]`
 `cad3 run [SCRIPT] [-p PROJECT] [--freecad PATH] [--timeout SECONDS] [--step]`
 `cad3 inspect [-p PROJECT] [--object NAME] [--detail] [--format json|code] [--freecad PATH]`
-`cad3 render [-p PROJECT] [--views iso,top,front,right] [--width N] [--height N] [--freecad PATH]`
+`cad3 render [-p PROJECT] [--views iso,top,front,right] [--section AXIS=MM ...] [--width N] [--height N] [--freecad PATH]` (with only `--section`, the default views are skipped)
 `cad3 status|log|diff|commit|restore [-p PROJECT]` (`commit -m MESSAGE`; `restore REV`; `diff [REV]`; `log --limit N`)
 Project defaults to current directory (or nearest parent containing cad3.json; never legacy manifests). JSON output for all commands except explicit `--format code`. argparse errors still exit nonzero. `python cad3.py ...` works from a fresh checkout without pip installation. `python -m cad3` and installed `cad3` also supported.
 

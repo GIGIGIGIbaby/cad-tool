@@ -60,7 +60,10 @@ def parser() -> argparse.ArgumentParser:
     inspect.add_argument("--format", choices=("json", "code"), default="json")
     inspect.add_argument("--timeout", type=positive_float, default=60.0)
     render = project_command("render", "render geometry with bundled VTK (not a GUI screenshot)", True)
-    render.add_argument("--views", default="iso,top,front,right")
+    render.add_argument("--views", default=None,
+                        help="comma list of iso,top,front,right (default all four, or none when --section is given)")
+    render.add_argument("--section", action="append", default=[], metavar="AXIS=MM",
+                        help="axis-aligned section view, e.g. --section y=12.5 (repeatable); overlaps between objects are drawn red")
     render.add_argument("--width", type=positive_int, default=960)
     render.add_argument("--height", type=positive_int, default=720)
     render.add_argument("--timeout", type=positive_float, default=90.0)
@@ -111,15 +114,18 @@ def dispatch(args) -> dict | str:
             return code_view(result["state"])
         return result
     if command == "render":
-        views = tuple(item.strip() for item in args.views.split(",") if item.strip())
-        if not views or any(item not in {"iso", "top", "front", "right"} for item in views):
+        if args.views is None:
+            views = () if args.section else ("iso", "top", "front", "right")
+        else:
+            views = tuple(item.strip() for item in args.views.split(",") if item.strip())
+        if (not views and not args.section) or any(item not in {"iso", "top", "front", "right"} for item in views):
             raise Cad3Error("views must be a nonempty comma-separated list of iso,top,front,right")
         if len(set(views)) != len(views):
             raise Cad3Error("duplicate render views are not allowed")
         if max(args.width, args.height) > 4096:
             raise Cad3Error("render width and height must not exceed 4096 pixels")
         return runtime.render(project, executable=args.freecad, timeout=args.timeout,
-                              views=views, width=args.width, height=args.height)
+                              views=views, sections=args.section, width=args.width, height=args.height)
     if command == "status":
         return versions.status(project)
     if command == "log":

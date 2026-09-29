@@ -37,7 +37,8 @@ import os
 from pathlib import Path
 from typing import Any, Sequence
 
-__all__ = ['SCHEMA', 'RenderError', 'DEFAULT_VIEWS', 'VIEW_NAMES', 'render_objects']
+__all__ = ['SCHEMA', 'RenderError', 'DEFAULT_VIEWS', 'VIEW_NAMES', 'render_objects',
+           'render_sections', 'parse_section']
 
 SCHEMA = 'cad3.rendering/v1'
 
@@ -70,7 +71,7 @@ MAX_SIZE = 8192
 MIN_TOLERANCE = 0.01
 MAX_TOLERANCE = 1.0
 CAMERA_DISTANCE_FACTOR = 2.5
-CAMERA_FIT_MARGIN = 1.15
+CAMERA_FIT_MARGIN = 1.06
 
 #: Per-object triangle budget.  A native shape far above this is not rendered:
 #: meshing it can exhaust memory (SIGBUS/SIGKILL) and a C++ crash cannot be
@@ -582,6 +583,282 @@ def _write_png(vtk: Any, window: Any, path: Path) -> int:
     return path.stat().st_size
 
 
+def _fit_camera(renderer: Any, camera: Any, minima, maxima, direction, up,
+                width: int, height: int) -> None:
+    """Frame the bounding box tightly for a parallel camera.
+
+    ``ResetCamera`` fits the bounding *sphere*, which leaves long thin
+    assemblies occupying a fraction of the image.  Project the eight bbox
+    corners onto the camera's right/up axes instead and size the parallel
+    scale to the larger of the two extents (aspect-corrected).
+    """
+    try:
+        renderer.ResetCamera()
+    except Exception:
+        pass
+    d = [float(value) for value in direction]
+    u = [float(value) for value in up]
+    # orthonormal camera basis: up' = up - (up.d) d ; right = up' x d
+    dot = sum(u[i] * d[i] for i in range(3))
+    u = [u[i] - dot * d[i] for i in range(3)]
+    norm = math.sqrt(sum(value * value for value in u)) or 1.0
+    u = [value / norm for value in u]
+    r = [u[1] * d[2] - u[2] * d[1], u[2] * d[0] - u[0] * d[2], u[0] * d[1] - u[1] * d[0]]
+    centre = [(minima[i] + maxima[i]) / 2.0 for i in range(3)]
+    half_w = half_h = 0.0
+    for cx in (minima[0], maxima[0]):
+        for cy in (minima[1], maxima[1]):
+            for cz in (minima[2], maxima[2]):
+                offset = (cx - centre[0], cy - centre[1], cz - centre[2])
+                half_w = max(half_w, abs(sum(offset[i] * r[i] for i in range(3))))
+                half_h = max(half_h, abs(sum(offset[i] * u[i] for i in range(3))))
+    aspect = float(width) / float(height) if height else 1.0
+    scale = max(half_h, half_w / aspect if aspect > 0 else half_w)
+    if scale > 0 and math.isfinite(scale):
+        try:
+            camera.SetParallelScale(scale * CAMERA_FIT_MARGIN)
+        except Exception:
+            pass
+    try:
+        renderer.ResetCameraClippingRange()
+    except Exception:
+        pass
+
+
+# --------------------------------------------------------------------------
+# section views
+# --------------------------------------------------------------------------
+#: axis -> (index, camera direction, camera up, keep-side sign).  The half of
+#: the model between the plane and the camera is removed, so the cut faces
+#: point at the camera.  keep=-1 keeps coordinate <= value, +1 keeps >= value.
+SECTION_AXES = {
+    'x': (0, (1.0, 0.0, 0.0), (0.0, 0.0, 1.0), -1),
+    'y': (1, (0.0, -1.0, 0.0), (0.0, 0.0, 1.0), +1),
+    'z': (2, (0.0, 0.0, 1.0), (0.0, 1.0, 0.0), -1),
+}
+OVERLAP_COLOR = (0.95, 0.05, 0.05)
+OVERLAP_MIN_VOLUME = 1e-6  # mm^3
+MAX_OVERLAP_OBJECTS = 80
+
+
+class _ShapeItem:
+    """Duck-typed stand-in for a DocumentObject carrying a derived shape."""
+
+    def __init__(self, name: str, type_id: str, shape: Any):
+        self.Name = name
+        self.TypeId = type_id
+        self.Shape = shape
+
+
+def parse_section(item: Any) -> tuple[str, float]:
+    """``'y=12.5'`` -> ``('y', 12.5)``; raises RenderError otherwise."""
+    if isinstance(item, (list, tuple)) and len(item) == 2:
+        axis, value = item
+    else:
+        text = str(item).strip().lower().replace(' ', '')
+        if '=' not in text:
+            raise RenderError(f'section must look like x=0, y=12.5 or z=-3 (got {item!r})')
+        axis, value = text.split('=', 1)
+    axis = str(axis).strip().lower()
+    if axis not in SECTION_AXES:
+        raise RenderError(f'section axis must be x, y or z (got {axis!r})')
+    number = _finite(value, limit=1e9)
+    if number is None:
+        raise RenderError(f'section offset must be a finite number in mm (got {value!r})')
+    return axis, number
+
+
+def _section_path(directory: Path, index: int, axis: str) -> Path:
+    path = directory / f'section_{index + 1}_{axis}.png'
+    try:
+        if path.resolve().parent != directory:
+            raise RenderError(f'refusing to write outside the output dir: {path}')
+    except OSError:
+        pass
+    return path
+
+
+def _half_space(part_module: Any, app_module: Any, minima, maxima, axis: str, value: float):
+    index, _direction, _up, keep = SECTION_AXES[axis]
+    span = max(maxima[i] - minima[i] for i in range(3))
+    pad = max(span, 1.0)
+    lo = [minima[i] - pad for i in range(3)]
+    hi = [maxima[i] + pad for i in range(3)]
+    if keep < 0:
+        hi[index] = value
+    else:
+        lo[index] = value
+    if hi[index] - lo[index] <= 0:
+        return None
+    return part_module.makeBox(hi[0] - lo[0], hi[1] - lo[1], hi[2] - lo[2],
+                               app_module.Vector(lo[0], lo[1], lo[2]))
+
+
+def render_sections(objects: Any, output_dir: Any, sections: Sequence[Any],
+                    width: int = 960, height: int = 720) -> list:
+    """Render axis-aligned section views; one PNG per requested section.
+
+    Each object is intersected with the half-space behind the plane (seen
+    from the camera), so cut faces face the viewer.  Pairwise volume overlaps
+    between the *cut* objects are drawn in red on top and listed in the
+    metadata.  This is an observation aid, not an interference gate: it only
+    covers the kept half, uses the same OCCT booleans as ``common()``, and a
+    result depends on the operands being valid solids.
+    """
+    parsed = [parse_section(item) for item in (sections or [])]
+    if not parsed:
+        raise RenderError('no sections requested (use e.g. y=0)')
+    image_width = _normalize_size(width, 'width')
+    image_height = _normalize_size(height, 'height')
+    selected = _normalize_objects(objects)
+    directory = _prepare_output_dir(output_dir)
+    vtk = _vtk()
+    try:
+        import FreeCAD as app_module  # noqa: N813
+        import Part as part_module
+    except Exception as exc:  # pragma: no cover - only inside FreeCAD
+        raise RenderError(f'section views need FreeCAD Part inside the worker: {exc}')
+
+    sources = []
+    for obj in selected:
+        shape = _shape_of(obj)
+        bbox = _bbox_of(shape) if shape is not None else None
+        if shape is not None and bbox is not None:
+            sources.append((obj, shape, bbox))
+    if not sources:
+        raise RenderError('no renderable geometry for section views')
+    minima = [min(item[2][i] for item in sources) for i in range(3)]
+    maxima = [max(item[2][i + 3] for item in sources) for i in range(3)]
+    diagonal = math.sqrt(sum((maxima[i] - minima[i]) ** 2 for i in range(3))) or 1.0
+
+    results: list = []
+    for number, (axis, value) in enumerate(parsed):
+        index, direction, up, keep = SECTION_AXES[axis]
+        warnings: list[str] = []
+        skipped: list[dict] = []
+        if not (minima[index] <= value <= maxima[index]):
+            warnings.append('plane %s=%g is outside the model bounds [%g, %g]'
+                            % (axis, value, minima[index], maxima[index]))
+        half = _half_space(part_module, app_module, minima, maxima, axis, value)
+        pieces: list[_ShapeItem] = []
+        cut_names: list[str] = []
+        for obj, shape, bbox in sources:
+            name = _object_name(obj)
+            if half is None:
+                break
+            if bbox[index] < value < bbox[index + 3]:
+                cut_names.append(name)
+            try:
+                piece = shape.common(half)
+            except Exception as exc:
+                skipped.append({'object': name, 'reason': 'section boolean failed: %s: %s'
+                                % (type(exc).__name__, exc)})
+                continue
+            if piece is None or piece.isNull() or not _face_count(piece):
+                continue
+            pieces.append(_ShapeItem(name, _object_type(obj), piece))
+
+        overlaps: list[dict] = []
+        overlap_items: list[_ShapeItem] = []
+        if len(pieces) > MAX_OVERLAP_OBJECTS:
+            warnings.append('overlap highlighting skipped: %d objects exceeds %d'
+                            % (len(pieces), MAX_OVERLAP_OBJECTS))
+        else:
+            for i in range(len(pieces)):
+                for j in range(i + 1, len(pieces)):
+                    a, b = pieces[i], pieces[j]
+                    try:
+                        if not a.Shape.BoundBox.intersect(b.Shape.BoundBox):
+                            continue
+                        common = a.Shape.common(b.Shape)
+                        volume = float(common.Volume)
+                    except Exception as exc:
+                        warnings.append('overlap check %s/%s failed: %s' % (a.Name, b.Name, exc))
+                        continue
+                    if volume > OVERLAP_MIN_VOLUME and _face_count(common):
+                        overlaps.append({'a': a.Name, 'b': b.Name,
+                                         'volume_mm3_in_kept_half': round(volume, 6)})
+                        overlap_items.append(_ShapeItem('overlap:%s|%s' % (a.Name, b.Name),
+                                                        'overlap', common))
+
+        meshes, more_skipped = _collect_meshes(pieces)
+        skipped.extend(more_skipped)
+        overlap_meshes, _ = _collect_meshes(overlap_items)
+        if not meshes:
+            raise RenderError('section %s=%g leaves no geometry in the kept half' % (axis, value))
+        # lift overlap meshes slightly toward the camera so they win the depth test
+        lift = diagonal * 2e-3
+        for mesh in overlap_meshes:
+            pts = mesh['points']
+            for k in range(0, len(pts), 3):
+                pts[k] += direction[0] * lift
+                pts[k + 1] += direction[1] * lift
+                pts[k + 2] += direction[2] * lift
+
+        window = vtk.vtkRenderWindow()
+        window.SetOffScreenRendering(1)
+        window.SetSize(image_width, image_height)
+        renderer = vtk.vtkRenderer()
+        renderer.SetBackground(1.0, 1.0, 1.0)
+        colors = {}
+        for position, mesh in enumerate(meshes):
+            colour = PALETTE[position % len(PALETTE)]
+            colors[mesh['name']] = list(colour)
+            renderer.AddActor(_build_actor(vtk, mesh, colour))
+        for mesh in overlap_meshes:
+            actor = _build_actor(vtk, mesh, OVERLAP_COLOR)
+            actor.GetProperty().SetAmbient(0.6)
+            renderer.AddActor(actor)
+        try:
+            renderer.AutomaticLightCreationOn()
+        except Exception:
+            pass
+        window.AddRenderer(renderer)
+        kept_min, kept_max = _combined_bbox(meshes)
+        centre = [(kept_min[i] + kept_max[i]) / 2.0 for i in range(3)]
+        camera = renderer.GetActiveCamera()
+        camera.SetFocalPoint(*centre)
+        camera.SetPosition(*[centre[i] + direction[i] * diagonal * CAMERA_DISTANCE_FACTOR
+                             for i in range(3)])
+        camera.SetViewUp(*up)
+        camera.ParallelProjectionOn()
+        _fit_camera(renderer, camera, kept_min, kept_max, direction, up,
+                    image_width, image_height)
+        try:
+            window.Render()
+            path = _section_path(directory, number, axis)
+            size_bytes = _write_png(vtk, window, path)
+        finally:
+            try:
+                window.Finalize()
+            except Exception:
+                pass
+        results.append({
+            'view': 'section',
+            'section': {'axis': axis, 'offset_mm': value,
+                        'kept_side': '%s %s %g' % (axis, '<=' if keep < 0 else '>=', value),
+                        'looking_along': [-component for component in direction]},
+            'path': str(path),
+            'ok': True,
+            'width': image_width,
+            'height': image_height,
+            'size_bytes': size_bytes,
+            'source': {'statement': STATEMENT + '; section by OCCT half-space common()',
+                       'gui_screenshot': False},
+            'objects_cut_by_plane': cut_names,
+            'objects': [{'name': mesh['name'], 'color_rgb': colors[mesh['name']]}
+                        for mesh in meshes],
+            'overlaps': overlaps,
+            'overlap_note': ('red = volume shared by two objects inside the kept half; '
+                             'observation only, not an interference certificate. If a '
+                             'boolean looks wrong, first check operands are valid single '
+                             'solids and that holes/bores are cut along the intended axis.'),
+            'skipped': skipped,
+            'warnings': warnings,
+        })
+    return results
+
+
 def render_objects(objects: Any, output_dir: Any,
                    views: Sequence[str] = DEFAULT_VIEWS,
                    width: int = 960, height: int = 720) -> list:
@@ -734,12 +1011,8 @@ def render_objects(objects: Any, output_dir: Any,
                                  for index in range(3)])
             camera.SetViewUp(*up)
             camera.ParallelProjectionOn()
-            renderer.ResetCamera()
-            try:
-                camera.SetParallelScale(camera.GetParallelScale() * CAMERA_FIT_MARGIN)
-            except Exception:
-                pass
-            renderer.ResetCameraClippingRange()
+            _fit_camera(renderer, camera, minima, maxima, unit_direction, up,
+                        image_width, image_height)
             window.Render()
             path = _target_path(directory, view)
             size_bytes = _write_png(vtk, window, path)

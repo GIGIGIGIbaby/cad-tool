@@ -18,6 +18,7 @@ cad3 run src/main.py --step     # 执行并导出 STEP
 cad3 inspect --detail           # 观察当前模型（只读）
 cad3 inspect --format code      # 只读的代码式描述，不是可执行重建脚本
 cad3 render --views iso,top,front,right
+cad3 render --section y=12.5     # 剖面：看内部配合；零件重叠处标红（可重复 --section）
 cad3 status | log | diff        # Git 状态 / 历史 / 差异（diff 是文件差异，不是几何语义差异）
 cad3 commit -m "MSG"            # 只快照当前文件，不重跑建模
 cad3 restore REV                # 回到某次提交的内容（不动 HEAD，下次 commit 记录回滚）
@@ -57,9 +58,21 @@ cad3 restore REV                # 回到某次提交的内容（不动 HEAD，�
 
 ## 参数修改要走依赖链
 
+**要求"改表格就更新"的模型，只用原生对象 + 表达式**（`Part::Box/Cylinder/Cut/Fuse`、PartDesign 特征，尺寸与 `Placement` 挂表达式）。实测（FreeCAD 1.1.3）：
+
+- 工程自带的 **FeaturePython 重开后失效**：恢复文档时只允许 FreeCAD/已装插件的模块，工程模块被拦截，Proxy 变 `None`，改表格几何不动。
+- 脚本 `Part.makeBox(...)` 再塞进 `Part::Feature` 得到的是**冻结形状**；自定义属性挂表达式也不会重建几何。能让它随参数动的只有 `Placement` 表达式。
+- 验证方式：保存后**重新打开**文件，只改表格单元格 + `recompute()`，确认几何真的变了（不要只在建模的同一进程里验证）。
+
 - 参数放 `Spreadsheet`，用别名 + 表达式驱动约束与特征属性；改源单元格后 `doc.recompute()` 才传播。
 - 表达式驱动的量：`setDatum` 会**静默 no-op**（调用成功但值不变）；应改源（单元格/表达式），或先 `clearExpression`（注意它不恢复原值）。
 - 未 `recompute` 时旧 `Shape` 与 `State` 会给过期却看似正常的数字；先重算，再让几何与驱动参数交叉核对。
+
+## 看内部与查干涉
+
+- 外观图看不到轴穿孔、轴承座、螺母这类内部配合。沿关键轴线用 `cad3 render --section AXIS=MM` 切开看：切掉朝向相机的一半，零件间体积重叠画红，JSON 的 `overlaps` 同时列出。
+- 装配干涉用 `A.common(B).Volume`（配合面建成等尺寸时为 0，属接触）。**结果"不合理"时先怀疑输入**：操作数是否有效单一实体（`isValid()`、`len(Solids)==1`）、孔/刀具体是否沿正确的轴、位置是否对——然后切剖面看。不要因为数字难看就改用更弱的判据。
+- 红色/重叠为 0 只是观察，不是强度、公差或运动过程的证明；只查了你摆的那几个位置。
 
 ## 按需参考
 

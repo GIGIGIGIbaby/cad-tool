@@ -51,6 +51,21 @@ class CliTests(unittest.TestCase):
                 self.assertFalse(json.loads(text)['ok'])
                 render.assert_not_called()
 
+    def test_section_only_render_skips_default_views(self):
+        with patch.object(cli.Project, 'load', return_value=object()), \
+             patch.object(cli.runtime, 'render', return_value={'ok': True}) as render:
+            code, _ = self.call(['render', '--section', 'y=12.5', '--section', 'z=0'])
+        self.assertEqual(code, 0)
+        kwargs = render.call_args.kwargs
+        self.assertEqual(kwargs['views'], ())
+        self.assertEqual(kwargs['sections'], ['y=12.5', 'z=0'])
+
+    def test_section_with_explicit_views_keeps_them(self):
+        with patch.object(cli.Project, 'load', return_value=object()), \
+             patch.object(cli.runtime, 'render', return_value={'ok': True}) as render:
+            self.call(['render', '--views', 'iso', '--section', 'x=0'])
+        self.assertEqual(render.call_args.kwargs['views'], ('iso',))
+
     def test_render_size_is_bounded(self):
         with patch.object(cli.Project,'load',return_value=object()), patch.object(cli.runtime,'render') as render:
             code, _ = self.call(['render','--width','100000'])

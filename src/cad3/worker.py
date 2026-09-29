@@ -760,14 +760,22 @@ def _do_render(App, request, record) -> None:
         )
     render_dir = run_dir / "renders"
     render_dir.mkdir(parents=True, exist_ok=True)
+    requested_views = request.get("views")
+    if requested_views is None:
+        requested_views = ("iso", "top", "front", "right")
+    sections = list(request.get("sections") or [])
+    width = int(request.get("width") or 960)
+    height = int(request.get("height") or 720)
     try:
-        images = rendering.render_objects(
-            outputs,
-            render_dir,
-            views=tuple(request.get("views") or ("iso", "top", "front", "right")),
-            width=int(request.get("width") or 960),
-            height=int(request.get("height") or 720),
-        )
+        images = []
+        if requested_views:
+            images.extend(rendering.render_objects(
+                outputs, render_dir, views=tuple(requested_views), width=width, height=height))
+        if sections:
+            if not hasattr(rendering, "render_sections"):
+                raise ProtocolError("this cad3.rendering has no section support", kind="rendering_unavailable")
+            images.extend(rendering.render_sections(
+                outputs, render_dir, sections, width=width, height=height))
     except ProtocolError:
         raise
     except Exception as exc:
@@ -777,7 +785,8 @@ def _do_render(App, request, record) -> None:
     if not images:
         raise ProtocolError("renderer returned no images", kind="render")
     record["artifacts"]["renders"] = _safe_json(images)
-    record["result"] = {"images": _safe_json(images), "views": list(request.get("views") or ())}
+    record["result"] = {"images": _safe_json(images), "views": list(requested_views or ()),
+                        "sections": sections}
     state, state_source = _observe_state(doc, observe, record["warnings"])
     record["state_source"] = state_source
     record["state"] = _safe_json(state)
