@@ -95,9 +95,23 @@ def state_errors():
     return bad
 
 
+def write_alias(sheet, alias, value):
+    """Write a number keeping the cell's existing kind: plain number or length.
+
+    Writing a bare "200" into a cell that held "200 mm" breaks expressions
+    like `Params.CarriagePos + 39 mm` with a unit mismatch.
+    """
+    current = sheet.get(alias)
+    unit = getattr(current, "Unit", None)
+    text = str(value)
+    if unit is not None and unit != App.Units.Unit():
+        text = "%s mm" % value
+    sheet.set(sheet.getCellFromAlias(alias), text)
+
+
 def snapshot(sheet, positions):
     for (pos_alias, _), value in zip(AXES, positions):
-        sheet.set(sheet.getCellFromAlias(pos_alias), str(value))
+        write_alias(sheet, pos_alias, value)
     doc.recompute()
     parts = collect()
     bb = None
