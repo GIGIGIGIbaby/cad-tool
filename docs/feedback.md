@@ -1,7 +1,7 @@
 # cad-v3 反馈能力与边界
 
 本文说明 cad-v3 的"反馈回路"：一次运行给出什么证据、怎么读、哪些判断被实测修正过、哪些事现在不做。
-它是 [ARCHITECTURE.md](../ARCHITECTURE.md) 运行契约的配套说明，配套技能入口见 [skills/freecad-v3/SKILL.md](../skills/freecad-v3/SKILL.md)。
+它是 [ARCHITECTURE.md](../ARCHITECTURE.md) 运行契约的配套说明，配套技能入口见 [.agents/skills/freecad-v3/SKILL.md](../.agents/skills/freecad-v3/SKILL.md)。
 
 ## 1. 证据来源与范围
 

@@ -68,9 +68,9 @@ cad3 restore REV                # 回到某次提交的内容（不动 HEAD，�
 | 运行协议、失败判据、隔离、输出对象选择 | [references/runtime.md](references/runtime.md) |
 | 特征树、参数/表达式链、草图求解诊断与编号基准 | [references/state-sketch.md](references/state-sketch.md) |
 | 距离/截面/圆柱候选测量、无头图像、投影与剖面 | [references/measurement-visual.md](references/measurement-visual.md) |
-| 可直接改写的脚本样例 | [build_plate.py](../../examples/build_plate.py)、[edit_plate.py](../../examples/edit_plate.py)、[inspect_custom.py](../../examples/inspect_custom.py)、[fail.py](../../examples/fail.py) |
+| 可直接改写的脚本样例 | [build_plate.py](../../../examples/build_plate.py)、[edit_plate.py](../../../examples/edit_plate.py)、[inspect_custom.py](../../../examples/inspect_custom.py)、[fail.py](../../../examples/fail.py) |
 
-实测证据与边界汇总见 [docs/feedback.md](../../docs/feedback.md)（环境：FreeCAD 1.1.3 / macOS arm64 / `freecadcmd`）。
+实测证据与边界汇总见 [docs/feedback.md](../../../docs/feedback.md)（环境：FreeCAD 1.1.3 / macOS arm64 / `freecadcmd`）。
 
 ## 明确不声称
 

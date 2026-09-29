@@ -122,7 +122,7 @@ assert abs(box.Shape.Volume - 8000) < 1e-6
 
 ## 给模型的 Skill
 
-入口是 [freecad-v3 Skill](skills/freecad-v3/SKILL.md)。它是一份短说明和按需索引，不把整个FreeCAD文档灌入上下文，也不强制每个特征走固定检查流程。执行路径和API注意事项分别保存在 `references/` 中。
+入口是 [freecad-v3 Skill](.agents/skills/freecad-v3/SKILL.md)。它是一份短说明和按需索引，不把整个FreeCAD文档灌入上下文，也不强制每个特征走固定检查流程。执行路径和API注意事项分别保存在 `references/` 中。
 
 安装Skill只需要让使用的客户端发现该目录；本项目不自动修改任何客户端配置，也不依赖某一家模型平台的专有PTC功能。
 
