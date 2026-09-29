@@ -5,7 +5,7 @@ For each commit of an agent project, extract the committed models/main.FCStd
 blob into a fresh scratch judge project and run eval002_probe.py inside an
 isolated FreeCAD process through cad3. The agent project is never modified.
 
-usage: python3 evaluate_eval002.py /tmp/cad3-eval2-<name> [out.json]
+usage: python3 evaluate_eval002.py PROJECT [out.json] [--axes PosX:StrokeX,PosY:StrokeY]
 """
 import json
 import shutil
@@ -24,6 +24,9 @@ def git(project, *args, binary=False):
     return r.stdout if binary else r.stdout.decode()
 
 
+AXES = None
+
+
 def judge_commit(project, commit, workroot):
     blob = git(project, "show", f"{commit}:models/main.FCStd", binary=True)
     jp = workroot / commit[:10]
@@ -32,6 +35,8 @@ def judge_commit(project, commit, workroot):
     (jp / "models").mkdir(exist_ok=True)
     (jp / "models" / "main.FCStd").write_bytes(blob)
     shutil.copy(PROBE, jp / "src" / "probe.py")
+    if AXES:
+        (jp / "judge_cfg.json").write_text(json.dumps({"axes": AXES}))
     r = subprocess.run([sys.executable, str(CAD3), "run", "src/probe.py", "-p", str(jp),
                         "--timeout", "900"], capture_output=True, text=True)
     out = jp / "judge_out.json"
@@ -45,6 +50,13 @@ def judge_commit(project, commit, workroot):
 
 
 def main():
+    global AXES
+    argv = list(sys.argv[1:])
+    if "--axes" in argv:
+        i = argv.index("--axes")
+        AXES = [pair.split(":") for pair in argv[i + 1].split(",")]
+        del argv[i:i + 2]
+    sys.argv[1:] = argv
     project = Path(sys.argv[1]).resolve()
     commits = git(project, "log", "--reverse", "--format=%H").split()
     workroot = Path(tempfile.mkdtemp(prefix=f"cad3-judge-{project.name}-"))
