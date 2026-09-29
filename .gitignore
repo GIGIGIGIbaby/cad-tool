@@ -1,0 +1,11 @@
+.cad3/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+build/
+dist/
+.test-artifacts/
+.venv/
+.DS_Store

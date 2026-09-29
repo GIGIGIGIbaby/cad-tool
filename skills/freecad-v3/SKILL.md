@@ -1,0 +1,79 @@
+---
+name: freecad-v3
+description: 在 cad-v3 工程里用原生 FreeCAD Python 建模、观察和留档。需要本机已安装 FreeCAD；适合编写/修改 src/main.py、执行 cad3 命令、按需读取 references。
+---
+
+# FreeCAD V3 建模工场
+
+cad-v3 = 普通工程目录 + 小 JSON CLI + 原生 FreeCAD 脚本 + 只读观察 + Git 快照。
+模型怎么建由你决定：直接用原生 `Part` / `PartDesign` / `Sketcher` 等 API 自由编排，没有强制的几何流程，也不是另一套 CAD DSL。
+
+## 运行入口与短命令
+
+```bash
+cad3 doctor                     # 探测已安装的 FreeCAD 与版本（不改用户配置）
+cad3 init PATH --name NAME      # 只在不存在/空的目录建工程
+cad3 run src/main.py            # 执行脚本（先不发布）
+cad3 run src/main.py --step     # 执行并导出 STEP
+cad3 inspect --detail           # 观察当前模型（只读）
+cad3 inspect --format code      # 只读的代码式描述，不是可执行重建脚本
+cad3 render --views iso,top,front,right
+cad3 status | log | diff        # Git 状态 / 历史 / 差异（diff 是文件差异，不是几何语义差异）
+cad3 commit -m "MSG"            # 只快照当前文件，不重跑建模
+cad3 restore REV                # 回到某次提交的内容（不动 HEAD，下次 commit 记录回滚）
+```
+
+- 工程根由 `cad3.json` 标记；默认从当前目录向上找，或用 `-p PROJECT` 指定。
+- CLI 未安装时用 `python -m cad3 ...`；fresh checkout 中 `python cad3.py ...` 也可。
+- `cad3` 只发现并调用**已安装**的 FreeCAD：不安装 FreeCAD、不装插件、不改用户偏好、不连接正在运行的 GUI。
+  显式路径用 `--freecad PATH` 或环境变量 `CAD3_FREECAD`。
+- 输入脚本是你写的可信本地程序，不是沙箱里的不可信代码。
+
+## 脚本拿到什么
+
+运行时在独立 FreeCAD 进程里执行脚本，命名空间注入：
+
+- `App`（FreeCAD 模块）、`doc`（本工程的活文档）
+- `PROJECT_DIR`、`RUN_DIR`（`pathlib.Path`）、`__file__`、`__name__ == '__main__'`
+- 可 `import Part / Sketcher / PartDesign ...`，也可 import 工程内模块
+
+默认打开 `models/main.FCStd`（存在时），否则新建 `Model`；**优先修改传入的 `doc`**，不要每次从零重建。
+可选 `cad_outputs = ['Body']`（对象名或对象）指定导出/渲染对象；不给则由运行时挑 Body Tip / 独立结果实体，跳过草图与基准面。
+
+## 执行成功 ≠ 制造正确
+
+- `ok` / 退出码 0 只表示执行与协议成功，**不判断设计或制造是否正确**。
+- 必须核对本次运行的完成记录：记录 `status` 要是 `completed` 且匹配本次 `run_id`；脚本异常或 `SystemExit`、信号退出、超时都算失败——**记录在失败时也会被写出，进程退出码为 0 同样不能单独信**。
+- C++ 层崩溃（如 SIGSEGV）绕过 Python 异常处理，只能从进程退出码与日志看出来。
+- 原生 `Invalid` / `Error` 对象和计算警告必须显式报告，不要静默接受，也不要另造通用门控。
+- 数值断言按任务自己写；不要发明"通用实体数 / 孔数 / 体积门槛"。
+
+## 观察是只读
+
+- `inspect` 读结构、参数与表达式、草图求解诊断、原生错误、几何指标；`--format code` 是**只读描述**。
+- `render` 输出 BRep 网格化 + VTK 离屏着色 PNG，**不是原生 GUI 视口截图**，不保留选中态与界面标注。
+- 数字与图像要交叉核对：数值全通过也拦不住坐标系/叠图错误；近似结果必须标注方法。
+- 观察 ≠ 逆向：没有"把任意工程自动还原成完整可执行 Python"的内置出口。
+
+## 参数修改要走依赖链
+
+- 参数放 `Spreadsheet`，用别名 + 表达式驱动约束与特征属性；改源单元格后 `doc.recompute()` 才传播。
+- 表达式驱动的量：`setDatum` 会**静默 no-op**（调用成功但值不变）；应改源（单元格/表达式），或先 `clearExpression`（注意它不恢复原值）。
+- 未 `recompute` 时旧 `Shape` 与 `State` 会给过期却看似正常的数字；先重算，再让几何与驱动参数交叉核对。
+
+## 按需参考
+
+| 何时读 | 文件 |
+|---|---|
+| 运行协议、失败判据、隔离、输出对象选择 | [references/runtime.md](references/runtime.md) |
+| 特征树、参数/表达式链、草图求解诊断与编号基准 | [references/state-sketch.md](references/state-sketch.md) |
+| 距离/截面/圆柱候选测量、无头图像、投影与剖面 | [references/measurement-visual.md](references/measurement-visual.md) |
+| 可直接改写的脚本样例 | [build_plate.py](../../examples/build_plate.py)、[edit_plate.py](../../examples/edit_plate.py)、[inspect_custom.py](../../examples/inspect_custom.py)、[fail.py](../../examples/fail.py) |
+
+实测证据与边界汇总见 [docs/feedback.md](../../docs/feedback.md)（环境：FreeCAD 1.1.3 / macOS arm64 / `freecadcmd`）。
+
+## 明确不声称
+
+- 不做 GUI 桥接：命令行不接管、不截取原生视口。
+- 不做 FCStd 的语义自动合并；`diff` 只是文件差异。
+- 不承诺把任意既有工程完整迁移或逆向成参数化脚本。
