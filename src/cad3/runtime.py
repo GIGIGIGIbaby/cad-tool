@@ -681,6 +681,15 @@ def _publish(project, action: str, run_dir: Path, record: dict, result: dict, do
             ]
         )
 
+    elif action == "mates":
+        plan.extend(
+            [
+                ("evidence_mates", run_dir / "mates.json", artifacts / "mates.json"),
+                ("evidence_stderr", run_dir / "stderr.log", artifacts / "mates.stderr.log"),
+                ("evidence_stdout", run_dir / "stdout.log", artifacts / "mates.stdout.log"),
+            ]
+        )
+
     elif action == "inspect":
         plan.extend(
             [
@@ -708,7 +717,8 @@ def _publish(project, action: str, run_dir: Path, record: dict, result: dict, do
                     f"published model hash {model_sha} does not match the verified candidate {candidate_sha}"
                 )
 
-    report_name = {"execute": "report.json", "render": "render.json", "inspect": "inspect.json"}[action]
+    report_name = {"execute": "report.json", "render": "render.json", "inspect": "inspect.json",
+                   "mates": "mates.report.json"}[action]
     report_path = artifacts / report_name
     result["published"] = published
     result["files"] = files
@@ -743,6 +753,7 @@ def _invoke(
     detail: bool = False,
     views=None,
     sections=None,
+    interfaces=None,
     width: int = 960,
     height: int = 720,
     executable=None,
@@ -845,6 +856,7 @@ def _invoke(
         "export_step": bool(export_step),
         "views": list(views) if views is not None else None,
         "sections": list(sections or []),
+        "interfaces": interfaces,
         "width": width,
         "height": height,
         "object_name": object_name,
@@ -976,6 +988,8 @@ def _invoke(
 
         if action == "render":
             result["images"] = list((record.get("result") or {}).get("images") or [])
+        if action == "mates":
+            result["mates"] = record.get("result")
         if publish and project is not None:
             try:
                 _publish(project, action, run_dir, record or {}, result, document, input_hash_before)
@@ -1162,3 +1176,60 @@ def render(
         executable=executable,
         timeout=timeout,
     )
+
+
+def mates(
+    project,
+    *,
+    file: str | None = None,
+    geometry: bool = True,
+    executable: str | None = None,
+    timeout: float = 120.0,
+) -> dict:
+    """Check declared interfaces (``notes/interfaces.json``) and, when a model
+    exists, locate every declared cylinder/plane on the real FreeCAD shapes.
+
+    ``geometry=False`` runs on the host only, before any geometry exists.
+    """
+    from . import mates as mates_module
+
+    base = {"ok": False, "action": "mates", "run_id": None, "run_dir": None, "ok_meaning": OK_MEANING,
+            "errors": [], "warnings": [], "native_issues": []}
+    try:
+        root = _root(project)
+        document = _document_path(project)
+    except Cad3Error as exc:
+        return _fail(base, "bad_project", str(exc))
+    rel = file or mates_module.DEFAULT_FILE
+    path = Path(rel)
+    if not path.is_absolute():
+        path = root / path
+    path = Path(os.path.realpath(str(path)))
+    if not _inside(root, path):
+        return _fail(base, "bad_request", f"interface file must be inside the project: {path}")
+    if not path.is_file():
+        return _fail(base, "no_declaration",
+                     f"no interface declaration at {_rel(path, root)}; write one first",
+                     format=mates_module.FORMAT_HELP)
+    try:
+        raw = json.loads(path.read_text(encoding="utf-8"))
+        decl = mates_module.normalize(raw)
+    except (ValueError, mates_module.DeclarationError) as exc:
+        return _fail(base, "bad_declaration", f"{_rel(path, root)}: {exc}", format=mates_module.FORMAT_HELP)
+    if not geometry or not document.exists():
+        reason = "--no-geometry requested" if not geometry else "no model document yet"
+        base.update(ok=True, protocol_ok=True, file=_rel(path, root),
+                    mates=mates_module.report(decl, geometry_skipped=reason))
+        return base
+    result = _invoke(
+        action="mates",
+        root=root,
+        document=document,
+        project=project,
+        interfaces=raw,
+        executable=executable,
+        timeout=timeout,
+    )
+    result["file"] = _rel(path, root)
+    return result
+

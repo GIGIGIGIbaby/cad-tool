@@ -67,6 +67,10 @@ def parser() -> argparse.ArgumentParser:
     render.add_argument("--width", type=positive_int, default=960)
     render.add_argument("--height", type=positive_int, default=720)
     render.add_argument("--timeout", type=positive_float, default=90.0)
+    mates_cmd = project_command("mates", "check declared part interfaces against each other and the geometry", True)
+    mates_cmd.add_argument("--file", default=None, help="interface declaration (default notes/interfaces.json)")
+    mates_cmd.add_argument("--no-geometry", action="store_true", help="declarations only; do not start FreeCAD")
+    mates_cmd.add_argument("--timeout", type=positive_float, default=120.0)
     project_command("status", "show project Git status")
     history = project_command("log", "show committed design snapshots")
     history.add_argument("--limit", type=positive_int, default=10)
@@ -126,6 +130,9 @@ def dispatch(args) -> dict | str:
             raise Cad3Error("render width and height must not exceed 4096 pixels")
         return runtime.render(project, executable=args.freecad, timeout=args.timeout,
                               views=views, sections=args.section, width=args.width, height=args.height)
+    if command == "mates":
+        return runtime.mates(project, file=args.file, geometry=not args.no_geometry,
+                             executable=args.freecad, timeout=args.timeout)
     if command == "status":
         return versions.status(project)
     if command == "log":

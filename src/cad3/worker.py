@@ -31,7 +31,7 @@ from pathlib import Path
 
 PROTOCOL = "cad3.run/v1"
 COMPLETION_PROTOCOL = "cad3.completion/v1"
-ACTIONS = ("doctor", "execute", "inspect", "render")
+ACTIONS = ("doctor", "execute", "inspect", "render", "mates")
 
 #: Printed on stdout so the captured run log carries the outcome as evidence.
 RESULT_MARKER = "CAD3_WORKER_RESULT"
@@ -715,6 +715,42 @@ def _do_inspect(App, request, record) -> None:
     record["result"] = {"object_name": object_name, "detail": detail}
 
 
+def _do_mates(App, request, record) -> None:
+    run_dir = Path(request["run_dir"])
+    document = Path(request["document"])
+    isolation = _check_isolation(App, run_dir)
+    record["config"] = isolation["config"]
+    record["config_problems"] = isolation["problems"]
+    record["warnings"].extend(isolation["unverified"])
+    if isolation["problems"]:
+        raise ProtocolError(
+            "FreeCAD configuration is not isolated to the run directory: " + "; ".join(isolation["problems"]),
+            kind="isolation",
+        )
+    mates = _load_module("cad3.mates", record["warnings"])
+    if mates is None:
+        raise ProtocolError("cad3.mates is not importable inside this FreeCAD runtime", kind="mates_unavailable")
+    try:
+        decl = mates.normalize(request.get("interfaces") or {})
+    except mates.DeclarationError as exc:
+        raise ProtocolError(f"interface declaration: {exc}", kind="bad_declaration") from exc
+    if not document.exists():
+        record["result"] = mates.report(decl, geometry_skipped="no model document yet")
+        return
+    try:
+        doc = App.openDocument(str(document))
+    except Exception as exc:
+        raise ProtocolError(f"cannot open document {document}: {type(exc).__name__}: {exc}",
+                            kind="document_open") from exc
+    record["document"] = {"path": str(document), "existed": True, "name": getattr(doc, "Name", None)}
+    record["recompute"] = _recompute(doc)
+    geometry = mates.check_geometry(doc, decl)
+    record["result"] = _safe_json(mates.report(decl, geometry))
+    out = run_dir / "mates.json"
+    _dump_json(out, record["result"])
+    record["artifacts"]["mates_file"] = str(out)
+
+
 def _do_render(App, request, record) -> None:
     run_dir = Path(request["run_dir"])
     document = Path(request["document"])
@@ -796,6 +832,7 @@ _HANDLERS = {
     "doctor": _do_doctor,
     "execute": _do_execute,
     "inspect": _do_inspect,
+    "mates": _do_mates,
     "render": _do_render,
 }
 
