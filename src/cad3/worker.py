@@ -96,9 +96,17 @@ def _safe_json(value, depth: int = 0):
     if isinstance(value, float):
         return None if value != value or value in (float("inf"), float("-inf")) else value
     if isinstance(value, dict):
-        return {str(key): _safe_json(item, depth + 1) for key, item in list(value.items())[:_MAX_ITEMS]}
+        items = list(value.items())
+        out = {str(key): _safe_json(item, depth + 1) for key, item in items[:_MAX_ITEMS]}
+        if len(items) > _MAX_ITEMS:
+            out["<truncated>"] = f"{len(items) - _MAX_ITEMS} more entries omitted"
+        return out
     if isinstance(value, (list, tuple, set)):
-        return [_safe_json(item, depth + 1) for item in list(value)[:_MAX_ITEMS]]
+        items = list(value)
+        out = [_safe_json(item, depth + 1) for item in items[:_MAX_ITEMS]]
+        if len(items) > _MAX_ITEMS:
+            out.append(f"<truncated: {len(items) - _MAX_ITEMS} more items omitted>")
+        return out
     if isinstance(value, Path):
         return str(value)
     try:
@@ -745,10 +753,12 @@ def _do_mates(App, request, record) -> None:
     record["document"] = {"path": str(document), "existed": True, "name": getattr(doc, "Name", None)}
     record["recompute"] = _recompute(doc)
     geometry = mates.check_geometry(doc, decl)
-    record["result"] = _safe_json(mates.report(decl, geometry))
+    full = mates.report(decl, geometry)
     out = run_dir / "mates.json"
-    _dump_json(out, record["result"])
+    _dump_json(out, full)  # complete report, never truncated
     record["artifacts"]["mates_file"] = str(out)
+    record["result"] = _safe_json(full)
+    record["result"]["full_report"] = "artifacts/latest/mates.json (complete; inline lists may be truncated)"
 
 
 def _do_render(App, request, record) -> None:
