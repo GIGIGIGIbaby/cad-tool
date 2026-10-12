@@ -17,6 +17,8 @@
   "schema": "cad3.interfaces/v1",
   "ground": "BasePlate",
   "parts": {
+    "BasePlate": {"ports": [
+      {"id": "housing_bore", "type": "cylindrical_bore", "origin": [5, 30, 20], "axis": [1, 0, 0], "diameter": 22}]},
     "LeadScrew": {"designation": "Tr8x8", "ports": [
       {"id": "journal_motor", "type": "cylindrical_surface", "origin": [0, 30, 20], "axis": [1, 0, 0], "diameter": 8},
       {"id": "journal_idler", "type": "cylindrical_surface", "origin": [300, 30, 20], "axis": [1, 0, 0], "diameter": 8}]},
@@ -24,10 +26,14 @@
       {"id": "bore", "type": "cylindrical_bore", "origin": [5, 30, 20], "axis": [1, 0, 0], "diameter": 8},
       {"id": "outer", "type": "cylindrical_surface", "origin": [5, 30, 20], "axis": [1, 0, 0], "diameter": 22}]}
   },
-  "mates": [{"a": "LeadScrew.journal_motor", "b": "Bearing608_A.bore", "why": "radial support"}],
-  "unmated_ok": {"Carriage.top": "customer mounting surface"}
+  "mates": [
+    {"a": "LeadScrew.journal_motor", "b": "Bearing608_A.bore", "why": "radial support"},
+    {"a": "Bearing608_A.outer", "b": "BasePlate.housing_bore", "why": "housing seat"}
+  ]
 }
 ```
+
+上面这份会报一条 `unmated_interface`：`LeadScrew.journal_idler` 没有接任何东西——这就是"丝杆远端没有支撑"在声明里的样子。
 
 类型：`cylindrical_surface`（轴/外圆）、`male_shaft`、`cylindrical_bore`（孔）、`clearance_hole`、`male_thread_envelope` / `female_thread_envelope`（需 `nominal_diameter` 与 `pitch`）、`planar_face`、`axis`。
 

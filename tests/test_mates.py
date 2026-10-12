@@ -121,5 +121,26 @@ class RuntimeHostPathTests(unittest.TestCase):
         self.assertEqual(result["mates"]["geometry"], {"skipped": "no model document yet"})
 
 
+class DocumentationTests(unittest.TestCase):
+    def _example(self, path, pattern=r"```json\n(.*?)```"):
+        import re
+        text = (Path(__file__).resolve().parents[1] / path).read_text(encoding="utf-8")
+        block = re.search(pattern, text, re.S)
+        self.assertIsNotNone(block, f"no example JSON block found in {path}")
+        return mates.normalize(json.loads(block.group(1)))
+
+    def test_design_doc_example_stays_valid(self):
+        """The example in docs/interfaces-design.md must keep passing the checker."""
+        decl = self._example("docs/interfaces-design.md", r"## 声明示例.*?```json\n(.*?)```")
+        result = mates.report(decl, geometry_skipped="doc example")
+        self.assertEqual(result["overall"], mates.PASS, result["problems"])
+
+    def test_skill_reference_example_raises_one_dangling_interface(self):
+        decl = self._example(".agents/skills/freecad-v3/references/interfaces.md")
+        findings = mates.check_declarations(decl)["findings"]
+        self.assertEqual([f["ref"] for f in findings], ["LeadScrew.journal_idler"])
+        self.assertEqual(findings[0]["kind"], "unmated_interface")
+
+
 if __name__ == "__main__":
     unittest.main()

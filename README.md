@@ -109,6 +109,8 @@ assert abs(box.Shape.Volume - 8000) < 1e-6
 - `inspect --format code`：便于模型阅读的**只读**表达，不是完整重建脚本。
 - `render`：真实几何的 VTK 着色图；**不是原生 GUI 截图**，不承诺保留界面标注或选中态。
 - `render --section AXIS=MM`（可重复）：轴向剖面。看不见的内部（轴穿孔、轴承座、螺母）靠它看；零件之间的体积重叠画成红色，并在 JSON 的 `overlaps` 里列出。
+- `mates`：读取 `notes/interfaces.json`，先检查声明的接口、配合关系和装配连通性；有模型时再在 FreeCAD 进程中核对圆柱面/平面是否真实存在。结果是 `PASS/WARN/FAIL/UNKNOWN` 的设计反馈，命令的顶层 `ok` 仍只表示运行协议成功，不是机械验收。
+- 该检查器的接口格式、轴承示例、V2 标准件目录迁移边界和分阶段路线见 [声明式机械接口设计](docs/interfaces-design.md)。
 - 其他测量/求解工作流仍由模型通过原生 Python API 组织，不要求固定建模顺序。
 
 ## 执行与恢复边界
