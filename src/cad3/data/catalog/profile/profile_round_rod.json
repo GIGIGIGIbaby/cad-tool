@@ -1,0 +1,23 @@
+{
+  "schema": "cadparts.catalog-family/v1",
+  "id": "profile.round_rod",
+  "category": "profile",
+  "name": "Solid round bar / 圆棒",
+  "summary": "Generic solid round-stock envelope with explicit diameter and cut length.",
+  "aliases": ["round_rod", "rod", "圆棒", "圆钢"],
+  "keywords": ["profile", "型材", "圆棒", "圆钢", "实心轴", "直径", "长度"],
+  "selectors": {"diameter": "nominal diameter in mm", "length": "cut length in mm"},
+  "geometry": {
+    "fidelity": "nominal cylindrical stock envelope",
+    "accurate": ["diameter", "length", "axis", "end_faces"],
+    "omitted": ["grade", "tolerance", "surface finish"]
+  },
+  "interfaces": [
+    {"id": "axis", "type": "axis", "role": "coaxial placement"},
+    {"id": "end_min", "type": "profile_end", "role": "cut/join plane"},
+    {"id": "end_max", "type": "profile_end", "role": "cut/join plane"}
+  ],
+  "purchase": {"designation_template": "round bar diameter {diameter}, cut length {length}"},
+  "parameters": [{"name": "diameter", "type": "number", "description": "Nominal diameter", "required": true, "unit": "mm", "minimum": 0.0}, {"name": "length", "type": "number", "description": "Length along +Z", "required": true, "unit": "mm", "minimum": 0.0}],
+  "sample": {"params": {"diameter": 20, "length": 100}}
+}

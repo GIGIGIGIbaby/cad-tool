@@ -20,6 +20,8 @@ cad3 inspect --format code      # 只读的代码式描述，不是可执行重�
 cad3 render --views iso,top,front,right
 cad3 render --section y=12.5     # 剖面：看内部配合；零件重叠处标红（可重复 --section）
 cad3 status | log | diff        # Git 状态 / 历史 / 差异（diff 是文件差异，不是几何语义差异）
+cad3 catalog search QUERY     # 搜索内置标准件目录
+cad3 catalog instantiate ID   # 返回装配接口和原生代理契约
 cad3 commit -m "MSG"            # 只快照当前文件，不重跑建模
 cad3 restore REV                # 回到某次提交的内容（不动 HEAD，下次 commit 记录回滚）
 ```
@@ -37,6 +39,7 @@ cad3 restore REV                # 回到某次提交的内容（不动 HEAD，�
 - `App`（FreeCAD 模块）、`doc`（本工程的活文档）
 - `PROJECT_DIR`、`RUN_DIR`（`pathlib.Path`）、`__file__`、`__name__ == '__main__'`
 - 可 `import Part / Sketcher / PartDesign ...`，也可 import 工程内模块
+- `from cad3.parts import add, declaration` 可插入支持的标准件代理，并将接口按 Placement 变换到全局坐标。完整目录流程见项目 [CATALOG.md](../../../CATALOG.md)。
 
 默认打开 `models/main.FCStd`（存在时），否则新建 `Model`；**优先修改传入的 `doc`**，不要每次从零重建。
 可选 `cad_outputs = ['Body']`（对象名或对象）指定导出/渲染对象；不给则由运行时挑 Body Tip / 独立结果实体，跳过草图与基准面。
@@ -48,6 +51,10 @@ cad3 restore REV                # 回到某次提交的内容（不动 HEAD，�
 - C++ 层崩溃（如 SIGSEGV）绕过 Python 异常处理，只能从进程退出码与日志看出来。
 - 原生 `Invalid` / `Error` 对象和计算警告必须显式报告，不要静默接受，也不要另造通用门控。
 - 数值断言按任务自己写；不要发明"通用实体数 / 孔数 / 体积门槛"。
+
+## 选择建模表达
+
+供人继续设计和反馈的非标件默认保留有意义命名的原生特征树；临时包络可以用冻结外形，标准件优先用库。建模前读 [references/modeling-guidance.md](references/modeling-guidance.md)，判断是否还需逐实例反馈。特征树本身不赋予阵列实例独立名称，`FaceN` / `EdgeN` 不是稳定 ID；逐个指认的孔/槽还需语义清单或编号视图，接口声明要随参数和 Placement 同步。
 
 ## 观察是只读
 

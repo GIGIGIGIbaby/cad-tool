@@ -1,0 +1,22 @@
+{
+  "schema":"cadparts.catalog-family/v1","id":"pneumatic.cylinder.iso6432","category":"pneumatic",
+  "name":"ISO 6432 round cylinder / ISO 6432圆形气缸","summary":"Small-bore round pneumatic-cylinder proxies with mounting references and complete rod sweep.",
+  "aliases":["iso6432_cylinder","迷你气缸","不锈钢迷你缸"],"keywords":["pneumatic","cylinder","气缸","ISO 6432","迷你气缸","缸径","行程"],
+  "selectors":{"bore":["8","10","12","16","20","25","32"],"stroke":"cylinder stroke","rod_extension":"retracted rod extension"},
+  "compatibility":{"level":"normative","claim":"Nominal bore and mounting basis follow ISO 6432; switches, ports, cushioning and product outline remain catalog-specific.","match_fields":["bore_diameter","body_cross_section","body_length","rod_diameter","front_mount_pitch"]},
+  "geometry":{"fidelity":"round body, rod, mounting references and complete rod sweep","accurate":["declared bore class","body envelope","rod diameter/extension","motion axis","stroke"],"omitted":["ports","switches","cushion adjusters","threads","seals","force"]},
+  "interfaces":[{"id":"rear_mount","type":"cylinder_end","role":"rear attachment"},{"id":"front_mount","type":"cylinder_end","role":"front attachment"},{"id":"rod_end","type":"male_rod","role":"moving load"},{"id":"motion_axis","type":"linear_axis","role":"piston travel"}],
+  "keepouts":[{"id":"cylinder_body","purpose":"Cylinder body and end-cap envelope."},{"id":"rod_sweep","purpose":"Piston rod through full commanded stroke."}],
+  "purchase":{"designation_template":"ISO 6432 cylinder bore {bore} stroke {stroke}","note":"Select ports, cushioning, sensor slots and mounting accessories separately."},
+  "sample":{"params":{"bore":"20","stroke":100}},
+  "parameters": [{"name":"bore","type":"string","description":"Nominal bore","required":true,"choices":["8","10","12","16","20","25","32"]},{"name":"stroke","type":"number","description":"Cylinder stroke","required":true,"unit":"mm","minimum":0},{"name":"rod_extension","type":"number|null","description":"Retracted rod extension","required":false,"unit":"mm","default":null}],
+  "items":[
+    {"id":"pneumatic.cylinder.iso6432.8","name":"ISO 6432 bore 8 profile","generator":{"params":{"bore":"8","stroke":50}}},
+    {"id":"pneumatic.cylinder.iso6432.10","name":"ISO 6432 bore 10 profile","generator":{"params":{"bore":"10","stroke":50}}},
+    {"id":"pneumatic.cylinder.iso6432.12","name":"ISO 6432 bore 12 profile","generator":{"params":{"bore":"12","stroke":50}}},
+    {"id":"pneumatic.cylinder.iso6432.16","name":"ISO 6432 bore 16 profile","generator":{"params":{"bore":"16","stroke":100}}},
+    {"id":"pneumatic.cylinder.iso6432.20","name":"ISO 6432 bore 20 profile","generator":{"params":{"bore":"20","stroke":100}}},
+    {"id":"pneumatic.cylinder.iso6432.25","name":"ISO 6432 bore 25 profile","generator":{"params":{"bore":"25","stroke":100}}},
+    {"id":"pneumatic.cylinder.iso6432.32","name":"ISO 6432 bore 32 profile","generator":{"params":{"bore":"32","stroke":100}}}
+  ]
+}

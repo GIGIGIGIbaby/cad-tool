@@ -1,0 +1,23 @@
+{
+  "schema":"cadparts.catalog-family/v1","id":"hardware.caster","category":"hardware",
+  "name":"Industrial caster / 工业脚轮","summary":"50–200 mm plate/stem and rigid/swivel caster proxies with floor datum and swivel sweep.",
+  "aliases":["caster","industrial_caster","脚轮","万向轮"],"keywords":["caster","wheel","脚轮","万向轮","定向轮","刹车脚轮","底板","丝杆"],
+  "selectors":{"size":["50","75","100","125","150","200"],"mount":["plate","stem"],"swivel":[true,false],"brake":[true,false]},
+  "compatibility":{"level":"catalog_specific","claim":"Wheel diameter is only a planning class; overall height, offset, mount pattern, material, brake and load rating must match the chosen product.","match_fields":["wheel_diameter","wheel_width","overall_height","mount","plate_size_x","plate_size_y","mount_hole_pitch_x","mount_hole_pitch_y","stem_diameter"]},
+  "geometry":{"fidelity":"wheel/fork/mount envelope and swivel sweep","accurate":["declared wheel envelope","overall height","mount interface","floor datum","swivel axis"],"omitted":["bearings","tread profile","fork detail","brake mechanism","swivel offset detail","load rating"]},
+  "interfaces":[{"id":"floor_contact","type":"wheel_contact","role":"floor datum"},{"id":"wheel_axis","type":"rotation_axis","role":"rolling direction"},{"id":"mounting_plate","type":"rectangular_plate","role":"plate attachment"},{"id":"mounting_stem","type":"male_thread_envelope","role":"stem attachment"},{"id":"swivel_axis","type":"rotation_axis","role":"caster steering"}],
+  "keepouts":[{"id":"wheel_or_swivel_sweep","purpose":"Wheel envelope or full swivel sweep below mounting interface."}],
+  "purchase":{"designation_template":"{size} mm caster {mount} swivel {swivel} brake {brake}","note":"Pin overall height, swivel offset, load, wheel material, bearings and brake after layout."},
+  "sample":{"params":{"size":"100","mount":"plate","swivel":true}},
+  "parameters": [{"name":"size","type":"string","description":"Wheel diameter class","required":true,"choices":["50","75","100","125","150","200"]},{"name":"mount","type":"string","description":"Machine attachment","required":false,"default":"plate","choices":["plate","stem"]},{"name":"swivel","type":"boolean","description":"Swivel fork","required":false,"default":true},{"name":"brake","type":"boolean","description":"Brake selection evidence","required":false,"default":false}],
+  "items":[
+    {"id":"hardware.caster.50-plate","name":"50 mm plate swivel caster","generator":{"params":{"size":"50","mount":"plate","swivel":true}}},
+    {"id":"hardware.caster.75-plate","name":"75 mm plate swivel caster","generator":{"params":{"size":"75","mount":"plate","swivel":true}}},
+    {"id":"hardware.caster.100-plate","name":"100 mm plate swivel caster","generator":{"params":{"size":"100","mount":"plate","swivel":true}}},
+    {"id":"hardware.caster.125-plate","name":"125 mm plate swivel caster","generator":{"params":{"size":"125","mount":"plate","swivel":true}}},
+    {"id":"hardware.caster.150-plate","name":"150 mm plate swivel caster","generator":{"params":{"size":"150","mount":"plate","swivel":true}}},
+    {"id":"hardware.caster.200-plate","name":"200 mm plate swivel caster","generator":{"params":{"size":"200","mount":"plate","swivel":true}}},
+    {"id":"hardware.caster.75-stem","name":"75 mm stem swivel caster","generator":{"params":{"size":"75","mount":"stem","swivel":true}}},
+    {"id":"hardware.caster.100-stem","name":"100 mm stem swivel caster","generator":{"params":{"size":"100","mount":"stem","swivel":true}}}
+  ]
+}

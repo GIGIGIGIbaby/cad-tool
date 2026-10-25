@@ -1,0 +1,22 @@
+{
+  "schema": "cadparts.catalog-family/v1",
+  "id": "profile.square_tube",
+  "category": "profile",
+  "name": "Square hollow section / 方管",
+  "summary": "Configurable square-tube stock envelope for frames, cutting layouts and BOMs.",
+  "aliases": ["square_tube", "shs", "方管", "方形钢管"],
+  "keywords": ["profile", "型材", "方管", "钢管", "矩形管", "壁厚", "长度"],
+  "selectors": {"side": "outside side in mm", "wall": "wall thickness in mm", "length": "cut length in mm"},
+  "geometry": {
+    "fidelity": "nominal stock envelope; sharp corners by default",
+    "accurate": ["outside_side", "inside_side", "wall", "length", "end_faces"],
+    "omitted": ["weld seam", "rolling radii by default", "grade", "tolerance", "surface finish"]
+  },
+  "interfaces": [
+    {"id": "end_min", "type": "profile_end", "role": "cut/join plane"},
+    {"id": "end_max", "type": "profile_end", "role": "cut/join plane"}
+  ],
+  "purchase": {"designation_template": "square tube {side}x{side}x{wall}, cut length {length}"},
+  "parameters": [{"name": "side", "type": "number", "description": "Outside side length", "required": true, "unit": "mm", "minimum": 0.0}, {"name": "wall", "type": "number", "description": "Nominal wall thickness", "required": true, "unit": "mm", "minimum": 0.0}, {"name": "length", "type": "number", "description": "Extrusion length along +Z", "required": true, "unit": "mm", "minimum": 0.0}, {"name": "corner_radius", "type": "number", "description": "Optional outside corner radius; 0 keeps the simplified sharp envelope", "required": false, "unit": "mm", "default": 0.0, "minimum": 0.0}],
+  "sample": {"params": {"side": 40, "wall": 3, "length": 100}}
+}

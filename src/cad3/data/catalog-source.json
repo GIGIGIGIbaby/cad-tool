@@ -1,0 +1,16 @@
+{
+  "schema": "cad3.catalog-source/v1",
+  "catalog_version": "2026-10-12.1",
+  "origin": "cad-parts (MIT)",
+  "source_commit": "da81348",
+  "repository": "https://github.com/liwuzhan/cad-parts",
+  "source_checkout": "cad tools v2/cad-parts",
+  "note": "V2 planning profiles, not re-certified vendor CAD. LME generation withheld: V2 reuses LM dimensions for LME.",
+  "files": {
+    "fasteners.py": "04466814af46dd7bf781a9ce9ff78e8ee3fbb93825204157f0a79aed7441fe1a",
+    "motors.py": "bd3542cf7c9e7769e6120adefacd7cb3d96aefbf4a6f00f955cc4d9b62fbef02",
+    "linear_bushings.py": "3687f74ee37a1226b74ca43283e11b4607703508e550202bfba177409873bcbe",
+    "couplings.py": "dac91ab91d594e2717d109529140356e6cc21fd47e13fbbd079cafd6a2677ff4",
+    "interfaces.py": "93d093c2e0b24f512d58ad63f1c4cbcf946b0367c644c24e40ee94df012bde33"
+  }
+}

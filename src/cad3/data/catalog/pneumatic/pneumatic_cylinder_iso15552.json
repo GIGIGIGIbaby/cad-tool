@@ -1,0 +1,22 @@
+{
+  "schema":"cadparts.catalog-family/v1","id":"pneumatic.cylinder.iso15552","category":"pneumatic",
+  "name":"ISO 15552 profile cylinder / ISO 15552型材气缸","summary":"32–125 mm profile-cylinder proxies with mounting references and complete rod sweep.",
+  "aliases":["iso15552_cylinder","标准气缸","型材气缸"],"keywords":["pneumatic","cylinder","气缸","ISO 15552","CP96","DSBC","缸径","行程"],
+  "selectors":{"bore":["32","40","50","63","80","100","125"],"stroke":"cylinder stroke","rod_extension":"retracted rod extension"},
+  "compatibility":{"level":"normative","claim":"Nominal mounting basis follows ISO 15552; port, sensor, cushioning and product outline details remain catalog-specific.","match_fields":["bore_diameter","body_cross_section","body_length","rod_diameter","front_mount_pitch"]},
+  "geometry":{"fidelity":"profile body, rod, mounting references and complete rod sweep","accurate":["declared bore class","body envelope","rod diameter/extension","motion axis","stroke"],"omitted":["ports","sensor slots","cushion adjusters","tie-rod details","seals","force"]},
+  "interfaces":[{"id":"rear_mount","type":"cylinder_end","role":"rear attachment"},{"id":"front_mount","type":"cylinder_end","role":"front attachment"},{"id":"rod_end","type":"male_rod","role":"moving load"},{"id":"motion_axis","type":"linear_axis","role":"piston travel"}],
+  "keepouts":[{"id":"cylinder_body","purpose":"Cylinder body and end-cap envelope."},{"id":"rod_sweep","purpose":"Piston rod through full commanded stroke."}],
+  "purchase":{"designation_template":"ISO 15552 cylinder bore {bore} stroke {stroke}","note":"Select ports, cushioning, magnets, sensors and mounting accessories separately."},
+  "sample":{"params":{"bore":"63","stroke":200}},
+  "parameters": [{"name":"bore","type":"string","description":"Nominal bore","required":true,"choices":["32","40","50","63","80","100","125"]},{"name":"stroke","type":"number","description":"Cylinder stroke","required":true,"unit":"mm","minimum":0},{"name":"rod_extension","type":"number|null","description":"Retracted rod extension","required":false,"unit":"mm","default":null}],
+  "items":[
+    {"id":"pneumatic.cylinder.iso15552.32","name":"ISO 15552 bore 32 profile","generator":{"params":{"bore":"32","stroke":100}}},
+    {"id":"pneumatic.cylinder.iso15552.40","name":"ISO 15552 bore 40 profile","generator":{"params":{"bore":"40","stroke":100}}},
+    {"id":"pneumatic.cylinder.iso15552.50","name":"ISO 15552 bore 50 profile","generator":{"params":{"bore":"50","stroke":150}}},
+    {"id":"pneumatic.cylinder.iso15552.63","name":"ISO 15552 bore 63 profile","aliases":["DSBC-63","CP96-63"],"generator":{"params":{"bore":"63","stroke":200}}},
+    {"id":"pneumatic.cylinder.iso15552.80","name":"ISO 15552 bore 80 profile","generator":{"params":{"bore":"80","stroke":200}}},
+    {"id":"pneumatic.cylinder.iso15552.100","name":"ISO 15552 bore 100 profile","generator":{"params":{"bore":"100","stroke":250}}},
+    {"id":"pneumatic.cylinder.iso15552.125","name":"ISO 15552 bore 125 profile","generator":{"params":{"bore":"125","stroke":250}}}
+  ]
+}

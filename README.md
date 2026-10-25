@@ -4,6 +4,8 @@
 
 这是一个全新的小项目，不兼容旧 `.456d`，不依赖 build123d，不接管用户已打开的 FreeCAD GUI。模型直接写 FreeCAD Python；工具负责运行、观察、保存证据和版本恢复，而不是再造一套 CAD API。
 
+仓库：<https://github.com/liwuzhan/cad-tool>（旧 V2 的去向见文末）。
+
 ## 需要什么
 
 - 主机 Python **3.11+**（主机代码只有标准库依赖）。
@@ -100,6 +102,8 @@ assert abs(box.Shape.Volume - 8000) < 1e-6
 
 更完整的原生草图、参数、Pad/Pocket 示例见 [build_plate.py](examples/build_plate.py)。增量修改见 [edit_plate.py](examples/edit_plate.py)；直接使用原生测量见 [inspect_custom.py](examples/inspect_custom.py)。
 
+自定义件应按后续用途选择外形占位、可编辑特征树或逐实例反馈；重复孔阵列尤其需要决定用户是整体修改还是逐个指认。给模型的决策和验证指引见 [建模指引](.agents/skills/freecad-v3/references/modeling-guidance.md)。
+
 `cad_outputs` 可以指定对象名或对象；未提供时工具尝试选择 Body/独立结果实体，避免把中间特征再次计入。复杂装配应显式指定输出对象并检查结果，不能把启发式选择当作设计语义推理。
 
 ## 观察，而不是反编译
@@ -110,6 +114,7 @@ assert abs(box.Shape.Volume - 8000) < 1e-6
 - `render`：真实几何的 VTK 着色图；**不是原生 GUI 截图**，不承诺保留界面标注或选中态。
 - `render --section AXIS=MM`（可重复）：轴向剖面。看不见的内部（轴穿孔、轴承座、螺母）靠它看；零件之间的体积重叠画成红色，并在 JSON 的 `overlaps` 里列出。
 - `mates`：读取 `notes/interfaces.json`，先检查声明的接口、配合关系和装配连通性；有模型时再在 FreeCAD 进程中核对圆柱面/平面是否真实存在。结果是 `PASS/WARN/FAIL/UNKNOWN` 的设计反馈，命令的顶层 `ok` 仍只表示运行协议成功，不是机械验收。
+- `catalog search|compare|describe|instantiate`：查询 v3 内置的标准件目录。`cad3.parts.add` 可在 FreeCAD 脚本中生成首批原生占位零件，并在文档对象上保存零件契约；详见 [标准件库](CATALOG.md)。目录查询不需要安装 build123d 或启动 FreeCAD。
 - 该检查器的接口格式、轴承示例、V2 标准件目录迁移边界和分阶段路线见 [声明式机械接口设计](docs/interfaces-design.md)。
 - 其他测量/求解工作流仍由模型通过原生 Python API 组织，不要求固定建模顺序。
 
@@ -146,4 +151,8 @@ CAD3_TEST_FREECAD=/Applications/FreeCAD.app/Contents/Resources/bin/freecadcmd \
 
 旧`.456d`或build123d脚本自动迁移、GUI/MCP会话桥接、CAM/FEM专用封装、自动安装标准件插件、通用几何语义diff/merge、制造合格认证。STEP仍可作为交换格式，但导入STEP不会凭空恢复原设计的草图和特征历史。
 
-实现契约见 [ARCHITECTURE.md](ARCHITECTURE.md)，反馈含义见 [反馈文档](docs/feedback.md)。
+实现契约见 [ARCHITECTURE.md](ARCHITECTURE.md)，反馈含义见 [反馈文档](docs/feedback.md)；一次真实建模会话的工具使用反馈见 [AGENT-FEEDBACK-001](docs/AGENT-FEEDBACK-001-rv63-modeling-workflow.md)。
+
+## 旧 V2
+
+本仓库主线已由 FreeCAD 原生 V3 取代。旧的 build123d / `.456d` 实现封存在 tag [`v2-final`](https://github.com/liwuzhan/cad-tool/tree/v2-final)，两个版本互不兼容；历史 alpha release 里的 `dsh-cad-studio.tgz` 属于 V2。

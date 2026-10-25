@@ -1,0 +1,50 @@
+{
+  "schema": "cadparts.catalog-family/v1",
+  "id": "linear.screw_support",
+  "category": "linear",
+  "name": "Ball-screw support unit / 丝杆支撑座",
+  "summary": "BK/BF, EK/EF and FK/FF fixed/floating support proxies with bore and mounting evidence.",
+  "aliases": ["screw_support", "丝杆支撑座", "BK座", "BF座"],
+  "keywords": ["ball screw support", "丝杆支撑座", "BK", "BF", "EK", "EF", "FK", "FF", "固定端", "支撑端"],
+  "selectors": {"unit_type": ["BK", "BF", "EK", "EF", "FK", "FF"], "size": ["10", "12", "15", "17", "20", "25", "30", "35", "40"]},
+  "compatibility": {
+    "level": "series_compatible",
+    "claim": "Unit type and size narrow the support function; verify shaft-end machining, bore, mounting coordinates and locknut access against the chosen catalog.",
+    "match_fields": ["support_role", "shaft_bore", "shaft_axis_height", "body_length", "mount_hole_pitch_y", "mount_hole_pitch_z"]
+  },
+  "geometry": {
+    "fidelity": "support block envelope, shaft bore and rectangular mounting pattern",
+    "accurate": ["declared bore", "axis height", "body envelope", "mounting pattern"],
+    "omitted": ["bearings", "seals", "locknut detail", "preload", "shaft-end machining", "load rating"]
+  },
+  "interfaces": [
+    {"id": "shaft_bore", "type": "cylindrical_bore", "role": "fixed/floating screw support"},
+    {"id": "shaft_axis", "type": "axis", "role": "coaxial screw placement"},
+    {"id": "base_plane", "type": "planar_face", "role": "support mounting datum"},
+    {"id": "mount_hole_pattern", "type": "rectangular_hole_pattern", "role": "support mounting"}
+  ],
+  "keepouts": [{"id": "support_and_locknut_access", "purpose": "Support unit and shaft locknut access."}],
+  "purchase": {"designation_template": "{unit_type}{size} ball-screw support unit", "note": "Match the actual machined shaft end and bearing arrangement."},
+  "sample": {"params": {"unit_type": "BK", "size": "20"}},
+  "parameters": [{"name": "unit_type", "type": "string", "description": "Support family", "required": true, "choices": ["BK", "BF", "EK", "EF", "FK", "FF"]}, {"name": "size", "type": "string", "description": "Nominal shaft-end size", "required": true, "choices": ["10", "12", "15", "17", "20", "25", "30", "35", "40"]}],
+  "items": [
+    {"id":"linear.screw_support.bk10","name":"BK10 fixed support","aliases":["BK10"],"dimensions_mm":{"bore":10},"generator":{"params":{"unit_type":"BK","size":"10"}}},
+    {"id":"linear.screw_support.bf10","name":"BF10 floating support","aliases":["BF10"],"dimensions_mm":{"bore":10},"generator":{"params":{"unit_type":"BF","size":"10"}}},
+    {"id":"linear.screw_support.bk12","name":"BK12 fixed support","aliases":["BK12"],"dimensions_mm":{"bore":12},"generator":{"params":{"unit_type":"BK","size":"12"}}},
+    {"id":"linear.screw_support.bf12","name":"BF12 floating support","aliases":["BF12"],"dimensions_mm":{"bore":12},"generator":{"params":{"unit_type":"BF","size":"12"}}},
+    {"id":"linear.screw_support.bk15","name":"BK15 fixed support","aliases":["BK15"],"dimensions_mm":{"bore":15},"generator":{"params":{"unit_type":"BK","size":"15"}}},
+    {"id":"linear.screw_support.bf15","name":"BF15 floating support","aliases":["BF15"],"dimensions_mm":{"bore":15},"generator":{"params":{"unit_type":"BF","size":"15"}}},
+    {"id":"linear.screw_support.bk20","name":"BK20 fixed support","aliases":["BK20"],"dimensions_mm":{"bore":20},"generator":{"params":{"unit_type":"BK","size":"20"}}},
+    {"id":"linear.screw_support.bf20","name":"BF20 floating support","aliases":["BF20"],"dimensions_mm":{"bore":20},"generator":{"params":{"unit_type":"BF","size":"20"}}},
+    {"id":"linear.screw_support.bk25","name":"BK25 fixed support","aliases":["BK25"],"dimensions_mm":{"bore":25},"generator":{"params":{"unit_type":"BK","size":"25"}}},
+    {"id":"linear.screw_support.bf25","name":"BF25 floating support","aliases":["BF25"],"dimensions_mm":{"bore":25},"generator":{"params":{"unit_type":"BF","size":"25"}}},
+    {"id":"linear.screw_support.ek12","name":"EK12 fixed support","aliases":["EK12"],"dimensions_mm":{"bore":12},"generator":{"params":{"unit_type":"EK","size":"12"}}},
+    {"id":"linear.screw_support.ef12","name":"EF12 floating support","aliases":["EF12"],"dimensions_mm":{"bore":12},"generator":{"params":{"unit_type":"EF","size":"12"}}},
+    {"id":"linear.screw_support.ek20","name":"EK20 fixed support","aliases":["EK20"],"dimensions_mm":{"bore":20},"generator":{"params":{"unit_type":"EK","size":"20"}}},
+    {"id":"linear.screw_support.ef20","name":"EF20 floating support","aliases":["EF20"],"dimensions_mm":{"bore":20},"generator":{"params":{"unit_type":"EF","size":"20"}}},
+    {"id":"linear.screw_support.fk12","name":"FK12 fixed support","aliases":["FK12"],"dimensions_mm":{"bore":12},"generator":{"params":{"unit_type":"FK","size":"12"}}},
+    {"id":"linear.screw_support.ff12","name":"FF12 floating support","aliases":["FF12"],"dimensions_mm":{"bore":12},"generator":{"params":{"unit_type":"FF","size":"12"}}},
+    {"id":"linear.screw_support.fk20","name":"FK20 fixed support","aliases":["FK20"],"dimensions_mm":{"bore":20},"generator":{"params":{"unit_type":"FK","size":"20"}}},
+    {"id":"linear.screw_support.ff20","name":"FF20 floating support","aliases":["FF20"],"dimensions_mm":{"bore":20},"generator":{"params":{"unit_type":"FF","size":"20"}}}
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "schema":"cadparts.catalog-family/v1","id":"pneumatic.cylinder.compact","category":"pneumatic",
+  "name":"Compact pneumatic cylinder / 薄型气缸","summary":"ISO 21287 and SDA market planning proxies with compact body and complete rod sweep.",
+  "aliases":["compact_cylinder","SDA气缸","薄型气缸","紧凑气缸"],"keywords":["pneumatic","compact cylinder","薄型气缸","SDA","ISO 21287","缸径","行程"],
+  "selectors":{"series":["ISO21287","SDA"],"bore":["20","25","32","40","50","63","80","100"],"stroke":"cylinder stroke","rod_extension":"retracted rod extension"},
+  "compatibility":{"level":"series_compatible","claim":"ISO21287 is a standards family while SDA is a market family; compare body, mount and rod fields before substitution.","match_fields":["market_series","bore_diameter","body_cross_section","body_length","rod_diameter","front_mount_pitch"]},
+  "geometry":{"fidelity":"compact body, rod, mounting references and complete rod sweep","accurate":["declared body envelope","rod diameter/extension","motion axis","stroke"],"omitted":["ports","sensor slots","threads","seals","force"]},
+  "interfaces":[{"id":"rear_mount","type":"cylinder_end","role":"rear attachment"},{"id":"front_mount","type":"cylinder_end","role":"front attachment"},{"id":"rod_end","type":"male_rod","role":"moving load"},{"id":"motion_axis","type":"linear_axis","role":"piston travel"}],
+  "keepouts":[{"id":"cylinder_body","purpose":"Cylinder body and end-cap envelope."},{"id":"rod_sweep","purpose":"Piston rod through full commanded stroke."}],
+  "purchase":{"designation_template":"{series} compact cylinder bore {bore} stroke {stroke}","note":"Pin manufacturer mounting details before machining the plate."},
+  "sample":{"params":{"series":"SDA","bore":"40","stroke":50}},
+  "parameters": [{"name":"series","type":"string","description":"Interface family","required":true,"choices":["ISO21287","SDA"]},{"name":"bore","type":"string","description":"Nominal bore","required":true,"choices":["20","25","32","40","50","63","80","100"]},{"name":"stroke","type":"number","description":"Cylinder stroke","required":true,"unit":"mm","minimum":0},{"name":"rod_extension","type":"number|null","description":"Retracted rod extension","required":false,"unit":"mm","default":null}],
+  "items":[
+    {"id":"pneumatic.cylinder.compact.iso20","name":"ISO 21287 bore 20 compact cylinder","generator":{"params":{"series":"ISO21287","bore":"20","stroke":25}}},
+    {"id":"pneumatic.cylinder.compact.iso25","name":"ISO 21287 bore 25 compact cylinder","generator":{"params":{"series":"ISO21287","bore":"25","stroke":25}}},
+    {"id":"pneumatic.cylinder.compact.iso32","name":"ISO 21287 bore 32 compact cylinder","generator":{"params":{"series":"ISO21287","bore":"32","stroke":50}}},
+    {"id":"pneumatic.cylinder.compact.iso40","name":"ISO 21287 bore 40 compact cylinder","generator":{"params":{"series":"ISO21287","bore":"40","stroke":50}}},
+    {"id":"pneumatic.cylinder.compact.iso50","name":"ISO 21287 bore 50 compact cylinder","generator":{"params":{"series":"ISO21287","bore":"50","stroke":50}}},
+    {"id":"pneumatic.cylinder.compact.iso63","name":"ISO 21287 bore 63 compact cylinder","generator":{"params":{"series":"ISO21287","bore":"63","stroke":75}}},
+    {"id":"pneumatic.cylinder.compact.iso80","name":"ISO 21287 bore 80 compact cylinder","generator":{"params":{"series":"ISO21287","bore":"80","stroke":100}}},
+    {"id":"pneumatic.cylinder.compact.iso100","name":"ISO 21287 bore 100 compact cylinder","generator":{"params":{"series":"ISO21287","bore":"100","stroke":100}}},
+    {"id":"pneumatic.cylinder.compact.sda20","name":"SDA20 market planning profile","aliases":["SDA20"],"generator":{"params":{"series":"SDA","bore":"20","stroke":25}}},
+    {"id":"pneumatic.cylinder.compact.sda25","name":"SDA25 market planning profile","aliases":["SDA25"],"generator":{"params":{"series":"SDA","bore":"25","stroke":25}}},
+    {"id":"pneumatic.cylinder.compact.sda32","name":"SDA32 market planning profile","aliases":["SDA32"],"generator":{"params":{"series":"SDA","bore":"32","stroke":50}}},
+    {"id":"pneumatic.cylinder.compact.sda40","name":"SDA40 market planning profile","aliases":["SDA40"],"generator":{"params":{"series":"SDA","bore":"40","stroke":50}}},
+    {"id":"pneumatic.cylinder.compact.sda50","name":"SDA50 market planning profile","aliases":["SDA50"],"generator":{"params":{"series":"SDA","bore":"50","stroke":50}}},
+    {"id":"pneumatic.cylinder.compact.sda63","name":"SDA63 market planning profile","aliases":["SDA63"],"generator":{"params":{"series":"SDA","bore":"63","stroke":75}}},
+    {"id":"pneumatic.cylinder.compact.sda80","name":"SDA80 market planning profile","aliases":["SDA80"],"generator":{"params":{"series":"SDA","bore":"80","stroke":100}}},
+    {"id":"pneumatic.cylinder.compact.sda100","name":"SDA100 market planning profile","aliases":["SDA100"],"generator":{"params":{"series":"SDA","bore":"100","stroke":100}}}
+  ]
+}

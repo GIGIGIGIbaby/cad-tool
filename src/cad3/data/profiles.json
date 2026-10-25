@@ -1,0 +1,330 @@
+{
+  "fasteners": {
+    "M3": {
+      "diameter": 3,
+      "coarse_pitch": 0.5,
+      "across_flats": 5.5,
+      "head_height": 2.0,
+      "nut_height": 2.4,
+      "washer_inside": 3.2,
+      "washer_outside": 7,
+      "washer_thickness": 0.5
+    },
+    "M4": {
+      "diameter": 4,
+      "coarse_pitch": 0.7,
+      "across_flats": 7,
+      "head_height": 2.8,
+      "nut_height": 3.2,
+      "washer_inside": 4.3,
+      "washer_outside": 9,
+      "washer_thickness": 0.8
+    },
+    "M5": {
+      "diameter": 5,
+      "coarse_pitch": 0.8,
+      "across_flats": 8,
+      "head_height": 3.5,
+      "nut_height": 4.7,
+      "washer_inside": 5.3,
+      "washer_outside": 10,
+      "washer_thickness": 1.0
+    },
+    "M6": {
+      "diameter": 6,
+      "coarse_pitch": 1.0,
+      "across_flats": 10,
+      "head_height": 4.0,
+      "nut_height": 5.2,
+      "washer_inside": 6.4,
+      "washer_outside": 12,
+      "washer_thickness": 1.6
+    },
+    "M8": {
+      "diameter": 8,
+      "coarse_pitch": 1.25,
+      "across_flats": 13,
+      "head_height": 5.3,
+      "nut_height": 6.8,
+      "washer_inside": 8.4,
+      "washer_outside": 16,
+      "washer_thickness": 1.6
+    },
+    "M10": {
+      "diameter": 10,
+      "coarse_pitch": 1.5,
+      "across_flats": 16,
+      "head_height": 6.4,
+      "nut_height": 8.4,
+      "washer_inside": 10.5,
+      "washer_outside": 20,
+      "washer_thickness": 2.0
+    },
+    "M12": {
+      "diameter": 12,
+      "coarse_pitch": 1.75,
+      "across_flats": 18,
+      "head_height": 7.5,
+      "nut_height": 10.8,
+      "washer_inside": 13,
+      "washer_outside": 24,
+      "washer_thickness": 2.5
+    },
+    "M14": {
+      "diameter": 14,
+      "coarse_pitch": 2.0,
+      "across_flats": 21,
+      "head_height": 8.8,
+      "nut_height": 12.8,
+      "washer_inside": 15,
+      "washer_outside": 28,
+      "washer_thickness": 2.5
+    },
+    "M16": {
+      "diameter": 16,
+      "coarse_pitch": 2.0,
+      "across_flats": 24,
+      "head_height": 10.0,
+      "nut_height": 14.8,
+      "washer_inside": 17,
+      "washer_outside": 30,
+      "washer_thickness": 3.0
+    },
+    "M18": {
+      "diameter": 18,
+      "coarse_pitch": 2.5,
+      "across_flats": 27,
+      "head_height": 11.5,
+      "nut_height": 15.8,
+      "washer_inside": 19,
+      "washer_outside": 34,
+      "washer_thickness": 3.0
+    },
+    "M20": {
+      "diameter": 20,
+      "coarse_pitch": 2.5,
+      "across_flats": 30,
+      "head_height": 12.5,
+      "nut_height": 18.0,
+      "washer_inside": 21,
+      "washer_outside": 37,
+      "washer_thickness": 3.0
+    },
+    "M22": {
+      "diameter": 22,
+      "coarse_pitch": 2.5,
+      "across_flats": 34,
+      "head_height": 14.0,
+      "nut_height": 19.4,
+      "washer_inside": 23,
+      "washer_outside": 39,
+      "washer_thickness": 3.0
+    },
+    "M24": {
+      "diameter": 24,
+      "coarse_pitch": 3.0,
+      "across_flats": 36,
+      "head_height": 15.0,
+      "nut_height": 21.5,
+      "washer_inside": 25,
+      "washer_outside": 44,
+      "washer_thickness": 4.0
+    }
+  },
+  "steppers": {
+    "42": {
+      "face": 42,
+      "pitch": 31,
+      "hole": 3.5,
+      "pilot": 22,
+      "pilot_depth": 2,
+      "shaft": 5,
+      "shaft_length": 24,
+      "body_length": 48
+    },
+    "56.4": {
+      "face": 56.4,
+      "pitch": 47.14,
+      "hole": 5.2,
+      "pilot": 38.1,
+      "pilot_depth": 1.6,
+      "shaft": 6.35,
+      "shaft_length": 21,
+      "body_length": 76
+    },
+    "60": {
+      "face": 60,
+      "pitch": 50,
+      "hole": 5.5,
+      "pilot": 36,
+      "pilot_depth": 2,
+      "shaft": 8,
+      "shaft_length": 25,
+      "body_length": 75
+    },
+    "85": {
+      "face": 85,
+      "pitch": 69.6,
+      "hole": 6.5,
+      "pilot": 73,
+      "pilot_depth": 2,
+      "shaft": 12.7,
+      "shaft_length": 32,
+      "body_length": 118
+    }
+  },
+  "bushings": {
+    "8": {
+      "bore": 8,
+      "outside": 15,
+      "length": 24,
+      "flange": 32,
+      "flange_thickness": 6,
+      "flange_pitch": 24,
+      "flange_hole": 4.5
+    },
+    "10": {
+      "bore": 10,
+      "outside": 19,
+      "length": 29,
+      "flange": 40,
+      "flange_thickness": 6,
+      "flange_pitch": 30,
+      "flange_hole": 5.5
+    },
+    "12": {
+      "bore": 12,
+      "outside": 21,
+      "length": 30,
+      "flange": 42,
+      "flange_thickness": 6,
+      "flange_pitch": 32,
+      "flange_hole": 5.5
+    },
+    "16": {
+      "bore": 16,
+      "outside": 28,
+      "length": 37,
+      "flange": 48,
+      "flange_thickness": 8,
+      "flange_pitch": 38,
+      "flange_hole": 5.5
+    },
+    "20": {
+      "bore": 20,
+      "outside": 32,
+      "length": 42,
+      "flange": 54,
+      "flange_thickness": 8,
+      "flange_pitch": 43,
+      "flange_hole": 6.6
+    },
+    "25": {
+      "bore": 25,
+      "outside": 40,
+      "length": 59,
+      "flange": 62,
+      "flange_thickness": 8,
+      "flange_pitch": 51,
+      "flange_hole": 6.6
+    },
+    "30": {
+      "bore": 30,
+      "outside": 45,
+      "length": 64,
+      "flange": 74,
+      "flange_thickness": 10,
+      "flange_pitch": 60,
+      "flange_hole": 9
+    },
+    "40": {
+      "bore": 40,
+      "outside": 60,
+      "length": 80,
+      "flange": 96,
+      "flange_thickness": 12,
+      "flange_pitch": 78,
+      "flange_hole": 11
+    }
+  },
+  "couplings": {
+    "jaw/14": {
+      "diameter": 30,
+      "length": 35,
+      "max_bore": 14,
+      "gap": 3
+    },
+    "jaw/19": {
+      "diameter": 40,
+      "length": 50,
+      "max_bore": 19,
+      "gap": 4
+    },
+    "jaw/24": {
+      "diameter": 55,
+      "length": 65,
+      "max_bore": 24,
+      "gap": 5
+    },
+    "jaw/28": {
+      "diameter": 65,
+      "length": 75,
+      "max_bore": 28,
+      "gap": 5
+    },
+    "jaw/38": {
+      "diameter": 85,
+      "length": 90,
+      "max_bore": 38,
+      "gap": 6
+    },
+    "disc/14": {
+      "diameter": 32,
+      "length": 40,
+      "max_bore": 14,
+      "gap": 6
+    },
+    "disc/20": {
+      "diameter": 45,
+      "length": 55,
+      "max_bore": 20,
+      "gap": 8
+    },
+    "disc/25": {
+      "diameter": 55,
+      "length": 65,
+      "max_bore": 25,
+      "gap": 9
+    },
+    "disc/35": {
+      "diameter": 75,
+      "length": 85,
+      "max_bore": 35,
+      "gap": 12
+    },
+    "clamp/8": {
+      "diameter": 20,
+      "length": 25,
+      "max_bore": 8,
+      "gap": 2
+    },
+    "clamp/12": {
+      "diameter": 30,
+      "length": 35,
+      "max_bore": 12,
+      "gap": 3
+    },
+    "clamp/16": {
+      "diameter": 40,
+      "length": 45,
+      "max_bore": 16,
+      "gap": 4
+    },
+    "clamp/20": {
+      "diameter": 50,
+      "length": 55,
+      "max_bore": 20,
+      "gap": 5
+    }
+  }
+}

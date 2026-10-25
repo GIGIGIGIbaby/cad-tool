@@ -1,0 +1,28 @@
+{
+  "schema": "cadparts.catalog-family/v1",
+  "id": "gear.spur",
+  "category": "gear",
+  "name": "External spur gear / 外啮合直齿轮",
+  "summary": "Parametric involute spur-gear proxy for shaft layout, pitch geometry and assembly interference.",
+  "aliases": ["spur_gear", "gear.spur_gear", "直齿轮", "圆柱齿轮"],
+  "keywords": ["gear", "齿轮", "直齿", "模数", "齿数", "中心孔", "压力角"],
+  "selectors": {
+    "module": "metric module in mm",
+    "teeth": "tooth count",
+    "bore": "center bore diameter in mm",
+    "width": "face width in mm"
+  },
+  "geometry": {
+    "fidelity": "real sampled involute working flanks with simplified root transition",
+    "accurate": ["bore", "face_width", "pitch_diameter", "outside_diameter", "axis"],
+    "omitted": ["tool-generated root fillet", "backlash", "crowning", "tolerance", "material", "strength"]
+  },
+  "interfaces": [
+    {"id": "shaft_bore", "type": "cylindrical_bore", "role": "mount on shaft"},
+    {"id": "rotation_axis", "type": "axis", "role": "assembly rotation axis"},
+    {"id": "pitch_reference", "type": "pitch_cylinder", "role": "gear mesh layout"}
+  ],
+  "purchase": {"designation_template": "spur gear m{module} z{teeth} bore {bore} width {width}"},
+  "parameters": [{"name": "module", "type": "number", "description": "Normal metric module", "required": true, "unit": "mm", "minimum": 0.0}, {"name": "teeth", "type": "integer", "description": "Number of teeth", "required": true, "minimum": 8}, {"name": "bore", "type": "number", "description": "Central bore diameter; use 0 for solid", "required": true, "unit": "mm", "minimum": 0.0}, {"name": "width", "type": "number", "description": "Face width along +Z", "required": true, "unit": "mm", "minimum": 0.0}, {"name": "pressure_angle", "type": "number", "description": "Reference pressure angle; 20 degrees is the standards-based default", "required": false, "unit": "degree", "default": 20.0, "minimum": 14.5, "maximum": 30.0}, {"name": "profile_shift", "type": "number", "description": "Profile-shift coefficient x", "required": false, "default": 0.0, "minimum": -0.5, "maximum": 1.0}],
+  "sample": {"params": {"module": 2, "teeth": 24, "bore": 10, "width": 12}}
+}

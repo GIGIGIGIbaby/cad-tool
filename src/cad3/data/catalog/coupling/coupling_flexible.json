@@ -1,0 +1,46 @@
+{
+  "schema": "cadparts.catalog-family/v1",
+  "id": "coupling.flexible",
+  "category": "coupling",
+  "name": "Flexible shaft coupling / 弹性联轴器",
+  "summary": "Jaw, disc and clamp coupling planning envelopes with independent shaft bores.",
+  "aliases": ["flexible_coupling", "jaw_coupling", "plum_coupling", "联轴器", "梅花联轴器"],
+  "keywords": ["coupling", "联轴器", "梅花", "jaw", "disc", "膜片", "clamp", "夹紧", "轴孔"],
+  "selectors": {"kind": ["jaw", "disc", "clamp"], "size": "finite planning size", "bore_a": "first shaft bore", "bore_b": "second shaft bore"},
+  "compatibility": {
+    "level": "catalog_specific",
+    "claim": "Size code is local to this planning table; choose a vendor series and verify outside diameter, length, both bores and torque rating.",
+    "match_fields": ["outside_diameter", "overall_length", "bore_a", "bore_b", "maximum_bore"]
+  },
+  "geometry": {
+    "fidelity": "rotating envelope with two exact declared bores and flexible gap",
+    "accurate": ["outside envelope", "overall length", "bore A", "bore B", "coaxial axis"],
+    "omitted": ["jaw teeth", "spider detail", "disc stack", "clamp screws", "keyways", "torque and misalignment rating"]
+  },
+  "interfaces": [
+    {"id": "shaft_bore_a", "type": "cylindrical_bore", "role": "first shaft location"},
+    {"id": "shaft_bore_b", "type": "cylindrical_bore", "role": "second shaft location"},
+    {"id": "rotation_axis", "type": "axis", "role": "coaxial placement"},
+    {"id": "shaft_end_a", "type": "planar_face", "role": "first axial datum"},
+    {"id": "shaft_end_b", "type": "planar_face", "role": "second axial datum"}
+  ],
+  "keepouts": [{"id": "rotating_coupling", "purpose": "Rotating outside envelope plus radial planning clearance."}],
+  "purchase": {"designation_template": "{kind} flexible coupling size {size} bores {bore_a}x{bore_b}", "note": "Select torque, speed, misalignment, material and fastening method from the chosen catalog."},
+  "sample": {"params": {"kind": "jaw", "size": "19", "bore_a": 8, "bore_b": 14}},
+  "parameters": [{"name": "kind", "type": "string", "description": "Coupling construction", "required": true, "choices": ["jaw", "disc", "clamp"]}, {"name": "size", "type": "string", "description": "Finite planning size", "required": true}, {"name": "bore_a", "type": "number|null", "description": "First shaft bore", "required": false, "unit": "mm", "default": null}, {"name": "bore_b", "type": "number|null", "description": "Second shaft bore", "required": false, "unit": "mm", "default": null}],
+  "items": [
+    {"id":"coupling.flexible.jaw14","name":"Jaw coupling size 14","dimensions_mm":{"outside_diameter":30,"length":35,"maximum_bore":14},"generator":{"params":{"kind":"jaw","size":"14"}}},
+    {"id":"coupling.flexible.jaw19","name":"Jaw coupling size 19","aliases":["梅花19"],"dimensions_mm":{"outside_diameter":40,"length":50,"maximum_bore":19},"generator":{"params":{"kind":"jaw","size":"19"}}},
+    {"id":"coupling.flexible.jaw24","name":"Jaw coupling size 24","dimensions_mm":{"outside_diameter":55,"length":65,"maximum_bore":24},"generator":{"params":{"kind":"jaw","size":"24"}}},
+    {"id":"coupling.flexible.jaw28","name":"Jaw coupling size 28","dimensions_mm":{"outside_diameter":65,"length":75,"maximum_bore":28},"generator":{"params":{"kind":"jaw","size":"28"}}},
+    {"id":"coupling.flexible.jaw38","name":"Jaw coupling size 38","dimensions_mm":{"outside_diameter":85,"length":90,"maximum_bore":38},"generator":{"params":{"kind":"jaw","size":"38"}}},
+    {"id":"coupling.flexible.disc14","name":"Disc coupling size 14","dimensions_mm":{"outside_diameter":32,"length":40,"maximum_bore":14},"generator":{"params":{"kind":"disc","size":"14"}}},
+    {"id":"coupling.flexible.disc20","name":"Disc coupling size 20","dimensions_mm":{"outside_diameter":45,"length":55,"maximum_bore":20},"generator":{"params":{"kind":"disc","size":"20"}}},
+    {"id":"coupling.flexible.disc25","name":"Disc coupling size 25","dimensions_mm":{"outside_diameter":55,"length":65,"maximum_bore":25},"generator":{"params":{"kind":"disc","size":"25"}}},
+    {"id":"coupling.flexible.disc35","name":"Disc coupling size 35","dimensions_mm":{"outside_diameter":75,"length":85,"maximum_bore":35},"generator":{"params":{"kind":"disc","size":"35"}}},
+    {"id":"coupling.flexible.clamp8","name":"Clamp coupling size 8","dimensions_mm":{"outside_diameter":20,"length":25,"maximum_bore":8},"generator":{"params":{"kind":"clamp","size":"8"}}},
+    {"id":"coupling.flexible.clamp12","name":"Clamp coupling size 12","dimensions_mm":{"outside_diameter":30,"length":35,"maximum_bore":12},"generator":{"params":{"kind":"clamp","size":"12"}}},
+    {"id":"coupling.flexible.clamp16","name":"Clamp coupling size 16","dimensions_mm":{"outside_diameter":40,"length":45,"maximum_bore":16},"generator":{"params":{"kind":"clamp","size":"16"}}},
+    {"id":"coupling.flexible.clamp20","name":"Clamp coupling size 20","dimensions_mm":{"outside_diameter":50,"length":55,"maximum_bore":20},"generator":{"params":{"kind":"clamp","size":"20"}}}
+  ]
+}

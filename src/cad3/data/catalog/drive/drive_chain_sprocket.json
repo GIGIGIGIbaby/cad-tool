@@ -1,0 +1,33 @@
+{
+  "schema": "cadparts.catalog-family/v1",
+  "id": "drive.chain_sprocket",
+  "category": "drive",
+  "name": "Roller-chain sprocket / 滚子链轮",
+  "summary": "06B, 08B, 10B and 12B pitch-layout sprockets for shaft, center-distance and safety-envelope checks.",
+  "aliases": ["chain_sprocket", "链轮", "滚子链轮"],
+  "keywords": ["roller chain", "链条", "链轮", "06B", "08B", "10B", "12B", "齿数", "节圆"],
+  "selectors": {"series":["06B","08B","10B","12B"],"teeth":"tooth count","bore":"shaft bore","width":"face width override"},
+  "compatibility": {"level":"normative","claim":"Chain pitch and roller dimensions follow the cited series basis; hub, bore, keyway, plate thickness and production tooth form remain order specific.","match_fields":["series","pitch","roller_diameter","teeth","bore_diameter","face_width"]},
+  "geometry": {"fidelity":"pitch/outside rotating envelope; production tooth form omitted","accurate":["pitch diameter","chain series pitch","declared bore","face width","axis"],"omitted":["tooth form","hub","keyway","set screws","material","power rating"]},
+  "interfaces": [
+    {"id":"shaft_bore","type":"cylindrical_bore","role":"mount on shaft"},
+    {"id":"rotation_axis","type":"axis","role":"shaft placement"},
+    {"id":"pitch_reference","type":"pitch_cylinder","role":"chain center-distance layout"},
+    {"id":"axial_face_min","type":"planar_face","role":"axial location"},
+    {"id":"axial_face_max","type":"planar_face","role":"axial location"}
+  ],
+  "keepouts": [{"id":"rotating_sprocket_and_chain","purpose":"Sprocket and nearby moving chain clearance."}],
+  "purchase": {"designation_template":"{series} chain sprocket {teeth}T bore {bore}","note":"Pin simplex/duplex, hub form, keyway and material after layout."},
+  "sample": {"params":{"series":"08B","teeth":20,"bore":20}},
+  "parameters": [{"name": "series", "type": "string", "description": "ISO/BS chain series", "required": true, "choices": ["06B", "08B", "10B", "12B"]}, {"name": "teeth", "type": "integer", "description": "Tooth count", "required": true, "minimum": 9}, {"name": "bore", "type": "number", "description": "Shaft bore", "required": true, "unit": "mm", "minimum": 0}, {"name": "width", "type": "number|null", "description": "Face width override", "required": false, "unit": "mm", "default": null}],
+  "items": [
+    {"id":"drive.chain_sprocket.06b-15","name":"06B 15T sprocket profile","aliases":["06B-15T"],"generator":{"params":{"series":"06B","teeth":15,"bore":12}}},
+    {"id":"drive.chain_sprocket.06b-20","name":"06B 20T sprocket profile","aliases":["06B-20T"],"generator":{"params":{"series":"06B","teeth":20,"bore":15}}},
+    {"id":"drive.chain_sprocket.08b-15","name":"08B 15T sprocket profile","aliases":["08B-15T"],"generator":{"params":{"series":"08B","teeth":15,"bore":15}}},
+    {"id":"drive.chain_sprocket.08b-20","name":"08B 20T sprocket profile","aliases":["08B-20T"],"generator":{"params":{"series":"08B","teeth":20,"bore":20}}},
+    {"id":"drive.chain_sprocket.10b-15","name":"10B 15T sprocket profile","aliases":["10B-15T"],"generator":{"params":{"series":"10B","teeth":15,"bore":20}}},
+    {"id":"drive.chain_sprocket.10b-20","name":"10B 20T sprocket profile","aliases":["10B-20T"],"generator":{"params":{"series":"10B","teeth":20,"bore":25}}},
+    {"id":"drive.chain_sprocket.12b-15","name":"12B 15T sprocket profile","aliases":["12B-15T"],"generator":{"params":{"series":"12B","teeth":15,"bore":25}}},
+    {"id":"drive.chain_sprocket.12b-20","name":"12B 20T sprocket profile","aliases":["12B-20T"],"generator":{"params":{"series":"12B","teeth":20,"bore":30}}}
+  ]
+}

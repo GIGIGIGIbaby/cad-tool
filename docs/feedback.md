@@ -3,6 +3,9 @@
 本文说明 cad-v3 的"反馈回路"：一次运行给出什么证据、怎么读、哪些判断被实测修正过、哪些事现在不做。
 它是 [ARCHITECTURE.md](../ARCHITECTURE.md) 运行契约的配套说明，配套技能入口见 [.agents/skills/freecad-v3/SKILL.md](../.agents/skills/freecad-v3/SKILL.md)。
 
+相关反馈：[HUMAN-FEEDBACK-001：可寻址性](HUMAN-FEEDBACK-001-feature-addressability.md)、
+[AGENT-FEEDBACK-001：RV63 建模会话中的工具使用反馈](AGENT-FEEDBACK-001-rv63-modeling-workflow.md)。
+
 ## 1. 证据来源与范围
 
 - 环境：**FreeCAD 1.1.3 / macOS arm64 / `freecadcmd`**（`App.GuiUp == 0`）。
@@ -46,6 +49,7 @@
 8. **工程自带的脚本对象（FeaturePython）重开后会失效**（旧结论"放进可导入模块即可恢复"已被 EVAL-002 推翻）：FreeCAD 1.1.3 恢复文档时直接拒绝导入工程模块——`PropertyPythonObject::Restore: blocked import of module '...' during document restore. Only modules from FreeCAD or installed addons are permitted.` 结果是 Proxy 为 `None`，改表格后几何不更新，只有重跑脚本重新绑定才会动。**需要重开后仍然参数化的东西，用原生对象 + 表达式**（`Part::Box/Cylinder/Cut/Fuse`、PartDesign 特征、`Placement` 表达式）。
 9. **脚本生成的 `Part::Feature` 是冻结形状**：给它加自定义属性并挂表达式，属性值会变、`State` 仍 `Up-to-date`，但几何纹丝不动。要让它随表格移动，表达式必须挂在 `Placement`（如 `.Placement.Base.x`）或原生参数化特征的尺寸属性上。
 10. **布尔结果"看起来不对"时先怀疑自己的输入，不要先怀疑内核**：EVAL-002 中一个模型把孔沿错误的轴打穿（丝杆沿 X，孔沿 Y），看到 `common()` 体积"不符合解析值"、零件被切成 2 个实体后，认定 OCCT 布尔不准并换了更弱的检查，结果漏掉 4 处真实干涉。先查操作数是否为有效的单一实体、孔/刀具体的轴向与位置，再用 `render --section` 沿关键轴线切开看。
+11. **脚本化创建的 PartDesign Transformed 特征（PolarPattern/LinearPattern/Mirror）不会自动接进特征链**（上游 [FreeCAD#30974](https://github.com/FreeCAD/FreeCAD/issues/30974)）：`body.newObject("PartDesign::PolarPattern", ...)` 后 `body.Tip` 不前进、后续特征从阵列旁边绕过去，**阵列结果不参与几何且不报错**——对象 `State` 正常 `Up-to-date`，`pattern.Shape` 甚至完全正确，只有 `body.Shape` 少了副本。判据：对比 `pattern.Shape` 与 `body.Shape`，并读 `body.Tip` 是否推进。修复：显式 `pattern.BaseFeature = 前一特征` 且 `body.Tip = pattern`。同场实测两条：`Pad/Pocket` 的 `Midplane` 属性在 1.1.3 已废弃，改用 `SideType = "Symmetric"`；草图里对称约束已隐含的 `Vertical/Horizontal` 再写一遍会被求解器判为冗余（1-based 编号）。
 
 ## 5. 现在明确不做的事
 

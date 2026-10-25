@@ -89,3 +89,24 @@ sk.PartiallyRedundantConstraints  # 本轮未构造出非空样例，编号基�
 
 - 未找到内置的"任意文档 → 完整可执行 Python"出口：`exportPython/toPython/dumpPython/saveAsPython` 不存在，53 个导出过滤器里没有 Python（`meshpy` 是 FEM 网格数组，`csg` 实测是三角化顶点转储）。最接近的 `exportGraphviz`（结构）与 `csg/scad`（几何）都不是重建器。
 - 本轮只证明该版本、该样本上的行为；未验证 TechDraw/Assembly 树、跨版本命名稳定性、含内部对齐约束草图的诊断编号基准。
+
+## 6. 脚本化阵列要核对最终 Body
+
+补充证据：履带驱动轮 v2 / FreeCAD 1.1.3，详见 [feedback.md 第 4.11 条](../../../../docs/feedback.md)。
+创建 `PartDesign::PolarPattern` 后，阵列自己的 `Shape` 可以正确，`State` 为 `Up-to-date`，
+而 Body 的最终实体仍缺少阵列副本。该样本通过显式接链并推进 Tip 解决：
+
+```python
+previous = body.Tip                 # 创建阵列前保存当前末端
+pattern = body.newObject("PartDesign::PolarPattern", "BoltHolePattern")
+pattern.Originals = [hole_cut]
+pattern.Axis = (z_axis, [""])        # Body Origin 的 Z_Axis 对象
+pattern.Angle = 360
+pattern.setExpression("Occurrences", "Params.BoltCount")
+pattern.BaseFeature = previous
+body.Tip = pattern
+doc.recompute()
+```
+
+检查最终 `body.Shape` 中副本的位置/数量，以及后续特征是否依赖阵列；不能只检查 `pattern.Shape`。
+该结论来自这个版本和样本，遇到其他变换特征也应核对实际链路，不把单次结果当成所有版本的保证。

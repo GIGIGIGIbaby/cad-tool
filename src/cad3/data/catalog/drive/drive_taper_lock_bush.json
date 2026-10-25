@@ -1,0 +1,31 @@
+{
+  "schema": "cadparts.catalog-family/v1",
+  "id": "drive.taper_lock_bush",
+  "category": "drive",
+  "name": "Taper-lock bushing / 锥套",
+  "summary": "Common 1008–3525 taper-lock bushing envelopes with explicit finished bore.",
+  "aliases": ["taper_lock", "taper_bush", "锥套", "胀紧锥套"],
+  "keywords": ["taper lock", "taper bush", "锥套", "1008", "1210", "1610", "2012", "2517", "3020", "3525"],
+  "selectors": {"code":["1008","1210","1610","2012","2517","3020","3525"],"bore":"finished shaft bore"},
+  "compatibility": {"level":"series_compatible","claim":"Code and finished bore guide purchasing; taper, screw arrangement and hub fit must match a pinned vendor catalog.","match_fields":["designation","outside_diameter","length","bore_diameter"]},
+  "geometry": {"fidelity":"outside envelope, length and finished bore","accurate":["declared outside diameter","length","bore","axis"],"omitted":["exact taper","split","screw holes","keyway","extraction threads","tolerance"]},
+  "interfaces": [
+    {"id":"shaft_bore","type":"cylindrical_bore","role":"shaft location"},
+    {"id":"hub_seat","type":"tapered_surface_envelope","role":"mate with pulley/sprocket hub"},
+    {"id":"axial_face_min","type":"planar_face","role":"axial datum"},
+    {"id":"axial_face_max","type":"planar_face","role":"axial datum"}
+  ],
+  "keepouts": [{"id":"bushing_and_extraction_access","purpose":"Bushing envelope and axial extraction access."}],
+  "purchase": {"designation_template":"taper-lock {code} finished bore {bore}","note":"Pin manufacturer taper and screw specification before machining the mating hub."},
+  "sample": {"params":{"code":"2012","bore":35}},
+  "parameters": [{"name": "code", "type": "string", "description": "Bushing size", "required": true, "choices": ["1008", "1210", "1610", "2012", "2517", "3020", "3525"]}, {"name": "bore", "type": "number", "description": "Finished shaft bore", "required": true, "unit": "mm", "minimum": 0}],
+  "items": [
+    {"id":"drive.taper_lock_bush.1008","name":"Taper-lock 1008","aliases":["1008锥套"],"dimensions_mm":{"outside":35,"length":22.3,"max_bore":25},"generator":{"params":{"code":"1008","bore":20}}},
+    {"id":"drive.taper_lock_bush.1210","name":"Taper-lock 1210","aliases":["1210锥套"],"dimensions_mm":{"outside":47.5,"length":25.4,"max_bore":32},"generator":{"params":{"code":"1210","bore":25}}},
+    {"id":"drive.taper_lock_bush.1610","name":"Taper-lock 1610","aliases":["1610锥套"],"dimensions_mm":{"outside":57,"length":25.4,"max_bore":42},"generator":{"params":{"code":"1610","bore":30}}},
+    {"id":"drive.taper_lock_bush.2012","name":"Taper-lock 2012","aliases":["2012锥套"],"dimensions_mm":{"outside":70,"length":31.8,"max_bore":50},"generator":{"params":{"code":"2012","bore":35}}},
+    {"id":"drive.taper_lock_bush.2517","name":"Taper-lock 2517","aliases":["2517锥套"],"dimensions_mm":{"outside":85.5,"length":44.5,"max_bore":65},"generator":{"params":{"code":"2517","bore":45}}},
+    {"id":"drive.taper_lock_bush.3020","name":"Taper-lock 3020","aliases":["3020锥套"],"dimensions_mm":{"outside":108,"length":50.8,"max_bore":75},"generator":{"params":{"code":"3020","bore":55}}},
+    {"id":"drive.taper_lock_bush.3525","name":"Taper-lock 3525","aliases":["3525锥套"],"dimensions_mm":{"outside":127,"length":63.5,"max_bore":90},"generator":{"params":{"code":"3525","bore":65}}}
+  ]
+}

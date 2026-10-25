@@ -1,0 +1,23 @@
+{
+  "schema": "cadparts.catalog-family/v1",
+  "id": "fastener.hex_nut_metric",
+  "category": "fastener",
+  "name": "Metric regular hex nut / 公制六角螺母",
+  "summary": "Regular metric hex-nut proxy with nominal thread bore and bearing faces.",
+  "aliases": ["hex_nut", "metric_hex_nut", "六角螺母"],
+  "keywords": ["nut", "螺母", "M3", "M4", "M5", "M6", "M8", "M10", "M12"],
+  "selectors": {"size": "metric thread designation"},
+  "geometry": {
+    "fidelity": "nominal assembly envelope",
+    "accurate": ["nominal_thread_diameter", "height", "across_flats", "axis"],
+    "omitted": ["internal thread helix", "chamfer", "grade", "tolerance", "strength"]
+  },
+  "interfaces": [
+    {"id": "thread_bore", "type": "female_thread_envelope", "role": "mate with bolt"},
+    {"id": "bearing_face_min", "type": "planar_face", "role": "clamp location"},
+    {"id": "bearing_face_max", "type": "planar_face", "role": "clamp location"}
+  ],
+  "purchase": {"designation_template": "{size} regular hex nut"},
+  "parameters": [{"name": "size", "type": "string|number", "description": "Metric nominal thread designation", "required": true, "choices": ["M3", "M4", "M5", "M6", "M8", "M10", "M12", "M14", "M16", "M18", "M20", "M22", "M24"]}],
+  "sample": {"params": {"size": "M8"}}
+}

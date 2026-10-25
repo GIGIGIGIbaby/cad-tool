@@ -1,0 +1,23 @@
+{
+  "schema": "cadparts.catalog-family/v1",
+  "id": "fastener.plain_washer_metric",
+  "category": "fastener",
+  "name": "Metric normal-series plain washer / 公制平垫圈",
+  "summary": "Plain washer proxy defined by nominal inside diameter, outside diameter and thickness.",
+  "aliases": ["plain_washer", "metric_washer", "平垫圈", "垫片"],
+  "keywords": ["washer", "垫圈", "平垫", "M3", "M4", "M5", "M6", "M8", "M10", "M12"],
+  "selectors": {"size": "metric thread designation"},
+  "geometry": {
+    "fidelity": "exact nominal d1/d2/s envelope",
+    "accurate": ["inside_diameter", "outside_diameter", "thickness", "axis"],
+    "omitted": ["edge break", "tolerance", "material", "hardness"]
+  },
+  "interfaces": [
+    {"id": "clearance_bore", "type": "cylindrical_bore", "role": "bolt clearance"},
+    {"id": "bearing_face_min", "type": "planar_face", "role": "load distribution"},
+    {"id": "bearing_face_max", "type": "planar_face", "role": "load distribution"}
+  ],
+  "purchase": {"designation_template": "{size} normal-series plain washer"},
+  "parameters": [{"name": "size", "type": "string|number", "description": "Metric nominal thread designation", "required": true, "choices": ["M3", "M4", "M5", "M6", "M8", "M10", "M12", "M14", "M16", "M18", "M20", "M22", "M24"]}],
+  "sample": {"params": {"size": "M8"}}
+}

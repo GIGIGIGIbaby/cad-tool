@@ -1,0 +1,23 @@
+{
+  "schema":"cadparts.catalog-family/v1","id":"actuator.linear.electric","category":"actuator",
+  "name":"Electric linear actuator / 电动执行器","summary":"Rod and slider electric-actuator planning profiles with body, mount and complete output sweep.",
+  "aliases":["electric_actuator","electric_cylinder","电动缸","电动推杆","直线模组"],"keywords":["electric actuator","电动缸","电动推杆","直线模组","滑台","行程"],
+  "selectors":{"kind":["rod","slider"],"frame":["40","60","80","100"],"stroke":"commanded stroke","position":"current output position"},
+  "compatibility":{"level":"catalog_specific","claim":"Frame is only a planning class; mounting, body length, motor orientation, output interface and duty rating must be pinned to a product catalog.","match_fields":["actuator_type","body_width","body_height","body_length","mount_hole_pitch_y","mount_hole_pitch_z","rod_diameter"]},
+  "geometry":{"fidelity":"body/output envelope and full commanded sweep","accurate":["declared envelope","mount pattern","current output position","motion axis","stroke"],"omitted":["screw or belt drive","motor detail","limit switches","cable carrier","load and duty rating"]},
+  "interfaces":[{"id":"rear_mount","type":"rectangular_mount","role":"body attachment"},{"id":"output","type":"rod_or_slider_output","role":"moving load"},{"id":"motion_axis","type":"linear_axis","role":"commanded travel"}],
+  "keepouts":[{"id":"actuator_body_and_motor","purpose":"Actuator body, drive and motor allowance."},{"id":"moving_output_sweep","purpose":"Rod-end or slider-carriage sweep."}],
+  "purchase":{"designation_template":"{kind} electric actuator frame {frame} stroke {stroke}","note":"Pin vendor series, speed, load, duty, motor and switches after layout."},
+  "sample":{"params":{"kind":"rod","frame":"60","stroke":300}},
+  "parameters": [{"name":"kind","type":"string","description":"Output type","required":true,"choices":["rod","slider"]},{"name":"frame","type":"string","description":"Planning frame","required":true,"choices":["40","60","80","100"]},{"name":"stroke","type":"number","description":"Commanded stroke","required":true,"unit":"mm","minimum":0},{"name":"position","type":"number","description":"Current output position","required":false,"unit":"mm","default":0}],
+  "items":[
+    {"id":"actuator.linear.electric.rod40","name":"40-class rod actuator profile","generator":{"params":{"kind":"rod","frame":"40","stroke":200}}},
+    {"id":"actuator.linear.electric.rod60","name":"60-class rod actuator profile","generator":{"params":{"kind":"rod","frame":"60","stroke":300}}},
+    {"id":"actuator.linear.electric.rod80","name":"80-class rod actuator profile","generator":{"params":{"kind":"rod","frame":"80","stroke":500}}},
+    {"id":"actuator.linear.electric.rod100","name":"100-class rod actuator profile","generator":{"params":{"kind":"rod","frame":"100","stroke":500}}},
+    {"id":"actuator.linear.electric.slider40","name":"40-class slider module profile","generator":{"params":{"kind":"slider","frame":"40","stroke":200}}},
+    {"id":"actuator.linear.electric.slider60","name":"60-class slider module profile","generator":{"params":{"kind":"slider","frame":"60","stroke":300}}},
+    {"id":"actuator.linear.electric.slider80","name":"80-class slider module profile","generator":{"params":{"kind":"slider","frame":"80","stroke":500}}},
+    {"id":"actuator.linear.electric.slider100","name":"100-class slider module profile","generator":{"params":{"kind":"slider","frame":"100","stroke":500}}}
+  ]
+}

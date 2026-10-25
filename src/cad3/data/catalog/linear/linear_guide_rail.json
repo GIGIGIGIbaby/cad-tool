@@ -1,0 +1,50 @@
+{
+  "schema": "cadparts.catalog-family/v1",
+  "id": "linear.guide.rail",
+  "category": "linear",
+  "name": "Profile linear guide / 直线导轨",
+  "summary": "MGN/MGW miniature and HGR/HGW profile-rail proxies with carriage sweep evidence.",
+  "aliases": ["linear_guide", "直线导轨", "微型导轨", "方轨"],
+  "keywords": ["linear guide", "直线导轨", "MGN", "MGW", "HGR", "HGW", "滑块", "导轨"],
+  "selectors": {"series": ["MGN", "MGW", "HGR", "HGW"], "size": "finite nominal size", "rail_length": "cut length", "block_position": "carriage center from rail start"},
+  "compatibility": {
+    "level": "series_compatible",
+    "claim": "Series/size names narrow selection; rail section, block height, mounting pitch and preload class must all match before substitution.",
+    "match_fields": ["rail_width", "rail_height", "rail_mounting_pitch", "assembly_height", "block_width", "block_length", "block_hole_pitch_x", "block_hole_pitch_y"]
+  },
+  "geometry": {
+    "fidelity": "rail/block envelope, mounting pattern and full carriage sweep",
+    "accurate": ["declared rail section", "rail hole pitch", "block envelope", "assembly height", "mounting pitch", "motion axis"],
+    "omitted": ["raceways", "balls", "end seals", "lubricator", "preload", "load rating"]
+  },
+  "interfaces": [
+    {"id": "rail_base", "type": "planar_face", "role": "rail mounting datum"},
+    {"id": "motion_axis", "type": "linear_axis", "role": "carriage travel"},
+    {"id": "carriage_top", "type": "planar_face", "role": "moving load attachment"},
+    {"id": "rail_hole_pattern", "type": "linear_hole_pattern", "role": "rail mounting"}
+  ],
+  "keepouts": [{"id": "carriage_sweep", "purpose": "Moving carriage sweep across usable rail length."}],
+  "purchase": {"designation_template": "{series}{size} linear guide rail length {rail_length}", "note": "Select block length, preload, accuracy, seal and lubrication from a pinned catalog."},
+  "sample": {"params": {"series": "MGN", "size": "12", "rail_length": 300}},
+  "parameters": [{"name": "series", "type": "string", "description": "Guide family", "required": true, "choices": ["MGN", "MGW", "HGR", "HGW"]}, {"name": "size", "type": "string", "description": "Nominal size", "required": true}, {"name": "rail_length", "type": "number", "description": "Rail length", "required": false, "unit": "mm", "default": 300}, {"name": "block_position", "type": "number|null", "description": "Carriage center from rail start", "required": false, "unit": "mm", "default": null}],
+  "items": [
+    {"id":"linear.guide.rail.mgn7","name":"MGN7 guide profile","aliases":["MGN7"],"dimensions_mm":{"rail_width":7,"assembly_height":8},"generator":{"params":{"series":"MGN","size":"7"}}},
+    {"id":"linear.guide.rail.mgn9","name":"MGN9 guide profile","aliases":["MGN9"],"dimensions_mm":{"rail_width":9,"assembly_height":10},"generator":{"params":{"series":"MGN","size":"9"}}},
+    {"id":"linear.guide.rail.mgn12","name":"MGN12 guide profile","aliases":["MGN12"],"dimensions_mm":{"rail_width":12,"assembly_height":13},"generator":{"params":{"series":"MGN","size":"12"}}},
+    {"id":"linear.guide.rail.mgn15","name":"MGN15 guide profile","aliases":["MGN15"],"dimensions_mm":{"rail_width":15,"assembly_height":16},"generator":{"params":{"series":"MGN","size":"15"}}},
+    {"id":"linear.guide.rail.mgw7","name":"MGW7 wide guide profile","aliases":["MGW7"],"dimensions_mm":{"rail_width":14,"assembly_height":9},"generator":{"params":{"series":"MGW","size":"7"}}},
+    {"id":"linear.guide.rail.mgw9","name":"MGW9 wide guide profile","aliases":["MGW9"],"dimensions_mm":{"rail_width":18,"assembly_height":12},"generator":{"params":{"series":"MGW","size":"9"}}},
+    {"id":"linear.guide.rail.mgw12","name":"MGW12 wide guide profile","aliases":["MGW12"],"dimensions_mm":{"rail_width":24,"assembly_height":14},"generator":{"params":{"series":"MGW","size":"12"}}},
+    {"id":"linear.guide.rail.mgw15","name":"MGW15 wide guide profile","aliases":["MGW15"],"dimensions_mm":{"rail_width":42,"assembly_height":16},"generator":{"params":{"series":"MGW","size":"15"}}},
+    {"id":"linear.guide.rail.hgr15","name":"HGR/HGH15 guide profile","aliases":["HGR15","HGH15"],"dimensions_mm":{"rail_width":15,"assembly_height":28},"generator":{"params":{"series":"HGR","size":"15"}}},
+    {"id":"linear.guide.rail.hgr20","name":"HGR/HGH20 guide profile","aliases":["HGR20","HGH20"],"dimensions_mm":{"rail_width":20,"assembly_height":30},"generator":{"params":{"series":"HGR","size":"20"}}},
+    {"id":"linear.guide.rail.hgr25","name":"HGR/HGH25 guide profile","aliases":["HGR25","HGH25"],"dimensions_mm":{"rail_width":23,"assembly_height":40},"generator":{"params":{"series":"HGR","size":"25"}}},
+    {"id":"linear.guide.rail.hgr30","name":"HGR/HGH30 guide profile","aliases":["HGR30","HGH30"],"dimensions_mm":{"rail_width":28,"assembly_height":45},"generator":{"params":{"series":"HGR","size":"30"}}},
+    {"id":"linear.guide.rail.hgr35","name":"HGR/HGH35 guide profile","aliases":["HGR35","HGH35"],"dimensions_mm":{"rail_width":34,"assembly_height":55},"generator":{"params":{"series":"HGR","size":"35"}}},
+    {"id":"linear.guide.rail.hgw15","name":"HGW15 flange block profile","aliases":["HGW15"],"dimensions_mm":{"rail_width":15,"assembly_height":28,"block_width":47},"generator":{"params":{"series":"HGW","size":"15"}}},
+    {"id":"linear.guide.rail.hgw20","name":"HGW20 flange block profile","aliases":["HGW20"],"dimensions_mm":{"rail_width":20,"assembly_height":30,"block_width":63},"generator":{"params":{"series":"HGW","size":"20"}}},
+    {"id":"linear.guide.rail.hgw25","name":"HGW25 flange block profile","aliases":["HGW25"],"dimensions_mm":{"rail_width":23,"assembly_height":40,"block_width":70},"generator":{"params":{"series":"HGW","size":"25"}}},
+    {"id":"linear.guide.rail.hgw30","name":"HGW30 flange block profile","aliases":["HGW30"],"dimensions_mm":{"rail_width":28,"assembly_height":45,"block_width":90},"generator":{"params":{"series":"HGW","size":"30"}}},
+    {"id":"linear.guide.rail.hgw35","name":"HGW35 flange block profile","aliases":["HGW35"],"dimensions_mm":{"rail_width":34,"assembly_height":55,"block_width":100},"generator":{"params":{"series":"HGW","size":"35"}}}
+  ]
+}

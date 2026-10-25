@@ -1,0 +1,21 @@
+{
+  "schema": "cadparts.catalog-family/v1",
+  "id": "key.parallel",
+  "category": "key",
+  "name": "Ordinary parallel key / 普通型平键",
+  "summary": "Nominal b×h×L shaft key proxy with selectable end form.",
+  "aliases": ["parallel_key", "平键", "普通平键"],
+  "keywords": ["key", "平键", "键槽", "轴连接", "A型", "B型", "C型"],
+  "selectors": {"width": "b in mm", "height": "h in mm", "length": "L in mm", "end_type": ["A", "B", "C"]},
+  "geometry": {
+    "fidelity": "nominal solid key envelope",
+    "accurate": ["width", "height", "length", "end_form"],
+    "omitted": ["shaft keyway", "hub keyway", "chamfer", "fit", "tolerance", "material"]
+  },
+  "interfaces": [
+    {"id": "shaft_keyway_contact", "type": "rectangular_key_contact", "role": "torque-transfer placement"}
+  ],
+  "purchase": {"designation_template": "parallel key {width}x{height}x{length} type {end_type}"},
+  "parameters": [{"name": "width", "type": "number", "description": "Nominal key width b", "required": true, "unit": "mm", "minimum": 0.0}, {"name": "height", "type": "number", "description": "Nominal key height h", "required": true, "unit": "mm", "minimum": 0.0}, {"name": "length", "type": "number", "description": "Overall key length L", "required": true, "unit": "mm", "minimum": 0.0}, {"name": "end_type", "type": "string", "description": "A round/round, B square/square, C square/round", "required": false, "default": "A", "choices": ["A", "B", "C"]}],
+  "sample": {"params": {"width": 8, "height": 7, "length": 32, "end_type": "A"}}
+}
