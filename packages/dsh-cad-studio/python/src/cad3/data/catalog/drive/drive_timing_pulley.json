@@ -1,0 +1,30 @@
+{
+  "schema": "cadparts.catalog-family/v1",
+  "id": "drive.timing_pulley",
+  "category": "drive",
+  "name": "Timing-belt pulley / 同步带轮",
+  "summary": "GT2 and HTD3M/5M/8M pitch-layout pulleys for center-distance and envelope checks.",
+  "aliases": ["timing_pulley", "同步带轮", "齿形带轮"],
+  "keywords": ["timing belt", "同步带", "同步带轮", "GT2", "HTD3M", "HTD5M", "HTD8M", "齿数", "节圆"],
+  "selectors": {"profile": ["GT2", "HTD3M", "HTD5M", "HTD8M"], "teeth": "tooth count", "bore": "shaft bore", "belt_width": "belt face width", "flange": [true, false]},
+  "compatibility": {"level": "series_compatible", "claim": "Profile, tooth count, belt width and bore guide selection; hub, keyway and flange construction remain catalog specific.", "match_fields": ["profile", "pitch", "teeth", "bore_diameter", "belt_width", "overall_width"]},
+  "geometry": {"fidelity": "pitch/outside envelope with optional guide flanges; teeth omitted", "accurate": ["pitch diameter", "declared bore", "belt width", "flange envelope", "axis"], "omitted": ["tooth form", "hub and keyway", "set screws", "material", "power rating"]},
+  "interfaces": [
+    {"id":"shaft_bore","type":"cylindrical_bore","role":"mount on shaft"},
+    {"id":"rotation_axis","type":"axis","role":"shaft placement"},
+    {"id":"pitch_reference","type":"pitch_cylinder","role":"belt center-distance layout"},
+    {"id":"axial_face_min","type":"planar_face","role":"axial location"},
+    {"id":"axial_face_max","type":"planar_face","role":"axial location"}
+  ],
+  "keepouts": [{"id":"rotating_pulley_and_belt","purpose":"Pulley flanges and nearby moving belt clearance."}],
+  "purchase": {"designation_template":"{profile} timing pulley {teeth}T bore {bore} belt width {belt_width}","note":"Pin hub, flange, keyway and material after layout."},
+  "sample": {"params":{"profile":"HTD5M","teeth":24,"bore":12,"belt_width":15}},
+  "parameters": [{"name": "profile", "type": "string", "description": "Belt profile", "required": true, "choices": ["GT2", "HTD3M", "HTD5M", "HTD8M"]}, {"name": "teeth", "type": "integer", "description": "Tooth count", "required": true, "minimum": 10}, {"name": "bore", "type": "number", "description": "Shaft bore", "required": true, "unit": "mm", "minimum": 0}, {"name": "belt_width", "type": "number", "description": "Belt face width", "required": true, "unit": "mm", "minimum": 0}, {"name": "flange", "type": "boolean", "description": "Include guide flanges", "required": false, "default": true}],
+  "items": [
+    {"id":"drive.timing_pulley.gt2-20-5","name":"GT2 20T pulley, 5 mm bore","aliases":["GT2-20T-5"],"dimensions_mm":{"bore":5,"belt_width":6},"generator":{"params":{"profile":"GT2","teeth":20,"bore":5,"belt_width":6}}},
+    {"id":"drive.timing_pulley.gt2-20-8","name":"GT2 20T pulley, 8 mm bore","aliases":["GT2-20T-8"],"dimensions_mm":{"bore":8,"belt_width":10},"generator":{"params":{"profile":"GT2","teeth":20,"bore":8,"belt_width":10}}},
+    {"id":"drive.timing_pulley.htd3m-24-8","name":"HTD3M 24T pulley, 8 mm bore","dimensions_mm":{"bore":8,"belt_width":15},"generator":{"params":{"profile":"HTD3M","teeth":24,"bore":8,"belt_width":15}}},
+    {"id":"drive.timing_pulley.htd5m-24-12","name":"HTD5M 24T pulley, 12 mm bore","dimensions_mm":{"bore":12,"belt_width":15},"generator":{"params":{"profile":"HTD5M","teeth":24,"bore":12,"belt_width":15}}},
+    {"id":"drive.timing_pulley.htd8m-30-20","name":"HTD8M 30T pulley, 20 mm bore","dimensions_mm":{"bore":20,"belt_width":30},"generator":{"params":{"profile":"HTD8M","teeth":30,"bore":20,"belt_width":30}}}
+  ]
+}

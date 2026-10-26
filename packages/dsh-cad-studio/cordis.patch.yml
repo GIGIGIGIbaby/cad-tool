@@ -1,0 +1,6 @@
+# 一行 profile 依赖同时带出 Host tools、浏览器卡片、内嵌的 cad3 Python CLI 与
+# freecad-v3 skill。DSH 通过 package.json 的 dsh.client 发现客户端半件；
+# skill 由 Host 半件在 apply() 里用 ctx.skills.register() 自带注册，不需要第二行 patch。
+- insert:
+    - id: cad-studio
+      name: dsh-cad-studio

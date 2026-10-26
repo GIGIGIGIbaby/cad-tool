@@ -1,0 +1,45 @@
+{
+  "schema": "cadparts.catalog-family/v1",
+  "id": "linear.guide.supported_round",
+  "category": "linear",
+  "name": "Supported round-shaft guide / 支撑圆导轨",
+  "summary": "SBR/TBR supported shaft and carriage proxies with complete moving sweep.",
+  "aliases": ["supported_round_guide", "SBR", "TBR", "支撑光轴", "圆导轨"],
+  "keywords": ["linear guide", "SBR", "TBR", "支撑光轴", "圆导轨", "滑块", "直线轴承"],
+  "selectors": {"series": ["SBR", "TBR"], "diameter": ["12", "16", "20", "25", "30", "35", "40"], "length": "rail length", "block_position": "block center"},
+  "compatibility": {
+    "level": "series_compatible",
+    "claim": "Series and shaft diameter guide purchasing; support section, block envelope and mounting pattern remain vendor-specific.",
+    "match_fields": ["shaft_diameter", "shaft_axis_height", "support_width", "block_width", "block_length", "block_height"]
+  },
+  "geometry": {
+    "fidelity": "supported shaft, carriage envelope and complete carriage sweep",
+    "accurate": ["declared shaft diameter", "axis height", "support envelope", "block envelope", "travel axis"],
+    "omitted": ["bearing balls", "seals", "support fasteners", "block mounting holes", "load rating"]
+  },
+  "interfaces": [
+    {"id": "shaft_axis", "type": "linear_axis", "role": "round-guide travel"},
+    {"id": "support_base", "type": "planar_face", "role": "rail mounting datum"},
+    {"id": "carriage_top", "type": "planar_face", "role": "moving load attachment"}
+  ],
+  "keepouts": [{"id": "block_sweep", "purpose": "Bearing-block sweep along supported shaft."}],
+  "purchase": {"designation_template": "{series}{diameter} supported round guide length {length}", "note": "Verify support profile and block mounting pattern with the chosen vendor."},
+  "sample": {"params": {"series": "SBR", "diameter": "20", "length": 500}},
+  "parameters": [{"name": "series", "type": "string", "description": "Support family", "required": true, "choices": ["SBR", "TBR"]}, {"name": "diameter", "type": "string", "description": "Shaft diameter", "required": true, "choices": ["12", "16", "20", "25", "30", "35", "40"]}, {"name": "length", "type": "number", "description": "Rail length", "required": false, "unit": "mm", "default": 500}, {"name": "block_position", "type": "number|null", "description": "Block center", "required": false, "unit": "mm", "default": null}],
+  "items": [
+    {"id":"linear.guide.supported_round.sbr12","name":"SBR12 supported guide","aliases":["SBR12"],"dimensions_mm":{"shaft":12},"generator":{"params":{"series":"SBR","diameter":"12"}}},
+    {"id":"linear.guide.supported_round.sbr16","name":"SBR16 supported guide","aliases":["SBR16"],"dimensions_mm":{"shaft":16},"generator":{"params":{"series":"SBR","diameter":"16"}}},
+    {"id":"linear.guide.supported_round.sbr20","name":"SBR20 supported guide","aliases":["SBR20"],"dimensions_mm":{"shaft":20},"generator":{"params":{"series":"SBR","diameter":"20"}}},
+    {"id":"linear.guide.supported_round.sbr25","name":"SBR25 supported guide","aliases":["SBR25"],"dimensions_mm":{"shaft":25},"generator":{"params":{"series":"SBR","diameter":"25"}}},
+    {"id":"linear.guide.supported_round.sbr30","name":"SBR30 supported guide","aliases":["SBR30"],"dimensions_mm":{"shaft":30},"generator":{"params":{"series":"SBR","diameter":"30"}}},
+    {"id":"linear.guide.supported_round.sbr35","name":"SBR35 supported guide","aliases":["SBR35"],"dimensions_mm":{"shaft":35},"generator":{"params":{"series":"SBR","diameter":"35"}}},
+    {"id":"linear.guide.supported_round.sbr40","name":"SBR40 supported guide","aliases":["SBR40"],"dimensions_mm":{"shaft":40},"generator":{"params":{"series":"SBR","diameter":"40"}}},
+    {"id":"linear.guide.supported_round.tbr12","name":"TBR12 supported guide","aliases":["TBR12"],"dimensions_mm":{"shaft":12},"generator":{"params":{"series":"TBR","diameter":"12"}}},
+    {"id":"linear.guide.supported_round.tbr16","name":"TBR16 supported guide","aliases":["TBR16"],"dimensions_mm":{"shaft":16},"generator":{"params":{"series":"TBR","diameter":"16"}}},
+    {"id":"linear.guide.supported_round.tbr20","name":"TBR20 supported guide","aliases":["TBR20"],"dimensions_mm":{"shaft":20},"generator":{"params":{"series":"TBR","diameter":"20"}}},
+    {"id":"linear.guide.supported_round.tbr25","name":"TBR25 supported guide","aliases":["TBR25"],"dimensions_mm":{"shaft":25},"generator":{"params":{"series":"TBR","diameter":"25"}}},
+    {"id":"linear.guide.supported_round.tbr30","name":"TBR30 supported guide","aliases":["TBR30"],"dimensions_mm":{"shaft":30},"generator":{"params":{"series":"TBR","diameter":"30"}}},
+    {"id":"linear.guide.supported_round.tbr35","name":"TBR35 supported guide","aliases":["TBR35"],"dimensions_mm":{"shaft":35},"generator":{"params":{"series":"TBR","diameter":"35"}}},
+    {"id":"linear.guide.supported_round.tbr40","name":"TBR40 supported guide","aliases":["TBR40"],"dimensions_mm":{"shaft":40},"generator":{"params":{"series":"TBR","diameter":"40"}}}
+  ]
+}

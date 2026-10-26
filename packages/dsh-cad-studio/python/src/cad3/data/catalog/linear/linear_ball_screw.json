@@ -1,0 +1,39 @@
+{
+  "schema": "cadparts.catalog-family/v1",
+  "id": "linear.ball_screw",
+  "category": "linear",
+  "name": "SFU ball screw / SFU滚珠丝杆",
+  "summary": "Common SFU screw/nut proxies with lead, nut flange and moving sweep evidence.",
+  "aliases": ["ball_screw", "滚珠丝杆", "滚珠丝杠", "SFU丝杆"],
+  "keywords": ["ball screw", "滚珠丝杆", "滚珠丝杠", "SFU", "导程", "螺母", "法兰螺母"],
+  "selectors": {"code": ["SFU1204", "SFU1605", "SFU1610", "SFU2005", "SFU2010", "SFU2505", "SFU3205"], "length": "screw length", "nut_position": "nut center from fixed end"},
+  "compatibility": {
+    "level": "series_compatible",
+    "claim": "SFU diameter/lead codes guide purchasing; nut flange, end machining, accuracy and preload remain catalog/order specific.",
+    "match_fields": ["screw_diameter", "lead", "nut_outer_diameter", "nut_length", "nut_flange_diameter", "nut_flange_pitch_circle"]
+  },
+  "geometry": {
+    "fidelity": "screw/nut/flange envelope and complete nut sweep",
+    "accurate": ["declared screw diameter", "lead", "nut envelope", "flange dimensions", "motion axis"],
+    "omitted": ["helical groove", "balls", "return path", "end machining", "preload", "accuracy and load rating"]
+  },
+  "interfaces": [
+    {"id": "screw_axis", "type": "linear_rotation_axis", "role": "screw/support alignment"},
+    {"id": "fixed_end", "type": "shaft_end", "role": "fixed support reference"},
+    {"id": "floating_end", "type": "shaft_end", "role": "floating support reference"},
+    {"id": "nut_flange", "type": "circular_flange", "role": "moving load attachment"}
+  ],
+  "keepouts": [{"id": "nut_sweep", "purpose": "Ball-nut flange sweep along the screw axis."}],
+  "purchase": {"designation_template": "{code} ball screw length {length}", "note": "End machining, accuracy grade, preload and support bearings must be selected separately."},
+  "sample": {"params": {"code": "SFU1605", "length": 500}},
+  "parameters": [{"name": "code", "type": "string", "description": "Finite SFU designation", "required": true, "choices": ["SFU1204", "SFU1605", "SFU1610", "SFU2005", "SFU2010", "SFU2505", "SFU3205"]}, {"name": "length", "type": "number", "description": "Screw length", "required": false, "unit": "mm", "default": 500}, {"name": "nut_position", "type": "number|null", "description": "Nut center from fixed end", "required": false, "unit": "mm", "default": null}],
+  "items": [
+    {"id":"linear.ball_screw.sfu1204","name":"SFU1204 ball screw","aliases":["SFU1204","1204丝杆"],"dimensions_mm":{"diameter":12,"lead":4,"nut_flange":42},"generator":{"params":{"code":"SFU1204"}}},
+    {"id":"linear.ball_screw.sfu1605","name":"SFU1605 ball screw","aliases":["SFU1605","1605丝杆"],"dimensions_mm":{"diameter":16,"lead":5,"nut_flange":48},"generator":{"params":{"code":"SFU1605"}}},
+    {"id":"linear.ball_screw.sfu1610","name":"SFU1610 ball screw","aliases":["SFU1610","1610丝杆"],"dimensions_mm":{"diameter":16,"lead":10,"nut_flange":48},"generator":{"params":{"code":"SFU1610"}}},
+    {"id":"linear.ball_screw.sfu2005","name":"SFU2005 ball screw","aliases":["SFU2005","2005丝杆"],"dimensions_mm":{"diameter":20,"lead":5,"nut_flange":58},"generator":{"params":{"code":"SFU2005"}}},
+    {"id":"linear.ball_screw.sfu2010","name":"SFU2010 ball screw","aliases":["SFU2010","2010丝杆"],"dimensions_mm":{"diameter":20,"lead":10,"nut_flange":58},"generator":{"params":{"code":"SFU2010"}}},
+    {"id":"linear.ball_screw.sfu2505","name":"SFU2505 ball screw","aliases":["SFU2505","2505丝杆"],"dimensions_mm":{"diameter":25,"lead":5,"nut_flange":62},"generator":{"params":{"code":"SFU2505"}}},
+    {"id":"linear.ball_screw.sfu3205","name":"SFU3205 ball screw","aliases":["SFU3205","3205丝杆"],"dimensions_mm":{"diameter":32,"lead":5,"nut_flange":80},"generator":{"params":{"code":"SFU3205"}}}
+  ]
+}

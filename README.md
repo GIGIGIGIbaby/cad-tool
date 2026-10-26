@@ -135,6 +135,18 @@ assert abs(box.Shape.Volume - 8000) < 1e-6
 
 安装Skill只需要让使用的客户端发现该目录；本项目不自动修改任何客户端配置，也不依赖某一家模型平台的专有PTC功能。
 
+## DSH 插件
+
+同一仓库发布 DSH 插件 [`dsh-cad-studio`](packages/dsh-cad-studio/)：13 个 `cad3_*` Host 工具、浏览器结果卡、内嵌的 cad3 CLI 与 `freecad-v3` skill。装好即用，不需要另建 Python 依赖环境；FreeCAD 由用户安装，插件只探测。
+
+```bash
+curl -fL https://github.com/liwuzhan/cad-tool/releases/latest/download/dsh-cad-studio.tgz \
+  -o dsh-cad-studio.tgz
+dsh plugin --profile <profile> add ./dsh-cad-studio.tgz
+```
+
+插件要求 DSH 0.2.1-rc.1+。修改仓库根的 CLI 或 skill 后，运行 `node packages/sync-vendor.mjs` 同步内嵌副本；release workflow 会校验同步状态并打 `dsh-cad-studio.tgz`。
+
 ## 测试
 
 单元测试（不需要FreeCAD）及本机真实集成测试的入口：
@@ -143,6 +155,11 @@ assert abs(box.Shape.Volume - 8000) < 1e-6
 PYTHONPATH=src python3 -m unittest discover -s tests -v
 CAD3_TEST_FREECAD=/Applications/FreeCAD.app/Contents/Resources/bin/freecadcmd \
   PYTHONPATH=src python3 -m unittest discover -s tests -v
+
+# 插件：工具注册 + 内嵌 CLI 冒烟；以及 tarball 安装冒烟
+node packages/dsh-cad-studio/test/register.test.mjs
+npm pack ./packages/dsh-cad-studio --pack-destination /tmp && \
+  node packages/dsh-cad-studio/test/tarball.test.mjs /tmp/dsh-cad-studio-*.tgz
 ```
 
 集成测试使用临时新工程，不改当前源码仓库的模型。它们检查参数化构建、重新打开、编辑、版本恢复、失败保护和图像产生；不代替机械工程验收。
@@ -155,4 +172,4 @@ CAD3_TEST_FREECAD=/Applications/FreeCAD.app/Contents/Resources/bin/freecadcmd \
 
 ## 旧 V2
 
-本仓库主线已由 FreeCAD 原生 V3 取代。旧的 build123d / `.456d` 实现封存在 tag [`v2-final`](https://github.com/liwuzhan/cad-tool/tree/v2-final)，两个版本互不兼容；历史 alpha release 里的 `dsh-cad-studio.tgz` 属于 V2。
+本仓库主线已由 FreeCAD 原生 V3 取代。旧的 build123d / `.456d` 实现封存在 tag [`v2-final`](https://github.com/liwuzhan/cad-tool/tree/v2-final)，两个版本互不兼容；v0.1.0-alpha.5 及更早 release 里的 `dsh-cad-studio.tgz` 属于 V2；从 v3.0.0-alpha.1 起，同一资产名发布的是 FreeCAD 原生 V3 插件。

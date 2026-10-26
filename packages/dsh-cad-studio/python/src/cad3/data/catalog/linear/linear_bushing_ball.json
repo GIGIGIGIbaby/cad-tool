@@ -1,0 +1,512 @@
+{
+  "schema": "cadparts.catalog-family/v1",
+  "id": "linear.bushing.ball",
+  "category": "linear",
+  "name": "Linear ball bushing / 直线轴承",
+  "summary": "LM/LME cylindrical and LMF/LMK flanged bushing proxies for round shafts.",
+  "aliases": [
+    "linear_bushing",
+    "linear_bearing",
+    "直线轴承",
+    "法兰直线轴承"
+  ],
+  "keywords": [
+    "linear bearing",
+    "直线轴承",
+    "LM",
+    "LME",
+    "LMF",
+    "LMK",
+    "圆法兰",
+    "方法兰"
+  ],
+  "selectors": {
+    "style": [
+      "LM",
+      "LME",
+      "LMF",
+      "LMK"
+    ],
+    "bore": [
+      "8",
+      "10",
+      "12",
+      "16",
+      "20",
+      "25",
+      "30",
+      "40"
+    ],
+    "seal": [
+      "UU",
+      "unspecified"
+    ]
+  },
+  "compatibility": {
+    "level": "series_compatible",
+    "claim": "Style and bore narrow selection; outside diameter, length, flange pattern, seal suffix and fit must match the chosen catalog.",
+    "match_fields": [
+      "bore_diameter",
+      "outside_diameter",
+      "body_length",
+      "flange_shape",
+      "flange_size",
+      "flange_hole_pitch"
+    ]
+  },
+  "geometry": {
+    "fidelity": "body/bore and optional round/square flange mounting proxy",
+    "accurate": [
+      "declared bore",
+      "outer envelope",
+      "length",
+      "flange envelope and hole pattern"
+    ],
+    "omitted": [
+      "ball tracks",
+      "retainer",
+      "seals",
+      "snap-ring grooves",
+      "load rating"
+    ]
+  },
+  "interfaces": [
+    {
+      "id": "shaft_bore",
+      "type": "cylindrical_bore",
+      "role": "round-shaft location and travel"
+    },
+    {
+      "id": "motion_axis",
+      "type": "linear_axis",
+      "role": "bushing translation"
+    },
+    {
+      "id": "mounting_flange",
+      "type": "round_or_square_flange",
+      "role": "LMF/LMK moving-load attachment"
+    }
+  ],
+  "keepouts": [
+    {
+      "id": "moving_bushing",
+      "purpose": "Bushing outer envelope while translating on the shaft."
+    }
+  ],
+  "purchase": {
+    "designation_template": "{style}{bore} linear ball bushing",
+    "note": "Select seal, length suffix, accuracy and fit after layout."
+  },
+  "sample": {
+    "params": {
+      "style": "LMF",
+      "bore": "20"
+    }
+  },
+  "parameters": [
+    {
+      "name": "style",
+      "type": "string",
+      "description": "Bushing style",
+      "required": true,
+      "choices": [
+        "LM",
+        "LME",
+        "LMF",
+        "LMK"
+      ]
+    },
+    {
+      "name": "bore",
+      "type": "string",
+      "description": "Nominal shaft diameter",
+      "required": true,
+      "choices": [
+        "8",
+        "10",
+        "12",
+        "16",
+        "20",
+        "25",
+        "30",
+        "40"
+      ]
+    }
+  ],
+  "items": [
+    {
+      "id": "linear.bushing.ball.lm8",
+      "name": "LM8 cylindrical linear bushing",
+      "aliases": [
+        "LM8",
+        "LM8UU"
+      ],
+      "dimensions_mm": {
+        "bore": 8,
+        "outside": 15,
+        "length": 24
+      },
+      "generator": {
+        "params": {
+          "style": "LM",
+          "bore": "8"
+        }
+      }
+    },
+    {
+      "id": "linear.bushing.ball.lm12",
+      "name": "LM12 linear bushing",
+      "aliases": [
+        "LM12"
+      ],
+      "dimensions_mm": {
+        "bore": 12,
+        "outside": 21,
+        "length": 30
+      },
+      "generator": {
+        "params": {
+          "style": "LM",
+          "bore": "12"
+        }
+      }
+    },
+    {
+      "id": "linear.bushing.ball.lm16",
+      "name": "LM16 linear bushing",
+      "aliases": [
+        "LM16"
+      ],
+      "dimensions_mm": {
+        "bore": 16,
+        "outside": 28,
+        "length": 37
+      },
+      "generator": {
+        "params": {
+          "style": "LM",
+          "bore": "16"
+        }
+      }
+    },
+    {
+      "id": "linear.bushing.ball.lm20",
+      "name": "LM20 linear bushing",
+      "aliases": [
+        "LM20"
+      ],
+      "dimensions_mm": {
+        "bore": 20,
+        "outside": 32,
+        "length": 42
+      },
+      "generator": {
+        "params": {
+          "style": "LM",
+          "bore": "20"
+        }
+      }
+    },
+    {
+      "id": "linear.bushing.ball.lm25",
+      "name": "LM25 linear bushing",
+      "aliases": [
+        "LM25"
+      ],
+      "dimensions_mm": {
+        "bore": 25,
+        "outside": 40,
+        "length": 59
+      },
+      "generator": {
+        "params": {
+          "style": "LM",
+          "bore": "25"
+        }
+      }
+    },
+    {
+      "id": "linear.bushing.ball.lm30",
+      "name": "LM30 linear bushing",
+      "aliases": [
+        "LM30"
+      ],
+      "dimensions_mm": {
+        "bore": 30,
+        "outside": 45,
+        "length": 64
+      },
+      "generator": {
+        "params": {
+          "style": "LM",
+          "bore": "30"
+        }
+      }
+    },
+    {
+      "id": "linear.bushing.ball.lme12",
+      "name": "LME12 linear bushing",
+      "aliases": [
+        "LME12"
+      ],
+      "dimensions_mm": {
+        "bore": 12,
+        "outside": 21,
+        "length": 30
+      },
+      "generator": {
+        "params": {
+          "style": "LME",
+          "bore": "12"
+        }
+      }
+    },
+    {
+      "id": "linear.bushing.ball.lme16",
+      "name": "LME16 linear bushing",
+      "aliases": [
+        "LME16"
+      ],
+      "dimensions_mm": {
+        "bore": 16,
+        "outside": 28,
+        "length": 37
+      },
+      "generator": {
+        "params": {
+          "style": "LME",
+          "bore": "16"
+        }
+      }
+    },
+    {
+      "id": "linear.bushing.ball.lme20",
+      "name": "LME20 linear bushing",
+      "aliases": [
+        "LME20"
+      ],
+      "dimensions_mm": {
+        "bore": 20,
+        "outside": 32,
+        "length": 42
+      },
+      "generator": {
+        "params": {
+          "style": "LME",
+          "bore": "20"
+        }
+      }
+    },
+    {
+      "id": "linear.bushing.ball.lme25",
+      "name": "LME25 linear bushing",
+      "aliases": [
+        "LME25"
+      ],
+      "dimensions_mm": {
+        "bore": 25,
+        "outside": 40,
+        "length": 59
+      },
+      "generator": {
+        "params": {
+          "style": "LME",
+          "bore": "25"
+        }
+      }
+    },
+    {
+      "id": "linear.bushing.ball.lme30",
+      "name": "LME30 linear bushing",
+      "aliases": [
+        "LME30"
+      ],
+      "dimensions_mm": {
+        "bore": 30,
+        "outside": 45,
+        "length": 64
+      },
+      "generator": {
+        "params": {
+          "style": "LME",
+          "bore": "30"
+        }
+      }
+    },
+    {
+      "id": "linear.bushing.ball.lmf12",
+      "name": "LMF12 round-flange bushing",
+      "aliases": [
+        "LMF12"
+      ],
+      "dimensions_mm": {
+        "bore": 12,
+        "flange": 42
+      },
+      "generator": {
+        "params": {
+          "style": "LMF",
+          "bore": "12"
+        }
+      }
+    },
+    {
+      "id": "linear.bushing.ball.lmf16",
+      "name": "LMF16 round-flange bushing",
+      "aliases": [
+        "LMF16"
+      ],
+      "dimensions_mm": {
+        "bore": 16,
+        "flange": 48
+      },
+      "generator": {
+        "params": {
+          "style": "LMF",
+          "bore": "16"
+        }
+      }
+    },
+    {
+      "id": "linear.bushing.ball.lmf20",
+      "name": "LMF20 round-flange bushing",
+      "aliases": [
+        "LMF20"
+      ],
+      "dimensions_mm": {
+        "bore": 20,
+        "flange": 54
+      },
+      "generator": {
+        "params": {
+          "style": "LMF",
+          "bore": "20"
+        }
+      }
+    },
+    {
+      "id": "linear.bushing.ball.lmf25",
+      "name": "LMF25 round-flange bushing",
+      "aliases": [
+        "LMF25"
+      ],
+      "dimensions_mm": {
+        "bore": 25,
+        "flange": 62
+      },
+      "generator": {
+        "params": {
+          "style": "LMF",
+          "bore": "25"
+        }
+      }
+    },
+    {
+      "id": "linear.bushing.ball.lmf30",
+      "name": "LMF30 round-flange bushing",
+      "aliases": [
+        "LMF30"
+      ],
+      "dimensions_mm": {
+        "bore": 30,
+        "flange": 74
+      },
+      "generator": {
+        "params": {
+          "style": "LMF",
+          "bore": "30"
+        }
+      }
+    },
+    {
+      "id": "linear.bushing.ball.lmk12",
+      "name": "LMK12 square-flange bushing",
+      "aliases": [
+        "LMK12"
+      ],
+      "dimensions_mm": {
+        "bore": 12,
+        "flange": 42
+      },
+      "generator": {
+        "params": {
+          "style": "LMK",
+          "bore": "12"
+        }
+      }
+    },
+    {
+      "id": "linear.bushing.ball.lmk16",
+      "name": "LMK16 square-flange bushing",
+      "aliases": [
+        "LMK16"
+      ],
+      "dimensions_mm": {
+        "bore": 16,
+        "flange": 48
+      },
+      "generator": {
+        "params": {
+          "style": "LMK",
+          "bore": "16"
+        }
+      }
+    },
+    {
+      "id": "linear.bushing.ball.lmk20",
+      "name": "LMK20 square-flange bushing",
+      "aliases": [
+        "LMK20"
+      ],
+      "dimensions_mm": {
+        "bore": 20,
+        "flange": 54
+      },
+      "generator": {
+        "params": {
+          "style": "LMK",
+          "bore": "20"
+        }
+      }
+    },
+    {
+      "id": "linear.bushing.ball.lmk25",
+      "name": "LMK25 square-flange bushing",
+      "aliases": [
+        "LMK25"
+      ],
+      "dimensions_mm": {
+        "bore": 25,
+        "flange": 62
+      },
+      "generator": {
+        "params": {
+          "style": "LMK",
+          "bore": "25"
+        }
+      }
+    },
+    {
+      "id": "linear.bushing.ball.lmk30",
+      "name": "LMK30 square-flange bushing",
+      "aliases": [
+        "LMK30"
+      ],
+      "dimensions_mm": {
+        "bore": 30,
+        "flange": 74
+      },
+      "generator": {
+        "params": {
+          "style": "LMK",
+          "bore": "30"
+        }
+      }
+    }
+  ],
+  "alias_selections": {
+    "LM8UU": {
+      "seal": "UU"
+    }
+  }
+}

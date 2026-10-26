@@ -1,0 +1,22 @@
+{
+  "schema": "cadparts.catalog-family/v1",
+  "id": "fastener.hex_bolt_metric",
+  "category": "fastener",
+  "name": "Metric hex-head screw / 公制六角头螺栓",
+  "summary": "Purchasable metric hex-head fastener represented by its head and nominal thread envelope.",
+  "aliases": ["hex_bolt", "metric_hex_bolt", "六角螺栓", "外六角螺栓"],
+  "keywords": ["bolt", "screw", "螺栓", "螺钉", "M3", "M4", "M5", "M6", "M8", "M10", "M12"],
+  "selectors": {"size": "metric thread designation", "length": "nominal length below head in mm"},
+  "geometry": {
+    "fidelity": "nominal assembly envelope",
+    "accurate": ["nominal_diameter", "length", "head_height", "across_flats", "axis"],
+    "omitted": ["thread helix", "chamfer", "fillet", "grade marking", "tolerance", "strength"]
+  },
+  "interfaces": [
+    {"id": "thread_axis", "type": "male_thread_envelope", "role": "coaxial fastener placement"},
+    {"id": "head_bearing_face", "type": "planar_face", "role": "clamp location"}
+  ],
+  "purchase": {"designation_template": "{size}x{length} hex-head screw"},
+  "parameters": [{"name": "size", "type": "string|number", "description": "Metric nominal thread designation", "required": true, "choices": ["M3", "M4", "M5", "M6", "M8", "M10", "M12", "M14", "M16", "M18", "M20", "M22", "M24"]}, {"name": "length", "type": "number", "description": "Nominal length below the head", "required": true, "unit": "mm", "minimum": 0.0}],
+  "sample": {"params": {"size": "M8", "length": 30}}
+}

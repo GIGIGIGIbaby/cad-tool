@@ -1,0 +1,38 @@
+{
+  "schema": "cadparts.catalog-family/v1",
+  "id": "gearbox.planetary.inline",
+  "category": "gearbox",
+  "name": "Inline planetary gearbox / 行星减速机",
+  "summary": "Coaxial planetary reducer planning profiles grouped by common square motor-interface class.",
+  "aliases": ["planetary_gearbox", "行星减速机", "精密行星减速机"],
+  "keywords": ["gearbox", "planetary", "reducer", "行星", "同轴", "减速比", "伺服减速机"],
+  "selectors": {"motor_interface": ["42", "60", "80", "90", "110", "130"], "ratio": "purchase ratio; normally does not change this planning envelope"},
+  "compatibility": {
+    "level": "series_compatible",
+    "claim": "Motor-interface class is only a search category; input pilot, bolt pitch and output geometry must all match the chosen catalog.",
+    "match_fields": ["input_face", "input_hole_pitch", "input_pilot_diameter", "output_flange_diameter", "output_pilot_diameter", "output_hole_pitch", "output_shaft_diameter"]
+  },
+  "geometry": {
+    "fidelity": "coaxial planning envelope and declared input/output interfaces",
+    "accurate": ["declared body envelope", "input face/pilot/pitch", "output flange/pilot/pitch", "output shaft"],
+    "omitted": ["gearing", "bearings", "keyway", "backlash", "rated torque", "efficiency"]
+  },
+  "interfaces": [
+    {"id": "motor_input", "type": "square_motor_flange", "role": "motor adapter"},
+    {"id": "output_flange", "type": "circular_flange", "role": "machine mounting"},
+    {"id": "output_shaft", "type": "male_shaft", "role": "torque output"},
+    {"id": "rotation_axis", "type": "axis", "role": "coaxial placement"}
+  ],
+  "keepouts": [{"id": "gearbox", "purpose": "Gearbox, output flange and shaft envelope."}],
+  "purchase": {"designation_template": "inline planetary reducer for {motor_interface} mm motor ratio {ratio}", "note": "Pin vendor, series, stage count, backlash and torque after layout selection."},
+  "sample": {"params": {"motor_interface": "80", "ratio": 10}},
+  "parameters": [{"name": "motor_interface", "type": "string", "description": "Nominal motor-interface class", "required": true, "choices": ["42", "60", "80", "90", "110", "130"]}, {"name": "ratio", "type": "number", "description": "Reduction ratio for purchase direction", "required": false, "default": 10, "minimum": 1}],
+  "items": [
+    {"id": "gearbox.planetary.inline.42", "name": "42 mm motor-interface planetary profile", "dimensions_mm": {"input_face": 42, "input_hole_pitch": 31, "input_pilot_diameter": 22, "body_diameter": 42, "body_length": 65, "output_flange_diameter": 48, "output_pilot_diameter": 35, "output_hole_pitch": 40, "output_shaft_diameter": 12, "output_shaft_length": 25}, "generator": {"params": {"motor_interface": "42"}}},
+    {"id": "gearbox.planetary.inline.60", "name": "60 mm motor-interface planetary profile", "dimensions_mm": {"input_face": 60, "input_hole_pitch": 50, "input_pilot_diameter": 50, "body_diameter": 60, "body_length": 85, "output_flange_diameter": 70, "output_pilot_diameter": 55, "output_hole_pitch": 58, "output_shaft_diameter": 16, "output_shaft_length": 30}, "generator": {"params": {"motor_interface": "60"}}},
+    {"id": "gearbox.planetary.inline.80", "name": "80 mm motor-interface planetary profile", "dimensions_mm": {"input_face": 80, "input_hole_pitch": 70, "input_pilot_diameter": 70, "body_diameter": 80, "body_length": 110, "output_flange_diameter": 90, "output_pilot_diameter": 70, "output_hole_pitch": 75, "output_shaft_diameter": 22, "output_shaft_length": 40}, "generator": {"params": {"motor_interface": "80"}}},
+    {"id": "gearbox.planetary.inline.90", "name": "90 mm motor-interface planetary profile", "dimensions_mm": {"input_face": 90, "input_hole_pitch": 80, "input_pilot_diameter": 80, "body_diameter": 90, "body_length": 120, "output_flange_diameter": 100, "output_pilot_diameter": 80, "output_hole_pitch": 85, "output_shaft_diameter": 22, "output_shaft_length": 40}, "generator": {"params": {"motor_interface": "90"}}},
+    {"id": "gearbox.planetary.inline.110", "name": "110 mm motor-interface planetary profile", "dimensions_mm": {"input_face": 110, "input_hole_pitch": 95, "input_pilot_diameter": 95, "body_diameter": 110, "body_length": 150, "output_flange_diameter": 130, "output_pilot_diameter": 100, "output_hole_pitch": 110, "output_shaft_diameter": 32, "output_shaft_length": 50}, "generator": {"params": {"motor_interface": "110"}}},
+    {"id": "gearbox.planetary.inline.130", "name": "130 mm motor-interface planetary profile", "dimensions_mm": {"input_face": 130, "input_hole_pitch": 110, "input_pilot_diameter": 110, "body_diameter": 130, "body_length": 175, "output_flange_diameter": 150, "output_pilot_diameter": 120, "output_hole_pitch": 130, "output_shaft_diameter": 35, "output_shaft_length": 55}, "generator": {"params": {"motor_interface": "130"}}}
+  ]
+}

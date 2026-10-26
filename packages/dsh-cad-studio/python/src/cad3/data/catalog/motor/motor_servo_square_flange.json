@@ -1,0 +1,43 @@
+{
+  "schema": "cadparts.catalog-family/v1",
+  "id": "motor.servo.square_flange",
+  "category": "motor",
+  "name": "Square-flange servo motor / 方形法兰伺服电机",
+  "summary": "Planning proxies for common 40–130 mm servo flange classes with explicit interfaces.",
+  "aliases": ["servo_motor", "伺服电机", "110伺服", "130伺服"],
+  "keywords": ["motor", "servo", "伺服", "法兰", "40", "60", "80", "90", "110", "130"],
+  "selectors": {
+    "flange": ["40", "60", "80", "90", "110", "130"],
+    "body_length": "catalog-specific body length",
+    "shaft_diameter": "catalog-specific shaft diameter",
+    "shaft_length": "catalog-specific shaft extension"
+  },
+  "compatibility": {
+    "level": "series_compatible",
+    "claim": "The nominal flange class is a search category, not a universal standard; compare every resolved interface field before substitution.",
+    "match_fields": ["face_size", "mounting_hole_pitch", "mounting_hole_diameter", "pilot_diameter", "shaft_diameter", "shaft_length"]
+  },
+  "geometry": {
+    "fidelity": "common planning profile with explicit shaft/body overrides",
+    "accurate": ["declared face", "declared hole pattern", "declared pilot", "declared shaft", "explicit body_length"],
+    "omitted": ["brake housing", "connector orientation", "keyway", "encoder", "torque", "thermal behavior"]
+  },
+  "interfaces": [
+    {"id": "mounting_face", "type": "planar_face", "role": "axial location"},
+    {"id": "pilot", "type": "cylindrical_surface", "role": "radial location"},
+    {"id": "output_shaft", "type": "male_shaft", "role": "torque output"},
+    {"id": "mount_hole_*", "type": "clearance_hole", "role": "four-hole mounting"}
+  ],
+  "keepouts": [{"id": "body_and_rear_connector", "purpose": "Conservative body and rear cable/connector clearance."}],
+  "purchase": {"designation_template": "servo motor {flange} mm flange shaft {shaft_diameter} body {body_length}", "note": "Pin a manufacturer catalog number before manufacturing the mating plate."},
+  "sample": {"params": {"flange": "110"}},
+  "parameters": [{"name": "flange", "type": "string", "description": "Nominal square flange class", "required": true, "choices": ["40", "60", "80", "90", "110", "130"]}, {"name": "body_length", "type": "number|null", "description": "Catalog body length override", "required": false, "unit": "mm", "default": null}, {"name": "shaft_diameter", "type": "number|null", "description": "Catalog shaft diameter override", "required": false, "unit": "mm", "default": null}, {"name": "shaft_length", "type": "number|null", "description": "Catalog shaft extension override", "required": false, "unit": "mm", "default": null}],
+  "items": [
+    {"id": "motor.servo.square_flange.40", "name": "40 mm servo planning profile", "dimensions_mm": {"face": 40, "bolt_pitch": 30, "pilot": 30, "shaft": 8, "body_length": 80}, "generator": {"params": {"flange": "40"}}},
+    {"id": "motor.servo.square_flange.60", "name": "60 mm servo planning profile", "dimensions_mm": {"face": 60, "bolt_pitch": 50, "pilot": 50, "shaft": 14, "body_length": 100}, "generator": {"params": {"flange": "60"}}},
+    {"id": "motor.servo.square_flange.80", "name": "80 mm servo planning profile", "dimensions_mm": {"face": 80, "bolt_pitch": 70, "pilot": 70, "shaft": 19, "body_length": 130}, "generator": {"params": {"flange": "80"}}},
+    {"id": "motor.servo.square_flange.90", "name": "90 mm servo planning profile", "dimensions_mm": {"face": 90, "bolt_pitch": 80, "pilot": 80, "shaft": 19, "body_length": 140}, "generator": {"params": {"flange": "90"}}},
+    {"id": "motor.servo.square_flange.110", "name": "110 mm servo planning profile", "aliases": ["110伺服"], "dimensions_mm": {"face": 110, "bolt_pitch": 95, "pilot": 95, "shaft": 19, "body_length": 160}, "generator": {"params": {"flange": "110"}}},
+    {"id": "motor.servo.square_flange.130", "name": "130 mm servo planning profile", "aliases": ["130伺服"], "dimensions_mm": {"face": 130, "bolt_pitch": 110, "pilot": 110, "shaft": 22, "body_length": 180}, "generator": {"params": {"flange": "130"}}}
+  ]
+}

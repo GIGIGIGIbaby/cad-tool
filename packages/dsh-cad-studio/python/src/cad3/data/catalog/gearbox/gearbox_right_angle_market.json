@@ -1,0 +1,52 @@
+{
+  "schema": "cadparts.catalog-family/v1",
+  "id": "gearbox.right_angle.market",
+  "category": "gearbox",
+  "name": "Right-angle market gearbox / 市场型直角减速机",
+  "summary": "NMRV worm and BKM hypoid planning proxies with fixed input, output, feet and safety envelopes.",
+  "aliases": ["nmrv", "bkm", "worm_gearbox", "蜗轮蜗杆减速机", "准双曲面减速机"],
+  "keywords": ["gearbox", "reducer", "减速机", "NMRV", "BKM", "RV63", "蜗轮蜗杆", "准双曲面", "空心轴"],
+  "selectors": {"series": ["NMRV", "BKM"], "size": "finite market size code", "output_bore": "catalog-specific hollow-output bore"},
+  "compatibility": {
+    "level": "series_compatible",
+    "claim": "Shared NMRV/BKM size names are purchasing directions only; compare every mounting and shaft field before cross-vendor substitution.",
+    "match_fields": ["output_bore", "output_axis_height", "foot_hole_pitch_x", "foot_hole_pitch_y", "foot_hole_diameter", "input_pilot_diameter", "input_bolt_circle"]
+  },
+  "geometry": {
+    "fidelity": "conservative market-series housing and declared interfaces",
+    "accurate": ["declared body envelope", "output bore and axis", "foot-hole pattern", "input pilot and bolt circle"],
+    "omitted": ["housing ribs", "lubrication plugs", "gearing", "bearings", "keyways", "torque", "efficiency"]
+  },
+  "interfaces": [
+    {"id": "output_bore", "type": "cylindrical_bore", "role": "hollow torque output"},
+    {"id": "output_axis", "type": "axis", "role": "output placement"},
+    {"id": "input_motor_pilot", "type": "circular_flange", "role": "motor adapter"},
+    {"id": "base_plane", "type": "planar_face", "role": "mounting datum"},
+    {"id": "foot_hole_*", "type": "clearance_hole", "role": "base mounting"}
+  ],
+  "keepouts": [
+    {"id": "housing", "purpose": "Conservative housing envelope."},
+    {"id": "output_member_both_sides", "purpose": "Output hub/coupling access on both sides."},
+    {"id": "input_motor", "purpose": "Motor/adapter clearance along input axis."}
+  ],
+  "purchase": {"designation_template": "{series} {size} right-angle reducer output bore {output_bore}", "note": "Ratio, input motor adapter, output configuration and mounting position remain catalog selections."},
+  "sample": {"params": {"series": "NMRV", "size": "063"}},
+  "parameters": [{"name": "series", "type": "string", "description": "Market series", "required": true, "choices": ["NMRV", "BKM"]}, {"name": "size", "type": "string", "description": "Series size code", "required": true}, {"name": "output_bore", "type": "number|null", "description": "Hollow-output bore override", "required": false, "unit": "mm", "default": null}],
+  "items": [
+    {"id": "gearbox.right_angle.market.nmrv025", "name": "NMRV 025 planning profile", "aliases": ["NMRV025", "RV25"], "dimensions_mm": {"envelope": [90, 70, 72], "axis_height": 25, "output_bore": 11}, "generator": {"params": {"series": "NMRV", "size": "025"}}},
+    {"id": "gearbox.right_angle.market.nmrv030", "name": "NMRV 030 planning profile", "aliases": ["NMRV030", "RV30"], "dimensions_mm": {"envelope": [103, 80, 82], "axis_height": 30, "output_bore": 14}, "generator": {"params": {"series": "NMRV", "size": "030"}}},
+    {"id": "gearbox.right_angle.market.nmrv040", "name": "NMRV 040 planning profile", "aliases": ["NMRV040", "RV40"], "dimensions_mm": {"envelope": [130, 100, 103], "axis_height": 40, "output_bore": 18}, "generator": {"params": {"series": "NMRV", "size": "040"}}},
+    {"id": "gearbox.right_angle.market.nmrv050", "name": "NMRV 050 planning profile", "aliases": ["NMRV050", "RV50"], "dimensions_mm": {"envelope": [150, 120, 125], "axis_height": 50, "output_bore": 25}, "generator": {"params": {"series": "NMRV", "size": "050"}}},
+    {"id": "gearbox.right_angle.market.nmrv063", "name": "NMRV 063 planning profile", "aliases": ["NMRV063", "RV63", "rv63减速机"], "dimensions_mm": {"envelope": [180, 144, 148], "axis_height": 63, "output_bore": 25}, "generator": {"params": {"series": "NMRV", "size": "063"}}},
+    {"id": "gearbox.right_angle.market.nmrv075", "name": "NMRV 075 planning profile", "aliases": ["NMRV075", "RV75"], "dimensions_mm": {"envelope": [205, 172, 175], "axis_height": 75, "output_bore": 28}, "generator": {"params": {"series": "NMRV", "size": "075"}}},
+    {"id": "gearbox.right_angle.market.nmrv090", "name": "NMRV 090 planning profile", "aliases": ["NMRV090", "RV90"], "dimensions_mm": {"envelope": [238, 197, 205], "axis_height": 90, "output_bore": 35}, "generator": {"params": {"series": "NMRV", "size": "090"}}},
+    {"id": "gearbox.right_angle.market.nmrv110", "name": "NMRV 110 planning profile", "aliases": ["NMRV110", "RV110"], "dimensions_mm": {"envelope": [290, 238, 250], "axis_height": 110, "output_bore": 42}, "generator": {"params": {"series": "NMRV", "size": "110"}}},
+    {"id": "gearbox.right_angle.market.nmrv130", "name": "NMRV 130 planning profile", "aliases": ["NMRV130", "RV130"], "dimensions_mm": {"envelope": [335, 270, 285], "axis_height": 130, "output_bore": 45}, "generator": {"params": {"series": "NMRV", "size": "130"}}},
+    {"id": "gearbox.right_angle.market.bkm050", "name": "BKM 050 planning profile", "aliases": ["BKM050"], "dimensions_mm": {"envelope": [165, 128, 132], "axis_height": 50, "output_bore": 25}, "generator": {"params": {"series": "BKM", "size": "050"}}},
+    {"id": "gearbox.right_angle.market.bkm063", "name": "BKM 063 planning profile", "aliases": ["BKM063"], "dimensions_mm": {"envelope": [195, 152, 158], "axis_height": 63, "output_bore": 30}, "generator": {"params": {"series": "BKM", "size": "063"}}},
+    {"id": "gearbox.right_angle.market.bkm075", "name": "BKM 075 planning profile", "aliases": ["BKM075"], "dimensions_mm": {"envelope": [225, 180, 185], "axis_height": 75, "output_bore": 35}, "generator": {"params": {"series": "BKM", "size": "075"}}},
+    {"id": "gearbox.right_angle.market.bkm090", "name": "BKM 090 planning profile", "aliases": ["BKM090"], "dimensions_mm": {"envelope": [265, 210, 215], "axis_height": 90, "output_bore": 40}, "generator": {"params": {"series": "BKM", "size": "090"}}},
+    {"id": "gearbox.right_angle.market.bkm110", "name": "BKM 110 planning profile", "aliases": ["BKM110"], "dimensions_mm": {"envelope": [315, 250, 260], "axis_height": 110, "output_bore": 50}, "generator": {"params": {"series": "BKM", "size": "110"}}},
+    {"id": "gearbox.right_angle.market.bkm130", "name": "BKM 130 planning profile", "aliases": ["BKM130"], "dimensions_mm": {"envelope": [365, 290, 300], "axis_height": 130, "output_bore": 60}, "generator": {"params": {"series": "BKM", "size": "130"}}}
+  ]
+}

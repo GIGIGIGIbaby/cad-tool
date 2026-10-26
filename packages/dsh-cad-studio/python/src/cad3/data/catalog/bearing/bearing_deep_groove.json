@@ -1,0 +1,483 @@
+{
+  "schema": "cadparts.catalog-family/v1",
+  "id": "bearing.deep_groove",
+  "category": "bearing",
+  "name": "Deep-groove ball bearing / 深沟球轴承",
+  "summary": "Designation-driven radial bearing proxy with exact nominal bore, outside diameter and width.",
+  "aliases": [
+    "deep_groove_bearing",
+    "深沟球轴承",
+    "轴承"
+  ],
+  "keywords": [
+    "bearing",
+    "轴承",
+    "滚珠轴承",
+    "密封",
+    "防尘",
+    "ZZ",
+    "2RS",
+    "内径",
+    "外径"
+  ],
+  "selectors": {
+    "code": "standard boundary-dimension designation",
+    "closure": [
+      "open",
+      "Z",
+      "ZZ",
+      "RS",
+      "2RS"
+    ],
+    "clearance": [
+      "normal",
+      "C3",
+      "C4"
+    ]
+  },
+  "geometry": {
+    "fidelity": "exact nominal d/D/B envelope; optional recognizable heuristic internals",
+    "accurate": [
+      "bore_diameter",
+      "outside_diameter",
+      "width",
+      "axis",
+      "axial_faces"
+    ],
+    "omitted": [
+      "raceway",
+      "cage",
+      "seal geometry",
+      "tolerance",
+      "material",
+      "load rating"
+    ]
+  },
+  "interfaces": [
+    {
+      "id": "shaft_bore",
+      "type": "cylindrical_bore",
+      "role": "shaft radial location"
+    },
+    {
+      "id": "housing_seat",
+      "type": "cylindrical_surface",
+      "role": "housing radial location"
+    },
+    {
+      "id": "axial_face_min",
+      "type": "planar_face",
+      "role": "axial location"
+    },
+    {
+      "id": "axial_face_max",
+      "type": "planar_face",
+      "role": "axial location"
+    }
+  ],
+  "purchase": {
+    "designation_template": "{code}-{closure}-{clearance}",
+    "note": "Closure and clearance normally change the order designation, not the assembly envelope."
+  },
+  "sample": {
+    "params": {
+      "code": "6204"
+    }
+  },
+  "parameters": [
+    {
+      "name": "code",
+      "type": "string",
+      "description": "Bearing designation",
+      "required": true,
+      "choices": [
+        "608",
+        "6200",
+        "6201",
+        "6202",
+        "6203",
+        "6204",
+        "6205",
+        "6206",
+        "6207",
+        "6208",
+        "6209",
+        "6210",
+        "6300",
+        "6301",
+        "6302",
+        "6303",
+        "6304",
+        "6305",
+        "6306",
+        "6307",
+        "6308",
+        "6309",
+        "6310"
+      ]
+    },
+    {
+      "name": "detail",
+      "type": "string",
+      "description": "simplified envelope or recognizable heuristic rings and balls",
+      "required": false,
+      "default": "simplified",
+      "choices": [
+        "simplified",
+        "rings"
+      ]
+    }
+  ],
+  "items": [
+    {
+      "id": "bearing.deep_groove.608",
+      "name": "608 deep-groove bearing",
+      "aliases": [
+        "608",
+        "608ZZ",
+        "608-2RS"
+      ],
+      "dimensions_mm": {
+        "bore": 8,
+        "outside_diameter": 22,
+        "width": 7
+      },
+      "generator": {
+        "params": {
+          "code": "608"
+        }
+      },
+      "source": "CAD V3 EVAL-002 nominal boundary dimensions; seal/clearance suffixes are purchase selections"
+    },
+    {
+      "id": "bearing.deep_groove.6200",
+      "name": "6200 deep-groove bearing",
+      "dimensions_mm": {
+        "bore": 10,
+        "outside_diameter": 30,
+        "width": 9
+      },
+      "generator": {
+        "params": {
+          "code": "6200"
+        }
+      }
+    },
+    {
+      "id": "bearing.deep_groove.6201",
+      "name": "6201 deep-groove bearing",
+      "dimensions_mm": {
+        "bore": 12,
+        "outside_diameter": 32,
+        "width": 10
+      },
+      "generator": {
+        "params": {
+          "code": "6201"
+        }
+      }
+    },
+    {
+      "id": "bearing.deep_groove.6202",
+      "name": "6202 deep-groove bearing",
+      "dimensions_mm": {
+        "bore": 15,
+        "outside_diameter": 35,
+        "width": 11
+      },
+      "generator": {
+        "params": {
+          "code": "6202"
+        }
+      }
+    },
+    {
+      "id": "bearing.deep_groove.6203",
+      "name": "6203 deep-groove bearing",
+      "dimensions_mm": {
+        "bore": 17,
+        "outside_diameter": 40,
+        "width": 12
+      },
+      "generator": {
+        "params": {
+          "code": "6203"
+        }
+      }
+    },
+    {
+      "id": "bearing.deep_groove.6204",
+      "name": "6204 deep-groove bearing",
+      "aliases": [
+        "6204",
+        "6204-ZZ",
+        "6204-2RS"
+      ],
+      "keywords": [
+        "20mm内径"
+      ],
+      "dimensions_mm": {
+        "bore": 20,
+        "outside_diameter": 47,
+        "width": 14
+      },
+      "generator": {
+        "params": {
+          "code": "6204"
+        }
+      }
+    },
+    {
+      "id": "bearing.deep_groove.6205",
+      "name": "6205 deep-groove bearing",
+      "dimensions_mm": {
+        "bore": 25,
+        "outside_diameter": 52,
+        "width": 15
+      },
+      "generator": {
+        "params": {
+          "code": "6205"
+        }
+      }
+    },
+    {
+      "id": "bearing.deep_groove.6206",
+      "name": "6206 deep-groove bearing",
+      "dimensions_mm": {
+        "bore": 30,
+        "outside_diameter": 62,
+        "width": 16
+      },
+      "generator": {
+        "params": {
+          "code": "6206"
+        }
+      }
+    },
+    {
+      "id": "bearing.deep_groove.6207",
+      "name": "6207 deep-groove bearing",
+      "dimensions_mm": {
+        "bore": 35,
+        "outside_diameter": 72,
+        "width": 17
+      },
+      "generator": {
+        "params": {
+          "code": "6207"
+        }
+      }
+    },
+    {
+      "id": "bearing.deep_groove.6208",
+      "name": "6208 deep-groove bearing",
+      "dimensions_mm": {
+        "bore": 40,
+        "outside_diameter": 80,
+        "width": 18
+      },
+      "generator": {
+        "params": {
+          "code": "6208"
+        }
+      }
+    },
+    {
+      "id": "bearing.deep_groove.6209",
+      "name": "6209 deep-groove bearing",
+      "dimensions_mm": {
+        "bore": 45,
+        "outside_diameter": 85,
+        "width": 19
+      },
+      "generator": {
+        "params": {
+          "code": "6209"
+        }
+      }
+    },
+    {
+      "id": "bearing.deep_groove.6210",
+      "name": "6210 deep-groove bearing",
+      "dimensions_mm": {
+        "bore": 50,
+        "outside_diameter": 90,
+        "width": 20
+      },
+      "generator": {
+        "params": {
+          "code": "6210"
+        }
+      }
+    },
+    {
+      "id": "bearing.deep_groove.6300",
+      "name": "6300 deep-groove bearing",
+      "dimensions_mm": {
+        "bore": 10,
+        "outside_diameter": 35,
+        "width": 11
+      },
+      "generator": {
+        "params": {
+          "code": "6300"
+        }
+      }
+    },
+    {
+      "id": "bearing.deep_groove.6301",
+      "name": "6301 deep-groove bearing",
+      "dimensions_mm": {
+        "bore": 12,
+        "outside_diameter": 37,
+        "width": 12
+      },
+      "generator": {
+        "params": {
+          "code": "6301"
+        }
+      }
+    },
+    {
+      "id": "bearing.deep_groove.6302",
+      "name": "6302 deep-groove bearing",
+      "dimensions_mm": {
+        "bore": 15,
+        "outside_diameter": 42,
+        "width": 13
+      },
+      "generator": {
+        "params": {
+          "code": "6302"
+        }
+      }
+    },
+    {
+      "id": "bearing.deep_groove.6303",
+      "name": "6303 deep-groove bearing",
+      "dimensions_mm": {
+        "bore": 17,
+        "outside_diameter": 47,
+        "width": 14
+      },
+      "generator": {
+        "params": {
+          "code": "6303"
+        }
+      }
+    },
+    {
+      "id": "bearing.deep_groove.6304",
+      "name": "6304 deep-groove bearing",
+      "dimensions_mm": {
+        "bore": 20,
+        "outside_diameter": 52,
+        "width": 15
+      },
+      "generator": {
+        "params": {
+          "code": "6304"
+        }
+      }
+    },
+    {
+      "id": "bearing.deep_groove.6305",
+      "name": "6305 deep-groove bearing",
+      "dimensions_mm": {
+        "bore": 25,
+        "outside_diameter": 62,
+        "width": 17
+      },
+      "generator": {
+        "params": {
+          "code": "6305"
+        }
+      }
+    },
+    {
+      "id": "bearing.deep_groove.6306",
+      "name": "6306 deep-groove bearing",
+      "dimensions_mm": {
+        "bore": 30,
+        "outside_diameter": 72,
+        "width": 19
+      },
+      "generator": {
+        "params": {
+          "code": "6306"
+        }
+      }
+    },
+    {
+      "id": "bearing.deep_groove.6307",
+      "name": "6307 deep-groove bearing",
+      "dimensions_mm": {
+        "bore": 35,
+        "outside_diameter": 80,
+        "width": 21
+      },
+      "generator": {
+        "params": {
+          "code": "6307"
+        }
+      }
+    },
+    {
+      "id": "bearing.deep_groove.6308",
+      "name": "6308 deep-groove bearing",
+      "dimensions_mm": {
+        "bore": 40,
+        "outside_diameter": 90,
+        "width": 23
+      },
+      "generator": {
+        "params": {
+          "code": "6308"
+        }
+      }
+    },
+    {
+      "id": "bearing.deep_groove.6309",
+      "name": "6309 deep-groove bearing",
+      "dimensions_mm": {
+        "bore": 45,
+        "outside_diameter": 100,
+        "width": 25
+      },
+      "generator": {
+        "params": {
+          "code": "6309"
+        }
+      }
+    },
+    {
+      "id": "bearing.deep_groove.6310",
+      "name": "6310 deep-groove bearing",
+      "dimensions_mm": {
+        "bore": 50,
+        "outside_diameter": 110,
+        "width": 27
+      },
+      "generator": {
+        "params": {
+          "code": "6310"
+        }
+      }
+    }
+  ],
+  "alias_selections": {
+    "608ZZ": {
+      "closure": "ZZ"
+    },
+    "608-2RS": {
+      "closure": "2RS"
+    },
+    "6204-ZZ": {
+      "closure": "ZZ"
+    },
+    "6204-2RS": {
+      "closure": "2RS"
+    }
+  }
+}

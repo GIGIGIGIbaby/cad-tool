@@ -1,0 +1,19 @@
+{
+  "schema":"cadparts.catalog-family/v1","id":"sensor.proximity.threaded","category":"sensor",
+  "name":"Threaded proximity sensor / 螺纹接近传感器","summary":"M8/M12/M18/M30 cylindrical sensor proxy with sensing and rear cable clearances.",
+  "aliases":["proximity_sensor","接近开关","接近传感器"],"keywords":["sensor","proximity","接近开关","接近传感器","M8","M12","M18","M30","电感式"],
+  "selectors":{"thread":["M8","M12","M18","M30"],"connector":["cable","m8","m12"]},
+  "compatibility":{"level":"series_compatible","claim":"Thread size guides bracket selection; sensing distance, flush/non-flush body, length, connector and electrical output remain product-specific.","match_fields":["thread","body_diameter","body_length","thread_length","connector"]},
+  "geometry":{"fidelity":"threaded body envelope and functional clearances","accurate":["declared body diameter","body length","thread length","sensing face","rear connection axis"],"omitted":["thread helix","nuts","LED","exact connector","sensing distance","electrical behavior"]},
+  "interfaces":[{"id":"threaded_mount","type":"male_thread_envelope","role":"panel mounting"},{"id":"sensing_face","type":"planar_face","role":"target reference"},{"id":"cable_exit","type":"cable_axis","role":"connector routing"}],
+  "keepouts":[{"id":"sensing_clearance","purpose":"Unobstructed target approach volume."},{"id":"rear_connector_and_bend","purpose":"Rear connector/cable bend allowance."}],
+  "purchase":{"designation_template":"{thread} proximity sensor {connector}","note":"Select sensing distance, flush mounting, PNP/NPN, NO/NC, voltage and IP rating separately."},
+  "sample":{"params":{"thread":"M18"}},
+  "parameters": [{"name":"thread","type":"string","description":"Metric threaded body","required":true,"choices":["M8","M12","M18","M30"]},{"name":"connector","type":"string","description":"Rear termination","required":false,"default":"cable","choices":["cable","m8","m12"]}],
+  "items":[
+    {"id":"sensor.proximity.threaded.m8","name":"M8 proximity sensor envelope","aliases":["M8接近开关"],"generator":{"params":{"thread":"M8"}}},
+    {"id":"sensor.proximity.threaded.m12","name":"M12 proximity sensor envelope","aliases":["M12接近开关"],"generator":{"params":{"thread":"M12"}}},
+    {"id":"sensor.proximity.threaded.m18","name":"M18 proximity sensor envelope","aliases":["M18接近开关"],"generator":{"params":{"thread":"M18"}}},
+    {"id":"sensor.proximity.threaded.m30","name":"M30 proximity sensor envelope","aliases":["M30接近开关"],"generator":{"params":{"thread":"M30"}}}
+  ]
+}

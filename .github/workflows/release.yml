@@ -1,0 +1,85 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag (defaults to v<package version>)"
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Resolve and verify release tag
+        id: release
+        shell: bash
+        env:
+          REQUESTED_TAG: ${{ inputs.tag }}
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            tag="${GITHUB_REF#refs/tags/}"
+          elif [[ -n "$REQUESTED_TAG" ]]; then
+            tag="$REQUESTED_TAG"
+          else
+            version="$(node -p "require('./packages/dsh-cad-studio/package.json').version")"
+            tag="v$version"
+          fi
+          package_version="$(node -p "require('./packages/dsh-cad-studio/package.json').version")"
+          if [[ "$tag" != "v$package_version" ]]; then
+            echo "release tag $tag does not match package version $package_version" >&2
+            exit 1
+          fi
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+
+      - name: Verify vendored Python CLI and skill are in sync
+        run: node packages/sync-vendor.mjs --check
+
+      - name: Register tools against the bundled CLI (no FreeCAD)
+        run: node packages/dsh-cad-studio/test/register.test.mjs
+
+      - name: Build release tarball
+        run: |
+          mkdir -p dist
+          npm pack ./packages/dsh-cad-studio --ignore-scripts --pack-destination dist
+          mv dist/dsh-cad-studio-*.tgz dist/dsh-cad-studio.tgz
+          (cd dist && sha256sum dsh-cad-studio.tgz > SHA256SUMS)
+
+      - name: Install tarball in a clean project and smoke-test it
+        run: node packages/dsh-cad-studio/test/tarball.test.mjs dist/dsh-cad-studio.tgz
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dsh-cad-studio
+          path: |
+            dist/dsh-cad-studio.tgz
+            dist/SHA256SUMS
+
+      - name: Attach assets to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.release.outputs.tag }}
+          target_commitish: ${{ github.sha }}
+          name: CAD Studio ${{ steps.release.outputs.tag }} (FreeCAD V3)
+          generate_release_notes: true
+          files: |
+            dist/dsh-cad-studio.tgz
+            dist/SHA256SUMS

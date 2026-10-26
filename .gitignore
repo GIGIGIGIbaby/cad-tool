@@ -9,3 +9,4 @@ dist/
 .test-artifacts/
 .venv/
 .DS_Store
+__pycache__/

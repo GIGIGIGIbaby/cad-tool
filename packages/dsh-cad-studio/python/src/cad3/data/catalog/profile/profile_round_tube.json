@@ -1,0 +1,23 @@
+{
+  "schema": "cadparts.catalog-family/v1",
+  "id": "profile.round_tube",
+  "category": "profile",
+  "name": "Circular hollow section / 圆管",
+  "summary": "Configurable circular-tube stock envelope for frames, shafts, spacers and BOMs.",
+  "aliases": ["round_tube", "chs", "圆管", "钢管"],
+  "keywords": ["profile", "型材", "圆管", "钢管", "外径", "内径", "壁厚", "长度"],
+  "selectors": {"outer_diameter": "OD in mm", "wall": "wall thickness in mm", "length": "cut length in mm"},
+  "geometry": {
+    "fidelity": "nominal cylindrical stock envelope",
+    "accurate": ["outside_diameter", "inside_diameter", "wall", "length", "axis", "end_faces"],
+    "omitted": ["weld seam", "grade", "tolerance", "surface finish"]
+  },
+  "interfaces": [
+    {"id": "inside_bore", "type": "cylindrical_bore", "role": "shaft/tube clearance"},
+    {"id": "end_min", "type": "profile_end", "role": "cut/join plane"},
+    {"id": "end_max", "type": "profile_end", "role": "cut/join plane"}
+  ],
+  "purchase": {"designation_template": "round tube OD{outer_diameter} wall {wall}, cut length {length}"},
+  "parameters": [{"name": "outer_diameter", "type": "number", "description": "Outside diameter", "required": true, "unit": "mm", "minimum": 0.0}, {"name": "wall", "type": "number", "description": "Nominal wall thickness", "required": true, "unit": "mm", "minimum": 0.0}, {"name": "length", "type": "number", "description": "Length along +Z", "required": true, "unit": "mm", "minimum": 0.0}],
+  "sample": {"params": {"outer_diameter": 48.3, "wall": 3.2, "length": 100}}
+}

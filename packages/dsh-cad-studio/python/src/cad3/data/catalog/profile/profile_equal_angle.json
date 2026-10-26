@@ -1,0 +1,22 @@
+{
+  "schema": "cadparts.catalog-family/v1",
+  "id": "profile.equal_angle",
+  "category": "profile",
+  "name": "Equal-leg angle / 等边角钢",
+  "summary": "Configurable equal-angle stock proxy for structural layout, cutting and BOMs.",
+  "aliases": ["equal_angle", "angle_steel", "角钢", "等边角钢"],
+  "keywords": ["profile", "型材", "角钢", "等边角钢", "L型钢", "壁厚", "长度"],
+  "selectors": {"leg": "equal leg length in mm", "thickness": "nominal thickness in mm", "length": "cut length in mm"},
+  "geometry": {
+    "fidelity": "sharp-corner nominal L-section envelope",
+    "accurate": ["leg", "thickness", "length", "end_faces"],
+    "omitted": ["rolling root radius", "toe radius", "grade", "tolerance", "surface finish"]
+  },
+  "interfaces": [
+    {"id": "end_min", "type": "profile_end", "role": "cut/join plane"},
+    {"id": "end_max", "type": "profile_end", "role": "cut/join plane"}
+  ],
+  "purchase": {"designation_template": "equal angle {leg}x{leg}x{thickness}, cut length {length}"},
+  "parameters": [{"name": "leg", "type": "number", "description": "Equal outside leg length", "required": true, "unit": "mm", "minimum": 0.0}, {"name": "thickness", "type": "number", "description": "Nominal leg thickness", "required": true, "unit": "mm", "minimum": 0.0}, {"name": "length", "type": "number", "description": "Length along +Z", "required": true, "unit": "mm", "minimum": 0.0}],
+  "sample": {"params": {"leg": 50, "thickness": 5, "length": 100}}
+}

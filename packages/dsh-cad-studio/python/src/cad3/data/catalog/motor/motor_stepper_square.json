@@ -1,0 +1,41 @@
+{
+  "schema": "cadparts.catalog-family/v1",
+  "id": "motor.stepper.square",
+  "category": "motor",
+  "name": "Square stepper motor / 方形步进电机",
+  "summary": "42, 56.4, 60 and 85 mm stepper mounting profiles with overridable body and shaft dimensions.",
+  "aliases": ["stepper_motor", "nema_stepper", "步进电机", "42步进", "57步进", "86步进"],
+  "keywords": ["motor", "stepper", "步进电机", "NEMA17", "NEMA23", "NEMA24", "NEMA34", "42", "57", "60", "85", "86"],
+  "selectors": {
+    "frame": ["42", "56.4", "60", "85"],
+    "body_length": "catalog-specific body length",
+    "shaft_diameter": "catalog-specific shaft diameter",
+    "shaft_length": "catalog-specific shaft extension"
+  },
+  "compatibility": {
+    "level": "series_compatible",
+    "claim": "Frame class narrows the mounting interface but does not prove shaft, pilot, connector or body-envelope interchangeability.",
+    "match_fields": ["mounting_hole_pitch", "mounting_hole_diameter", "pilot_diameter", "shaft_diameter", "shaft_length"]
+  },
+  "geometry": {
+    "fidelity": "mounting interface and conservative square body proxy",
+    "accurate": ["mounting_face", "hole_pattern", "pilot", "shaft", "explicit body_length"],
+    "omitted": ["windings", "bearings", "connector shape", "torque", "thermal behavior"]
+  },
+  "interfaces": [
+    {"id": "mounting_face", "type": "planar_face", "role": "axial location"},
+    {"id": "pilot", "type": "cylindrical_surface", "role": "radial location"},
+    {"id": "output_shaft", "type": "male_shaft", "role": "torque output"},
+    {"id": "mount_hole_*", "type": "clearance_hole", "role": "four-hole mounting"}
+  ],
+  "keepouts": [{"id": "body_and_rear_connector", "purpose": "Conservative body and rear cable/connector clearance."}],
+  "purchase": {"designation_template": "square stepper frame {frame} shaft {shaft_diameter} body {body_length}", "note": "Use resolved interfaces, not the colloquial 57/86 name alone."},
+  "sample": {"params": {"frame": "42"}},
+  "parameters": [{"name": "frame", "type": "string", "description": "Frame face size", "required": true, "choices": ["42", "56.4", "60", "85"]}, {"name": "body_length", "type": "number|null", "description": "Product body length override", "required": false, "unit": "mm", "default": null}, {"name": "shaft_diameter", "type": "number|null", "description": "Product shaft diameter override", "required": false, "unit": "mm", "default": null}, {"name": "shaft_length", "type": "number|null", "description": "Product shaft extension override", "required": false, "unit": "mm", "default": null}],
+  "items": [
+    {"id": "motor.stepper.square.42", "name": "42 mm / NEMA 17 planning profile", "aliases": ["NEMA17", "42步进"], "dimensions_mm": {"face": 42, "bolt_pitch": 31, "pilot": 22, "shaft": 5, "body_length": 48}, "generator": {"params": {"frame": "42"}}},
+    {"id": "motor.stepper.square.56_4", "name": "56.4 mm / NEMA 23 planning profile", "aliases": ["NEMA23", "57步进"], "dimensions_mm": {"face": 56.4, "bolt_pitch": 47.14, "pilot": 38.1, "shaft": 6.35, "body_length": 76}, "generator": {"params": {"frame": "56.4"}}},
+    {"id": "motor.stepper.square.60", "name": "60 mm / NEMA 24 planning profile", "aliases": ["NEMA24", "60步进"], "dimensions_mm": {"face": 60, "bolt_pitch": 50, "pilot": 36, "shaft": 8, "body_length": 75}, "generator": {"params": {"frame": "60"}}},
+    {"id": "motor.stepper.square.85", "name": "85 mm / NEMA 34 planning profile", "aliases": ["NEMA34", "86步进"], "dimensions_mm": {"face": 85, "bolt_pitch": 69.6, "pilot": 73, "shaft": 12.7, "body_length": 118}, "generator": {"params": {"frame": "85"}}}
+  ]
+}

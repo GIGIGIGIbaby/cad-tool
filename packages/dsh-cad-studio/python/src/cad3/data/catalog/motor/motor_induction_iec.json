@@ -1,0 +1,40 @@
+{
+  "schema": "cadparts.catalog-family/v1",
+  "id": "motor.induction.iec",
+  "category": "motor",
+  "name": "IEC induction motor / IEC 异步电机",
+  "summary": "IEC 60072 mounting and shaft interfaces with a conservative manufacturer-dependent body envelope.",
+  "aliases": ["iec_motor", "三相异步电机", "B3电机", "B5电机", "B14电机"],
+  "keywords": ["IEC", "motor", "induction", "异步电机", "B3", "B5", "B14", "B35", "机座号"],
+  "selectors": {"frame": ["63", "71", "80", "90S", "90L", "100L", "112M", "132S", "132M"], "mount": ["B3", "B5", "B14", "B35"]},
+  "compatibility": {
+    "level": "normative",
+    "claim": "Shaft, foot and flange dimensions follow the cited IEC frame plan; body and terminal-box envelopes remain catalog-specific.",
+    "match_fields": ["frame", "mount", "shaft_diameter", "shaft_length", "foot_hole_pitch_axial", "foot_hole_pitch_transverse", "flange_pitch_circle", "flange_pilot_diameter"]
+  },
+  "geometry": {
+    "fidelity": "normative mounting coordinates plus conservative body proxy",
+    "accurate": ["shaft_height", "shaft_diameter", "shaft_length", "foot pattern", "B5/B14 flange dimensions"],
+    "omitted": ["manufacturer body outline", "cooling fins", "fan cover detail", "terminal box", "keyway", "power and efficiency"]
+  },
+  "interfaces": [
+    {"id": "output_shaft", "type": "male_shaft", "role": "torque output"},
+    {"id": "shaft_axis", "type": "axis", "role": "coaxial placement"},
+    {"id": "foot_hole_*", "type": "clearance_hole", "role": "B3/B35 mounting"},
+    {"id": "drive_flange", "type": "circular_flange", "role": "B5/B14/B35 mounting"}
+  ],
+  "keepouts": [{"id": "motor_and_terminal_box", "purpose": "Conservative motor, fan-cover and terminal-box envelope."}],
+  "purchase": {"designation_template": "IEC frame {frame} mounting {mount} induction motor", "note": "Power, poles, voltage, efficiency, enclosure and brake are separate selection fields."},
+  "sample": {"params": {"frame": "80", "mount": "B5"}},
+  "parameters": [{"name": "frame", "type": "string", "description": "IEC frame designation", "required": true, "choices": ["63", "71", "80", "90S", "90L", "100L", "112M", "132S", "132M"]}, {"name": "mount", "type": "string", "description": "Mounting arrangement", "required": false, "default": "B3", "choices": ["B3", "B5", "B14", "B35"]}],
+  "items": [
+    {"id": "motor.induction.iec.63-b3", "name": "IEC 63 B3 motor interface", "dimensions_mm": {"shaft_height": 63, "shaft": 11, "shaft_length": 23, "foot_pitch": [100, 80]}, "generator": {"params": {"frame": "63", "mount": "B3"}}},
+    {"id": "motor.induction.iec.71-b3", "name": "IEC 71 B3 motor interface", "dimensions_mm": {"shaft_height": 71, "shaft": 14, "shaft_length": 30, "foot_pitch": [112, 90]}, "generator": {"params": {"frame": "71", "mount": "B3"}}},
+    {"id": "motor.induction.iec.80-b3", "name": "IEC 80 B3 motor interface", "dimensions_mm": {"shaft_height": 80, "shaft": 19, "shaft_length": 40, "foot_pitch": [125, 100]}, "generator": {"params": {"frame": "80", "mount": "B3"}}},
+    {"id": "motor.induction.iec.80-b5", "name": "IEC 80 B5 motor interface", "dimensions_mm": {"shaft_height": 80, "shaft": 19, "shaft_length": 40, "flange_pcd": 165, "flange_pilot": 130}, "generator": {"params": {"frame": "80", "mount": "B5"}}},
+    {"id": "motor.induction.iec.90s-b3", "name": "IEC 90S B3 motor interface", "dimensions_mm": {"shaft_height": 90, "shaft": 24, "shaft_length": 50, "foot_pitch": [140, 100]}, "generator": {"params": {"frame": "90S", "mount": "B3"}}},
+    {"id": "motor.induction.iec.100l-b5", "name": "IEC 100L B5 motor interface", "dimensions_mm": {"shaft_height": 100, "shaft": 28, "shaft_length": 60, "flange_pcd": 215, "flange_pilot": 180}, "generator": {"params": {"frame": "100L", "mount": "B5"}}},
+    {"id": "motor.induction.iec.112m-b35", "name": "IEC 112M B35 motor interface", "dimensions_mm": {"shaft_height": 112, "shaft": 28, "shaft_length": 60, "foot_pitch": [190, 140], "flange_pcd": 215}, "generator": {"params": {"frame": "112M", "mount": "B35"}}},
+    {"id": "motor.induction.iec.132m-b3", "name": "IEC 132M B3 motor interface", "dimensions_mm": {"shaft_height": 132, "shaft": 38, "shaft_length": 80, "foot_pitch": [216, 178]}, "generator": {"params": {"frame": "132M", "mount": "B3"}}}
+  ]
+}

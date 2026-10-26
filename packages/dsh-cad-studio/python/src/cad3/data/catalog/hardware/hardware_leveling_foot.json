@@ -1,0 +1,22 @@
+{
+  "schema":"cadparts.catalog-family/v1","id":"hardware.leveling_foot","category":"hardware",
+  "name":"Machine leveling foot / 设备调平脚","summary":"M8–M30 threaded machine feet with floor datum, stem and adjustment clearance.",
+  "aliases":["leveling_foot","adjustable_foot","调平脚","地脚"],"keywords":["leveling foot","machine foot","调平脚","地脚","M8","M10","M12","M16","M20","M24","M30"],
+  "selectors":{"thread":["M8","M10","M12","M16","M20","M24","M30"],"stem_length":"threaded stem length"},
+  "compatibility":{"level":"series_compatible","claim":"Metric stem guides frame attachment; foot diameter, stem length, articulation, pad material and load rating remain product-specific.","match_fields":["thread","stem_diameter","stem_length","foot_diameter","foot_height"]},
+  "geometry":{"fidelity":"foot pad, threaded stem envelope and adjustment access","accurate":["declared stem diameter/length","foot envelope","floor datum"],"omitted":["thread helix","articulation","anti-slip pad","spanner flats","load rating"]},
+  "interfaces":[{"id":"floor_contact","type":"planar_face","role":"machine support datum"},{"id":"threaded_stem","type":"male_thread_envelope","role":"frame attachment"},{"id":"adjustment_axis","type":"axis","role":"height adjustment"}],
+  "keepouts":[{"id":"adjustment_and_spanner_access","purpose":"Foot, vertical adjustment and spanner access."}],
+  "purchase":{"designation_template":"leveling foot {thread} stem length {stem_length}","note":"Select load, pad, articulation, corrosion protection and locking nut separately."},
+  "sample":{"params":{"thread":"M16"}},
+  "parameters": [{"name":"thread","type":"string","description":"Metric stem","required":true,"choices":["M8","M10","M12","M16","M20","M24","M30"]},{"name":"stem_length","type":"number|null","description":"Threaded stem length","required":false,"unit":"mm","default":null}],
+  "items":[
+    {"id":"hardware.leveling_foot.m8","name":"M8 leveling foot","generator":{"params":{"thread":"M8"}}},
+    {"id":"hardware.leveling_foot.m10","name":"M10 leveling foot","generator":{"params":{"thread":"M10"}}},
+    {"id":"hardware.leveling_foot.m12","name":"M12 leveling foot","generator":{"params":{"thread":"M12"}}},
+    {"id":"hardware.leveling_foot.m16","name":"M16 leveling foot","generator":{"params":{"thread":"M16"}}},
+    {"id":"hardware.leveling_foot.m20","name":"M20 leveling foot","generator":{"params":{"thread":"M20"}}},
+    {"id":"hardware.leveling_foot.m24","name":"M24 leveling foot","generator":{"params":{"thread":"M24"}}},
+    {"id":"hardware.leveling_foot.m30","name":"M30 leveling foot","generator":{"params":{"thread":"M30"}}}
+  ]
+}

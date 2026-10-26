@@ -1,0 +1,21 @@
+{
+  "schema":"cadparts.catalog-family/v1","id":"fan.axial.square","category":"fan",
+  "name":"Square axial fan / 方形轴流风扇","summary":"Common 40–140 mm fan frames with mounting, airflow axis and intake/exhaust clearances.",
+  "aliases":["axial_fan","cooling_fan","散热风扇","轴流风扇"],"keywords":["fan","axial","风扇","散热风扇","轴流","40mm","60mm","80mm","92mm","120mm","140mm"],
+  "selectors":{"size":["40","60","80","92","120","140"]},
+  "compatibility":{"level":"series_compatible","claim":"Nominal square size narrows selection; thickness, hole pitch, voltage, connector and airflow/noise remain product-specific.","match_fields":["side","thickness","mount_hole_pitch","mount_hole_diameter"]},
+  "geometry":{"fidelity":"frame/opening/hub envelope with functional airflow clearances","accurate":["declared side","thickness","mount-hole pattern","opening","airflow axis"],"omitted":["blades","motor detail","guard","connector","airflow and noise curve"]},
+  "interfaces":[{"id":"mounting_face","type":"planar_face","role":"panel mounting"},{"id":"airflow_axis","type":"flow_axis","role":"intake/exhaust alignment"},{"id":"mount_hole_*","type":"clearance_hole","role":"fan mounting"}],
+  "keepouts":[{"id":"intake_clearance","purpose":"Unobstructed intake planning volume."},{"id":"exhaust_clearance","purpose":"Unobstructed exhaust planning volume."}],
+  "purchase":{"designation_template":"{size} mm square axial fan","note":"Select thickness, voltage, connector, bearing, airflow, static pressure, noise and IP rating separately."},
+  "sample":{"params":{"size":"120"}},
+  "parameters": [{"name":"size","type":"string","description":"Nominal square frame","required":true,"choices":["40","60","80","92","120","140"]}],
+  "items":[
+    {"id":"fan.axial.square.40","name":"40 mm square axial fan","dimensions_mm":{"side":40,"thickness":10,"hole_pitch":32},"generator":{"params":{"size":"40"}}},
+    {"id":"fan.axial.square.60","name":"60 mm square axial fan","dimensions_mm":{"side":60,"thickness":15,"hole_pitch":50},"generator":{"params":{"size":"60"}}},
+    {"id":"fan.axial.square.80","name":"80 mm square axial fan","dimensions_mm":{"side":80,"thickness":25,"hole_pitch":71.5},"generator":{"params":{"size":"80"}}},
+    {"id":"fan.axial.square.92","name":"92 mm square axial fan","dimensions_mm":{"side":92,"thickness":25,"hole_pitch":82.5},"generator":{"params":{"size":"92"}}},
+    {"id":"fan.axial.square.120","name":"120 mm square axial fan","aliases":["120mm","120mm风扇","120mm散热风扇"],"keywords":["120mm"],"dimensions_mm":{"side":120,"thickness":25,"hole_pitch":105},"generator":{"params":{"size":"120"}}},
+    {"id":"fan.axial.square.140","name":"140 mm square axial fan","dimensions_mm":{"side":140,"thickness":38,"hole_pitch":124.5},"generator":{"params":{"size":"140"}}}
+  ]
+}
