@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.0.0-alpha.2 (2026-10-26)
+
+- 修复发布物污染：CI 测试生成的 `__pycache__/*.pyc` 不再进入 tarball
+  （包内 `.npmignore` + 工作流 `PYTHONDONTWRITEBYTECODE=1`）。工具与协议行为不变。
+
 ## 3.0.0-alpha.1
 
 首个 FreeCAD 原生 V3 插件版，取代 V2 的 build123d / `.456d` 插件。

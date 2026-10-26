@@ -1,6 +1,6 @@
 {
   "name": "dsh-cad-studio",
-  "version": "3.0.0-alpha.1",
+  "version": "3.0.0-alpha.2",
   "description": "DSH plugin for FreeCAD-native CAD modeling: run, inspect, render, mates, standard-parts catalog and Git design snapshots",
   "type": "module",
   "main": "lib/index.js",
@@ -19,7 +19,8 @@
     "lib/client.js",
     "cordis.patch.yml",
     "python/cad3.py",
-    "python/src/cad3",
+    "python/src/cad3/*.py",
+    "python/src/cad3/data",
     "skills",
     "README.md",
     "CHANGELOG.md"

@@ -18,6 +18,9 @@ jobs:
   package:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
+    env:
+      # 测试会调用内嵌 cad3 CLI，避免它的 __pycache__ 被 npm pack 带进发行物
+      PYTHONDONTWRITEBYTECODE: "1"
     steps:
       - uses: actions/checkout@v4
 
